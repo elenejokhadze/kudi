@@ -195,6 +195,18 @@ textarea.in{padding:12px 14px;min-height:80px}
 .sub-feats{display:flex;flex-direction:column;gap:8px;margin:12px 0}
 .sub-feats li{list-style:none;display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
 .sub-badge{display:inline-flex;align-items:center;gap:5px;background:var(--mint);color:var(--mint-ink);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:800}
+/* champion state */
+:root{--gold:#F6C94E;--gold-deep:#B8860B;--gold-bg:#FEF9E7}
+.ring.champion .face{background:linear-gradient(135deg,#F6C94E 0%,#FFE08A 100%)}
+.ring.champion svg.track circle:last-child{stroke:#F6C94E}
+.ring.champion{filter:drop-shadow(0 0 10px rgba(246,201,78,.5))}
+.bdg.champion-all{grid-column:1/-1;background:linear-gradient(135deg,var(--gold-bg),#fff);border:2px solid var(--gold);border-radius:18px;padding:14px 16px;flex-direction:row;gap:12px;text-align:left;font-size:14px}
+.bdg.champion-all .medal{background:linear-gradient(135deg,#F6C94E,#FFE08A);color:var(--gold-deep);box-shadow:0 4px 16px rgba(246,201,78,.4);width:52px;height:52px;flex-shrink:0}
+/* care report */
+.report-stat{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+.report-stat:last-child{border-bottom:none}
+.report-stat .lbl{font-size:14px;font-weight:700;color:var(--muted)}
+.report-stat .val{font-family:var(--f-display);font-weight:800;font-size:18px}
 
 /* overlays: toast, xp float, confetti, badge modal */
 .toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--ink);color:var(--on-ink);border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px;z-index:40;display:flex;gap:10px;align-items:center;animation:toast 2.6s ease forwards;white-space:nowrap;max-width:calc(100% - 32px)}
@@ -571,6 +583,25 @@ function todayTasks(){
   const done = all.filter(x=>x.done).length;
   return {done, total: all.length, pct: all.length ? done/all.length : 1};
 }
+function allBadgesEarned(){ return S && BADGES.every(b => S.badges[b.id]); }
+function careStats(){
+  const log = S.log;
+  const meals = log.filter(l=>l.type==='meal').length;
+  const meds = log.filter(l=>l.type==='med').length;
+  const vaccines = log.filter(l=>l.type==='vaccine').length;
+  const treats = log.filter(l=>l.type==='treat').length;
+  const walks = log.filter(l=>l.type==='walk').length;
+  const water = log.filter(l=>l.type==='water').length;
+  const dates = [...new Set(log.map(l=>l.date))].sort();
+  const firstDate = dates[0];
+  const days = firstDate ? diffDays(firstDate, today()) + 1 : 0;
+  const tripsComplete = S.trips.filter(t=>t.steps.length && t.steps.every(s=>s.done)).length;
+  const feedCount = {};
+  log.filter(l=>l.type==='meal').forEach(l=>{ feedCount[l.by]=(feedCount[l.by]||0)+1; });
+  const topId = Object.keys(feedCount).sort((a,b)=>feedCount[b]-feedCount[a])[0];
+  const topFeeder = topId ? (S.members.find(m=>m.id===topId)||{name:'Someone'}).name : null;
+  return {meals, meds, vaccines, treats, walks, water, days, tripsComplete, topFeeder};
+}
 function moodOf(){
   const t = today(), now = hmToMin(nowHM());
   const late = S.meals.some(m => !mealFed(S,m.id,t) && hmToMin(m.time) + 30 < now);
@@ -625,11 +656,12 @@ function showModal(){
   const m = modalQ[0]; if (!m) return;
   const layer = document.getElementById('layer');
   const wrap = document.createElement('div'); wrap.className='modal'; wrap.setAttribute('role','dialog'); wrap.setAttribute('aria-modal','true');
-  wrap.innerHTML = `<div class="modal-in"><div class="medal">${ic(m.icon,'')}</div><span class="eyebrow">${m.kind==='level'?'New level':'Badge unlocked'}</span><h2 style="font-size:26px">${esc(m.title)}</h2><p class="muted" style="margin:0">${esc(m.desc)}</p><button class="btn sun block" id="modalOk">${m.kind==='badge'?`Nice! +${XP.badge} XP`:'Keep going'}</button></div>`;
+  const isChamp = m.kind==='champion';
+  wrap.innerHTML = `<div class="modal-in" ${isChamp?'style="border:2px solid var(--gold);background:var(--gold-bg)"':''}><div class="medal" ${isChamp?'style="background:linear-gradient(135deg,#F6C94E,#FFE08A);color:var(--gold-deep);box-shadow:0 6px 24px rgba(246,201,78,.5)"':''}>${ic(m.icon,'')}</div><span class="eyebrow">${m.kind==='level'?'New level':isChamp?'All badges!':'Badge unlocked'}</span><h2 style="font-size:26px">${esc(m.title)}</h2><p class="muted" style="margin:0">${esc(m.desc)}</p><button class="btn sun block" id="modalOk">${isChamp?'View care report':m.kind==='badge'?`Nice! +${XP.badge} XP`:'Keep going'}</button></div>`;
   layer.appendChild(wrap);
   burst({clientX:innerWidth/2, clientY:innerHeight/2-60}, 26);
   const ok = wrap.querySelector('#modalOk'); ok.focus();
-  ok.addEventListener('click', () => { wrap.remove(); modalQ.shift(); if (modalQ.length) setTimeout(showModal, 150); });
+  ok.addEventListener('click', () => { const isChamp = modalQ[0] && modalQ[0].kind==='champion'; wrap.remove(); modalQ.shift(); if (modalQ.length) setTimeout(showModal, 150); if (isChamp){ ui.tab='me'; ui.sheet={type:'report'}; render({keepScroll:true}); } });
 }
 function checkBadges(){
   BADGES.forEach(b => {
@@ -639,6 +671,11 @@ function checkBadges(){
       queueModal({kind:'badge', title:b.name, desc:b.desc, icon:b.icon});
     }
   });
+  if (!S.badges._champion && allBadgesEarned()){
+    S.badges._champion = today();
+    S.xp += 100;
+    queueModal({kind:'champion', title:`${S.pet.name} is a legend!`, desc:`You collected every badge. ${S.pet.name} has the most dedicated family in the world. +100 XP`, icon:'trophy'});
+  }
 }
 function toast(msg, undo){
   document.querySelectorAll('.toast').forEach(t=>t.remove());
@@ -732,8 +769,8 @@ function heroBlock(){
   const L = levelOf(S.xp), tt = todayTasks(), st = streak(S), mood = moodOf();
   const C = 2*Math.PI*42;
   return `<section class="hero" aria-label="${esc(S.pet.name)} today">
-    <div class="ring ${ui.flash==='hero'?'wiggle':''}">
-      <svg class="track" viewBox="0 0 92 92" aria-hidden="true"><circle cx="46" cy="46" r="42" fill="none" stroke="rgba(255,194,60,.25)" stroke-width="7"/><circle cx="46" cy="46" r="42" fill="none" stroke="#FFC23C" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-tt.pct)}" style="transition:stroke-dashoffset .8s cubic-bezier(.2,.8,.2,1)"/></svg>
+    <div class="ring ${ui.flash==='hero'?'wiggle':''} ${allBadgesEarned()?'champion':''}">
+      <svg class="track" viewBox="0 0 92 92" aria-hidden="true"><circle cx="46" cy="46" r="42" fill="none" stroke="rgba(255,194,60,.25)" stroke-width="7"/><circle cx="46" cy="46" r="42" fill="none" stroke="${allBadgesEarned()?'#F6C94E':'#FFC23C'}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-tt.pct)}" style="transition:stroke-dashoffset .8s cubic-bezier(.2,.8,.2,1)"/></svg>
       <div class="face">${mascot(S.pet.species, mood)}</div>
     </div>
     <div class="grow" style="position:relative;z-index:1">
@@ -966,8 +1003,12 @@ function viewMe(){
     <div class="card"><span class="badge-ico sun" style="width:60px;height:60px;border-radius:50%;overflow:hidden">${mascot(S.pet.species,'happy')}</span><div class="grow"><div class="t" style="font-size:18px">${esc(S.pet.name)}</div><div class="s">${esc({dog:'Dog',cat:'Cat',other:'Pet'}[S.pet.species]||'Pet')}${S.pet.breed?` · ${esc(S.pet.breed)}`:''}${S.pet.birthday?` · born ${fmt(S.pet.birthday)}`:''}</div></div><button class="iconbtn sm" data-a="sheet" data-type="pet" aria-label="Edit pet">${ic('edit','ico-s')}</button></div>
 
     <section class="sec"><div class="sec-h"><h3>Badges</h3><span class="pill num">${earned} / ${BADGES.length}</span></div>
-      <div class="badges">${BADGES.map(b=>`<div class="bdg ${S.badges[b.id]?'on':''}" title="${esc(b.desc)}"><span class="medal">${ic(b.icon)}</span><span>${esc(b.name)}</span></div>`).join('')}</div>
-      <div class="card"><span class="badge-ico ink">${ic('trophy')}</span><div class="grow"><div class="t">Level ${L.i+1} · ${esc(L.name)}</div><div class="bar sun" style="margin-top:6px"><i style="width:${Math.round(L.pct*100)}%"></i></div><div class="s num" style="margin-top:4px">${S.xp} XP${L.toNext?` · ${L.toNext} to ${esc(LEVELS[L.i+1])}`:' · Top level'}</div></div></div>
+      <div class="badges">
+        ${allBadgesEarned() ? `<div class="bdg champion-all"><div class="medal">${ic('trophy')}</div><div><div style="font-size:15px;font-weight:800;color:var(--gold-deep)">Champion!</div><div style="font-size:13px;color:var(--muted);font-weight:700">${esc(S.pet.name)} collected every badge.</div></div></div>` : ''}
+        ${BADGES.map(b=>`<div class="bdg ${S.badges[b.id]?'on':''}" title="${esc(b.desc)}"><span class="medal">${ic(b.icon)}</span><span>${esc(b.name)}</span></div>`).join('')}
+      </div>
+      <div class="card"><span class="badge-ico ${allBadgesEarned()?'':'ink'}" style="${allBadgesEarned()?'background:linear-gradient(135deg,#F6C94E,#FFE08A);color:var(--gold-deep)':''}">${ic('trophy')}</span><div class="grow"><div class="t">Level ${L.i+1} · ${esc(L.name)}</div><div class="bar sun" style="margin-top:6px"><i style="width:${Math.round(L.pct*100)}%"></i></div><div class="s num" style="margin-top:4px">${S.xp} XP${L.toNext?` · ${L.toNext} to ${esc(LEVELS[L.i+1])}`:' · Top level'}</div></div></div>
+      <button class="card" data-a="sheet" data-type="report" style="text-align:left;width:100%"><span class="badge-ico sun">${ic('star')}</span><div class="grow"><div class="t">View care report</div><div class="s">Meals, meds, streaks, trips and more.</div></div>${ic('right','ico-s')}</button>
     </section>
 
     <section class="sec"><div class="sec-h"><h3>Family</h3>${subscribed ? `<button class="link" data-a="sheet" data-type="member">Add</button>` : ''}</div>
@@ -1018,11 +1059,43 @@ function subscribeSheet(){
   </div>`;
 }
 
+/* ---------- care report sheet ---------- */
+function careReportSheet(){
+  const cs = careStats(), champ = allBadgesEarned(), L = levelOf(S.xp);
+  const earned = BADGES.filter(b=>S.badges[b.id]).length;
+  const row = (label, val, unit='') => `<div class="report-stat"><span class="lbl">${label}</span><span class="val">${val}<span style="font-size:13px;font-weight:700;opacity:.6"> ${unit}</span></span></div>`;
+  return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle" style="padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))">
+    <div class="grab"></div>
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="width:80px;height:80px;border-radius:50%;background:${champ?'linear-gradient(135deg,#F6C94E,#FFE08A)':'var(--sun)'};margin:0 auto 10px;display:grid;place-items:center;${champ?'box-shadow:0 6px 24px rgba(246,201,78,.4)':''}overflow:hidden">${mascot(S.pet.species,'happy')}</div>
+      <h2 id="shTitle" style="margin-bottom:2px">${esc(S.pet.name)}'s Care Report</h2>
+      <span class="pill ${champ?'sun':'ink'}">${champ?'Champion · All badges':'Level '+( L.i+1)+' · '+L.name}</span>
+    </div>
+    <div class="card col" style="gap:0;padding:0 14px">
+      ${cs.days ? row('Days of care', cs.days, 'days') : ''}
+      ${row('Meals logged', cs.meals, 'meals')}
+      ${row('Current streak', streak(S), 'days')}
+      ${cs.topFeeder ? row('Top feeder', esc(cs.topFeeder)) : ''}
+      ${cs.meds ? row('Medicine doses', cs.meds, 'doses') : ''}
+      ${cs.vaccines ? row('Vaccines recorded', cs.vaccines) : ''}
+      ${cs.treats ? row('Treats given', cs.treats) : ''}
+      ${cs.walks ? row('Walks logged', cs.walks) : ''}
+      ${cs.water ? row('Water top-ups', cs.water) : ''}
+      ${cs.tripsComplete ? row('Trips completed', cs.tripsComplete) : ''}
+      ${row('Total XP', S.xp, 'XP')}
+      ${row('Badges collected', `${earned} / ${BADGES.length}`)}
+    </div>
+    ${champ ? `<p class="small muted" style="text-align:center;margin:12px 0 0">Every badge collected. ${esc(S.pet.name)} is the luckiest pet.</p>` : `<button class="card" data-a="close" style="margin-top:10px;width:100%;justify-content:center;font-weight:800">Close</button>`}
+    ${champ ? `<button class="btn ghost block" style="margin-top:8px" data-a="close">Close</button>` : ''}
+  </div>`;
+}
+
 /* ---------- sheets ---------- */
 function sheetHTML(){
   const sh = ui.sheet; if (!sh) return '';
   if (sh.type === 'remind') return remindSheet();
   if (sh.type === 'subscribe') return subscribeSheet();
+  if (sh.type === 'report') return careReportSheet();
   if (sh.type === 'whoami') return `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle"><div class="grab"></div>
     <h2 id="shTitle">Who is using this phone?</h2><p class="muted" style="margin:0 0 14px">Your name shows next to everything you log for ${esc(S.pet.name)}.</p>
     <div class="stack">${S.members.map(m=>`<button class="card" data-a="iam" data-id="${m.id}" style="text-align:left;width:100%"><span class="badge-ico sun" style="border-radius:50%;font-weight:800">${esc(m.name.slice(0,1).toUpperCase())}</span><div class="grow t">I'm ${esc(m.name)}</div>${ic('right','ico-s')}</button>`).join('')}
