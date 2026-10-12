@@ -207,6 +207,12 @@ textarea.in{padding:12px 14px;min-height:80px}
 .report-stat:last-child{border-bottom:none}
 .report-stat .lbl{font-size:14px;font-weight:700;color:var(--muted)}
 .report-stat .val{font-family:var(--f-display);font-weight:800;font-size:18px}
+/* affiliate cards */
+.aff-card{background:var(--tint);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;align-items:center;gap:12px}
+.aff-card .aff-tag{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.aff-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.aff-links a{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:800;text-decoration:none;background:var(--card);border:1.5px solid var(--line);color:var(--ink)}
+.aff-links a:hover{background:var(--tint2)}
 
 /* overlays: toast, xp float, confetti, badge modal */
 .toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--ink);color:var(--on-ink);border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px;z-index:40;display:flex;gap:10px;align-items:center;animation:toast 2.6s ease forwards;white-space:nowrap;max-width:calc(100% - 32px)}
@@ -584,6 +590,8 @@ function todayTasks(){
   return {done, total: all.length, pct: all.length ? done/all.length : 1};
 }
 function allBadgesEarned(){ return S && BADGES.every(b => S.badges[b.id]); }
+function amazonPetLink(q){ return 'https://www.amazon.com/s?tag=kudiapp-20&k='+encodeURIComponent(q+' '+({dog:'dog',cat:'cat',other:'pet'}[S.pet.species]||'pet')+' food'); }
+function chewyLink(q){ return 'https://www.chewy.com/s?query='+encodeURIComponent(q); }
 function careStats(){
   const log = S.log;
   const meals = log.filter(l=>l.type==='meal').length;
@@ -931,9 +939,10 @@ function viewHealth(){
       ${spark?`<div class="card col"><div class="row" style="justify-content:space-between"><span class="t">Trend</span><span class="pill num">${esc(ws[0].value)} kg now</span></div>${spark}</div>`:''}
       ${ws.length?`<div class="list">${ws.map(w=>`<div class="li"><div class="grow"><div class="t num">${esc(w.value)} kg</div><div class="s">${fmt(w.date)} · ${esc(nameOf(w.by))}</div></div><button class="iconbtn sm" data-a="unlog" data-id="${w.id}" aria-label="Delete weight entry">${ic('x','ico-s')}</button></div>`).join('')}</div>`:'<div class="empty">No weights yet. Weigh monthly while growing.</div>'}`;
   }
+  const insuranceCard = `<div class="aff-card" style="margin-top:8px"><span class="badge-ico" style="background:var(--lav)">${ic('heart')}</span><div class="grow"><div class="aff-tag">Partner</div><div class="t" style="font-size:15px">Pet insurance for ${esc(S.pet.name)}</div><div class="s">Vet bills covered from €15/month. Compare plans from leading providers.</div><div class="aff-links"><a href="https://www.petinsurance.com/?ref=kudiapp" target="_blank" rel="noopener">${ic('right','ico-s')}Compare plans</a></div></div></div>`;
   return `${header('Health', `${S.pet.name} · ${ageLabel(monthsOld(S.pet.birthday))}`)}
     <div class="seg">${segBtn('meds','Meds')}${segBtn('vaccines',`Vaccines${healthAlerts()?` (${healthAlerts()})`:''}`)}${heatTab()?segBtn('heat','Heat'):''}${segBtn('weight','Weight')}</div>
-    <div class="stack" style="margin-top:14px">${body}</div>`;
+    <div class="stack" style="margin-top:14px">${body}${insuranceCard}</div>`;
 }
 function viewFood(){
   const seg = ui.foodSeg;
@@ -945,9 +954,12 @@ function viewFood(){
       <button class="btn soft block" data-a="sheet" data-type="meal">${ic('plus','ico-s')}Add meal time</button>`;
   } else if (seg === 'pantry'){
     const kinds = [['food','Food','bowl'],['treat','Treats','bone'],['toy','Toys','ball']];
+    const foodItems = S.items.filter(i=>i.kind==='food');
     body = kinds.map(([k,label,icn]) => { const list = S.items.filter(i=>i.kind===k);
       return `<div class="sec-h" style="margin-top:6px"><h3>${label}</h3><button class="link" data-a="sheet" data-type="item" data-kind="${k}">Add</button></div>
-      ${list.length?`<div class="list">${list.map(i=>`<div class="li ${ui.flash==='item:'+i.id?'enter':''}"><span class="badge-ico" style="width:36px;height:36px;border-radius:12px">${ic(icn,'ico-s')}</span><div class="grow"><div class="t">${esc(i.name)}</div>${i.note?`<div class="s">${esc(i.note)}</div>`:''}</div><button class="iconbtn sm" data-a="fav" data-id="${i.id}" aria-pressed="${!!i.fav}" aria-label="${i.fav?'Remove from favourites':'Mark as favourite'}" style="${i.fav?'background:var(--blush);color:var(--blush-ink)':''}">${ic('heart','ico-s')}</button><button class="iconbtn sm" data-a="sheet" data-type="item" data-id="${i.id}" aria-label="Edit ${esc(i.name)}">${ic('edit','ico-s')}</button></div>`).join('')}</div>`:`<div class="empty">No ${label.toLowerCase()} saved yet.</div>`}`; }).join('');
+      ${list.length?`<div class="list">${list.map(i=>`<div class="li ${ui.flash==='item:'+i.id?'enter':''}"><span class="badge-ico" style="width:36px;height:36px;border-radius:12px">${ic(icn,'ico-s')}</span><div class="grow"><div class="t">${esc(i.name)}</div>${i.note?`<div class="s">${esc(i.note)}</div>`:''}</div>${k==='food'?`<a href="${amazonPetLink(i.name)}" target="_blank" rel="noopener" class="btn ghost sm" style="font-size:12px;padding:0 10px;min-height:34px" aria-label="Shop ${esc(i.name)} on Amazon">Shop</a>`:''}
+        <button class="iconbtn sm" data-a="fav" data-id="${i.id}" aria-pressed="${!!i.fav}" aria-label="${i.fav?'Remove from favourites':'Mark as favourite'}" style="${i.fav?'background:var(--blush);color:var(--blush-ink)':''}">${ic('heart','ico-s')}</button><button class="iconbtn sm" data-a="sheet" data-type="item" data-id="${i.id}" aria-label="Edit ${esc(i.name)}">${ic('edit','ico-s')}</button></div>`).join('')}</div>`:`<div class="empty">No ${label.toLowerCase()} saved yet.</div>`}`; }).join('');
+    body += `<div class="aff-card" style="margin-top:8px"><span class="badge-ico sun">${ic('bone')}</span><div class="grow"><div class="aff-tag">Partner stores</div><div class="t" style="font-size:15px">Shop ${esc(S.pet.name)}'s food online</div><div class="s">${foodItems.length?`Based on your pantry: ${foodItems.slice(0,2).map(i=>esc(i.name)).join(', ')}${foodItems.length>2?` +${foodItems.length-2} more`:''}`:('Find food, treats and supplies')}</div><div class="aff-links"><a href="${foodItems.length?amazonPetLink(foodItems[0].name):'https://www.amazon.com/s?tag=kudiapp-20&k='+encodeURIComponent(S.pet.species+' pet food')}" target="_blank" rel="noopener">${ic('right','ico-s')}Amazon</a><a href="${foodItems.length?chewyLink(foodItems[0].name):'https://www.chewy.com/s?query='+encodeURIComponent(S.pet.species+' food')}" target="_blank" rel="noopener">${ic('right','ico-s')}Chewy</a></div></div></div>`;
   } else {
     const st = stageOf();
     const sp = S.pet.species;
