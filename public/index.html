@@ -513,6 +513,163 @@ const BADGES = [
   {id:'pantry', name:'Well stocked', icon:'bone', desc:'Saved 5 foods, treats or toys.', test:s => s.items.length >= 5}
 ];
 
+/* ---------- i18n ---------- */
+const STRINGS = {
+  en:{
+    nav_today:'Today',nav_health:'Health',nav_food:'Food',nav_travel:'Travel',nav_me:'Me',
+    act_add:'Add',act_save:'Save',act_cancel:'Cancel',act_delete:'Delete',act_edit:'Edit',
+    act_back:'Back',act_close:'Close',act_copy:'Copy',act_undo:'Undo',act_given:'Given',act_join:'Join',
+    lv0:'New friend',lv1:'Snack giver',lv2:'Walk buddy',lv3:'Care captain',lv4:'Pack leader',lv5:'Pet hero',
+    bd_first_meal:'First meal',bd_streak3:'3-day streak',bd_streak7:'Week streak',
+    bd_team:'Team feeding',bd_course:'Course done',bd_protected:'Protected',bd_ready:'Trip ready',bd_pantry:'Well stocked',
+    today_hungry:"Is anyone feeding me?",today_happy:'All done today. Best day!',
+    today_of:'{0} of {1} things done today',today_mark_fed:'Mark as fed',
+    today_family:'Today in the family',today_quick:'Quick log',today_each:'+5 XP each',
+    today_nothing:'Nothing logged yet today. Feeding, treats and walks show up here for everyone.',
+    food_section:'Food & play',food_meals:'Meals',food_pantry:'Pantry',food_guide:'Age guide',
+    food_add_meal:'Add meal time',food_no_meals:'No meal times yet.',
+    pantry_food:'Food',pantry_treats:'Treats',pantry_toys:'Toys',pantry_shop:'Shop',pantry_partner:'Partner stores',
+    health_title:'Health',health_meds:'Meds',health_vacc:'Vaccines',health_weight:'Weight',health_heat:'Heat',
+    health_add_presc:'Add a prescription',health_add_presc_s:'Name, dose, times a day and how many days',
+    health_no_meds:'No medicine right now. When the vet prescribes something, add it here and Kudi reminds everyone.',
+    health_add_vac:'Add a vaccine',health_add_vac_s:'Date given and when the next one is due',
+    health_no_vac:'No vaccines recorded yet. Copy them from the vet passport.',
+    health_log_w:'Log weight',health_no_w:'No weights yet. Weigh monthly while growing.',
+    health_ins_t:'Pet insurance',health_ins_s:'Vet bills covered from €15/month. Compare plans from leading providers.',health_ins_cta:'Compare plans',
+    travel_title:'Travel',travel_plan:'Plan a trip',
+    travel_plan_s:'Pick the country and date. Kudi builds the checklist with deadlines.',
+    travel_none:'No trips planned. Travel from Georgia to the EU takes at least 4 months of preparation, so start early.',
+    me_badges:'Badges',me_family:'Family',me_reminders:'Reminders',me_app:'App',me_level:'Level',
+    me_invite_t:'Invite your family',me_invite_s:"Send this link. Whoever opens it shares {0}'s meals, meds and reminders with you.",
+    me_report:'View care report',me_report_s:'Meals, meds, streaks, trips and more.',
+    me_sync_on:'Synced',me_sync_off:'Saved on this device',me_reset:'Reset all data',me_clear:'Clear sample and start fresh',
+    whoami_t:'Who is using this phone?',whoami_new:'Someone new? Type your name',
+    sub_title:'Family sharing',sub_plan:'KUDI FAMILY PLAN',sub_plan_s:'Share with your whole household',
+    sub_f1:'Live sync across all family phones',sub_f2:'Invite unlimited family members',
+    sub_f3:'Everyone gets feeding & medicine alerts',sub_f4:'See who fed or gave meds in real time',
+    sub_note:'Cancel any time. Solo use always stays free.',sub_cta:'Start for $3.99 / month',sub_later:'Maybe later',
+    sub_active:'Family Plan · $3.99/mo',sub_active_s:'Family sharing is active.',sub_cancel:'Cancel',
+    sub_free:'Free plan',sub_free_s:'Upgrade to Family Plan to sync with your household.',
+    sub_upsell:'Share with your family',sub_upsell_s:'Sync meals, meds and reminders to every family phone in real time.',
+    rep_title:"Care Report",rep_days:'Days of care',rep_meals:'Meals logged',rep_streak:'Current streak',
+    rep_top:'Top feeder',rep_meds:'Medicine doses',rep_vac:'Vaccines recorded',rep_treats:'Treats given',
+    rep_walks:'Walks logged',rep_water:'Water top-ups',rep_trips:'Trips completed',rep_xp:'Total XP',rep_badges:'Badges collected',
+    rep_champ:'{0} is the luckiest pet.',champ_cta:'View care report',
+    language:'Language',lang_en:'English',lang_ru:'Русский',lang_ka:'ქართული',
+    set_partner:'Partner stores',set_shop:'{0}\'s food online',
+    toast_copied:'Invite link copied',toast_sub_on:'Family Plan activated! Family sharing is now on.',
+    toast_sub_off:'Subscription cancelled. Data stays on this device.',toast_deleted:'Deleted',
+    toast_cant:'Could not sync. Saved on this phone.',
+    ob_tagline:'One shared place for meals, medicine, vaccines and trips. Earn XP every time you care.',
+    ob_add:'Add my pet',ob_sample:'Explore with a sample pet',ob_start:'Start caring  ·  +50 XP',
+    sp_dog:'Dog',sp_cat:'Cat',sp_other:'Pet',
+    champ_title:'{0} is a legend!',champ_desc:'You collected every badge. {0} has the most dedicated family in the world. +100 XP',
+  },
+  ru:{
+    nav_today:'Сегодня',nav_health:'Здоровье',nav_food:'Питание',nav_travel:'Путешествия',nav_me:'Я',
+    act_add:'Добавить',act_save:'Сохранить',act_cancel:'Отмена',act_delete:'Удалить',act_edit:'Изменить',
+    act_back:'Назад',act_close:'Закрыть',act_copy:'Копировать',act_undo:'Отменить',act_given:'Дал(а)',act_join:'Войти',
+    lv0:'Новый друг',lv1:'Кормилец',lv2:'Напарник по прогулкам',lv3:'Капитан заботы',lv4:'Вожак стаи',lv5:'Герой питомца',
+    bd_first_meal:'Первое кормление',bd_streak3:'3 дня подряд',bd_streak7:'Неделя подряд',
+    bd_team:'Командное кормление',bd_course:'Курс завершён',bd_protected:'Защищён',bd_ready:'Готов к поездке',bd_pantry:'Запасы есть',
+    today_hungry:'Кто-нибудь меня покормит?',today_happy:'Всё сделано! Лучший день!',
+    today_of:'{0} из {1} дел сделано',today_mark_fed:'Отметить как покормленного',
+    today_family:'Семья сегодня',today_quick:'Быстрый журнал',today_each:'+5 XP каждое',
+    today_nothing:'Записей пока нет. Кормление, лакомства и прогулки появятся здесь.',
+    food_section:'Питание и игры',food_meals:'Кормление',food_pantry:'Кладовая',food_guide:'По возрасту',
+    food_add_meal:'Добавить время кормления',food_no_meals:'Расписание кормления не задано.',
+    pantry_food:'Еда',pantry_treats:'Лакомства',pantry_toys:'Игрушки',pantry_shop:'Купить',pantry_partner:'Магазины-партнёры',
+    health_title:'Здоровье',health_meds:'Лекарства',health_vacc:'Вакцины',health_weight:'Вес',health_heat:'Течка',
+    health_add_presc:'Добавить рецепт',health_add_presc_s:'Название, доза, раз в день и сколько дней',
+    health_no_meds:'Сейчас лекарств нет. Когда ветеринар назначит, добавьте сюда.',
+    health_add_vac:'Добавить вакцину',health_add_vac_s:'Дата прививки и когда следующая',
+    health_no_vac:'Вакцины не записаны. Скопируйте из ветпаспорта.',
+    health_log_w:'Записать вес',health_no_w:'Нет данных о весе. Взвешивайте ежемесячно.',
+    health_ins_t:'Страховка для питомца',health_ins_s:'Покрытие ветрасходов от €15/мес. Сравните планы ведущих страховщиков.',health_ins_cta:'Сравнить планы',
+    travel_title:'Путешествия',travel_plan:'Запланировать поездку',
+    travel_plan_s:'Выберите страну и дату. Kudi составит чеклист с дедлайнами.',
+    travel_none:'Поездок не запланировано. Поездка из Грузии в ЕС требует минимум 4 месяца подготовки.',
+    me_badges:'Значки',me_family:'Семья',me_reminders:'Напоминания',me_app:'Приложение',me_level:'Уровень',
+    me_invite_t:'Пригласить семью',me_invite_s:'Отправьте ссылку. Все, кто откроет её, будут видеть уход за {0}.',
+    me_report:'Отчёт об уходе',me_report_s:'Кормления, лекарства, серии, поездки и многое другое.',
+    me_sync_on:'Синхронизировано',me_sync_off:'Сохранено на устройстве',me_reset:'Сбросить все данные',me_clear:'Очистить пример',
+    whoami_t:'Кто пользуется этим телефоном?',whoami_new:'Новый человек? Введите имя',
+    sub_title:'Семейный доступ',sub_plan:'СЕМЕЙНЫЙ ПЛАН KUDI',sub_plan_s:'Для всей семьи',
+    sub_f1:'Синхронизация на всех телефонах семьи',sub_f2:'Приглашайте неограниченное число членов',
+    sub_f3:'Все получают уведомления о кормлении и лекарствах',sub_f4:'Видите, кто покормил или дал лекарство',
+    sub_note:'Отмените в любое время. Одиночное использование бесплатно.',sub_cta:'Начать за $3.99 / месяц',sub_later:'Позже',
+    sub_active:'Семейный план · $3.99/мес',sub_active_s:'Семейный доступ активен.',sub_cancel:'Отменить',
+    sub_free:'Бесплатный план',sub_free_s:'Обновитесь до Семейного плана для синхронизации.',
+    sub_upsell:'Поделитесь с семьёй',sub_upsell_s:'Синхронизируйте кормление и напоминания на все телефоны семьи.',
+    rep_title:'Отчёт об уходе',rep_days:'Дней ухода',rep_meals:'Кормлений записано',rep_streak:'Текущая серия',
+    rep_top:'Главный кормилец',rep_meds:'Доз лекарств',rep_vac:'Вакцин записано',rep_treats:'Лакомств дано',
+    rep_walks:'Прогулок записано',rep_water:'Пополнений воды',rep_trips:'Поездок завершено',rep_xp:'Всего XP',rep_badges:'Значков получено',
+    rep_champ:'{0} — самый счастливый питомец.',champ_cta:'Открыть отчёт об уходе',
+    language:'Язык',lang_en:'English',lang_ru:'Русский',lang_ka:'ქართული',
+    set_partner:'Магазины-партнёры',set_shop:'Корм для {0} онлайн',
+    toast_copied:'Ссылка скопирована',toast_sub_on:'Семейный план активирован!',
+    toast_sub_off:'Подписка отменена. Данные остаются на устройстве.',toast_deleted:'Удалено',
+    toast_cant:'Не удалось синхронизировать. Сохранено на телефоне.',
+    ob_tagline:'Одно место для кормления, лекарств, вакцин и поездок. Зарабатывайте XP каждый раз.',
+    ob_add:'Добавить питомца',ob_sample:'Изучить с примером',ob_start:'Начать уход · +50 XP',
+    sp_dog:'Собака',sp_cat:'Кошка',sp_other:'Питомец',
+    champ_title:'{0} — легенда!',champ_desc:'Вы собрали все значки. У {0} самая преданная семья в мире. +100 XP',
+  },
+  ka:{
+    nav_today:'დღეს',nav_health:'ჯანმრთელობა',nav_food:'საკვები',nav_travel:'მოგზაურობა',nav_me:'მე',
+    act_add:'დამატება',act_save:'შენახვა',act_cancel:'გაუქმება',act_delete:'წაშლა',act_edit:'რედაქტირება',
+    act_back:'უკან',act_close:'დახურვა',act_copy:'კოპირება',act_undo:'გაუქმება',act_given:'გაეცა',act_join:'შემოერთება',
+    lv0:'ახალი მეგობარი',lv1:'საჭმლის გამცემი',lv2:'სეირნობის პარტნიორი',lv3:'მოვლის კაპიტანი',lv4:'ჯგუფის ლიდერი',lv5:'ცხოველის გმირი',
+    bd_first_meal:'პირველი კვება',bd_streak3:'3 დღის სერია',bd_streak7:'კვირის სერია',
+    bd_team:'ოჯახური კვება',bd_course:'კურსი დასრულდა',bd_protected:'დაცული',bd_ready:'მზადაა მოგზაურობისთვის',bd_pantry:'კარგი მარაგი',
+    today_hungry:'ვინმე გამაკვებს?',today_happy:'ყველაფერი მზადაა! საუკეთესო დღე!',
+    today_of:'{1}-დან {0} შესრულდა',today_mark_fed:'გამოკვებულად მონიშვნა',
+    today_family:'ოჯახი დღეს',today_quick:'სწრაფი ჩანაწერი',today_each:'+5 XP თითოეული',
+    today_nothing:'ჩანაწერები ჯერ არ არის. კვება, სიამოვნება და სეირნობები ყველასთვის გამოჩნდება.',
+    food_section:'საკვები და თამაში',food_meals:'კვება',food_pantry:'მარაგი',food_guide:'ასაკის სახელმძღვანელო',
+    food_add_meal:'კვების დროის დამატება',food_no_meals:'კვების განრიგი არ არის.',
+    pantry_food:'საკვები',pantry_treats:'სიამოვნება',pantry_toys:'სათამაშოები',pantry_shop:'ყიდვა',pantry_partner:'პარტნიორი მაღაზიები',
+    health_title:'ჯანმრთელობა',health_meds:'მედიკამენტები',health_vacc:'ვაქცინები',health_weight:'წონა',health_heat:'ეჟვანი',
+    health_add_presc:'რეცეპტის დამატება',health_add_presc_s:'სახელი, დოზა, დღეში რამდენჯერ და რამდენი დღე',
+    health_no_meds:'ახლა მედიკამენტები არ არის. ვეტერინარის დანიშვნის შემდეგ დაამატეთ.',
+    health_add_vac:'ვაქცინის დამატება',health_add_vac_s:'გაკეთების თარიღი და შემდეგი ვადა',
+    health_no_vac:'ვაქცინები ჩაწერილი არ არის. გადაიღეთ ვეტპასპორტიდან.',
+    health_log_w:'წონის ჩაწერა',health_no_w:'წონა ჯერ არ არის. ყოველთვიურად გაზომეთ.',
+    health_ins_t:'ცხოველის დაზღვევა',health_ins_s:'ვეტ. ხარჯების დაფარვა €15/თვიდან. შეადარეთ გეგმები.',health_ins_cta:'გეგმების შედარება',
+    travel_title:'მოგზაურობა',travel_plan:'მოგზაურობის დაგეგმვა',
+    travel_plan_s:'აირჩიეთ ქვეყანა და თარიღი. Kudi გამოართმევს ჩეკლისტს ვადებით.',
+    travel_none:'მოგზაურობები არ არის. საქართველოდან ევროკავშირში 4 თვის მომზადებაა საჭირო.',
+    me_badges:'ნიშნები',me_family:'ოჯახი',me_reminders:'შეხსენებები',me_app:'პარამეტრები',me_level:'დონე',
+    me_invite_t:'ოჯახის მოწვევა',me_invite_s:'გაუგზავნეთ ეს ბმული. ვინც გახსნის, დაინახავს {0}-ის მოვლას.',
+    me_report:'მოვლის ანგარიში',me_report_s:'კვება, მედიკამენტები, სერიები და მოგზაურობები.',
+    me_sync_on:'სინქრონიზებულია',me_sync_off:'შენახულია მოწყობილობაზე',me_reset:'ყველა მონაცემის გასუფთავება',me_clear:'ნიმუშის გასუფთავება',
+    whoami_t:'ვინ იყენებს ამ ტელეფონს?',whoami_new:'ახალი ადამიანი? ჩაწერეთ სახელი',
+    sub_title:'ოჯახური წვდომა',sub_plan:'KUDI-ს ოჯახური გეგმა',sub_plan_s:'გაუზიარეთ მთელ ოჯახს',
+    sub_f1:'ცოცხალი სინქრონიზაცია ოჯახის ყველა ტელეფონზე',sub_f2:'შეუზღუდავი ოჯახის წევრების მოწვევა',
+    sub_f3:'ყველა იღებს კვებისა და მედიკამენტების შეხსენებებს',sub_f4:'ნახეთ ვინ გამოკვება ან მისცა მედიკამენტი',
+    sub_note:'გაუქმება ნებისმიერ დროს. ინდივიდუალური გამოყენება ყოველთვის უფასოა.',sub_cta:'დაწყება $3.99 / თვეში',sub_later:'მოგვიანებით',
+    sub_active:'ოჯახური გეგმა · $3.99/თვე',sub_active_s:'ოჯახური წვდომა აქტიურია.',sub_cancel:'გაუქმება',
+    sub_free:'უფასო გეგმა',sub_free_s:'გადადით ოჯახურ გეგმაზე ოჯახთან სინქრონიზაციისთვის.',
+    sub_upsell:'გაუზიარეთ ოჯახს',sub_upsell_s:'სინქრონიზირეთ კვება და შეხსენებები ოჯახის ყველა ტელეფონზე.',
+    rep_title:'მოვლის ანგარიში',rep_days:'მოვლის დღეები',rep_meals:'ჩაწერილი კვებები',rep_streak:'მიმდინარე სერია',
+    rep_top:'მთავარი მომვლელი',rep_meds:'მედიკამენტის დოზები',rep_vac:'ჩაწერილი ვაქცინები',rep_treats:'გაცემული სიამოვნება',
+    rep_walks:'ჩაწერილი სეირნობები',rep_water:'წყლის შევსება',rep_trips:'დასრულებული მოგზაურობები',rep_xp:'სულ XP',rep_badges:'მიღებული ნიშნები',
+    rep_champ:'{0} ყველაზე ბედნიერი ცხოველია.',champ_cta:'მოვლის ანგარიშის ნახვა',
+    language:'ენა',lang_en:'English',lang_ru:'Русский',lang_ka:'ქართული',
+    set_partner:'პარტნიორი მაღაზიები',set_shop:'{0}-ის საკვები ონლაინ',
+    toast_copied:'მოსაწვევი ბმული კოპირებულია',toast_sub_on:'ოჯახური გეგმა გააქტიურდა!',
+    toast_sub_off:'გამოწერა გაუქმდა. მონაცემები რჩება მოწყობილობაზე.',toast_deleted:'წაიშალა',
+    toast_cant:'სინქრონიზაცია ვერ მოხდა. ტელეფონზე შენახულია.',
+    ob_tagline:'ერთი ადგილი კვებისთვის, მედიკამენტებისთვის, ვაქცინებისა და მოგზაურობებისთვის.',
+    ob_add:'ჩემი ცხოველის დამატება',ob_sample:'ნიმუშით გაცნობა',ob_start:'მოვლის დაწყება · +50 XP',
+    sp_dog:'ძაღლი',sp_cat:'კატა',sp_other:'ცხოველი',
+    champ_title:'{0} — ლეგენდაა!',champ_desc:'თქვენ შეაგროვეთ ყველა ნიშანი. {0}-ს ყველაზე ერთგული ოჯახი ჰყავს. +100 XP',
+  }
+};
+let lang = 'en';
+const LSLANG = 'kudi.lang';
+function t(key,...args){ const s=(STRINGS[lang]||STRINGS.en)[key]||STRINGS.en[key]||key; return args.reduce((r,a,i)=>r.replace(new RegExp(`\\{${i}\\}`,'g'),String(a)),s); }
+
 /* ---------- state ---------- */
 let S = null;               // persisted household state
 let me = null;              // this device's member id
@@ -542,7 +699,7 @@ function save(){
   lsSet(LS, json);
   if (remote){
     clearTimeout(pushTimer);
-    pushTimer = setTimeout(()=>{ lastPushed = json; remote.push(JSON.parse(json)).catch(()=>{ toast('Could not sync. Saved on this phone.'); }); }, 350);
+    pushTimer = setTimeout(()=>{ lastPushed = json; remote.push(JSON.parse(json)).catch(()=>{ toast(t('toast_cant')); }); }, 350);
   }
 }
 /* apply data that arrived from the shared store (artifact db or the Vercel API) */
@@ -665,7 +822,7 @@ function showModal(){
   const layer = document.getElementById('layer');
   const wrap = document.createElement('div'); wrap.className='modal'; wrap.setAttribute('role','dialog'); wrap.setAttribute('aria-modal','true');
   const isChamp = m.kind==='champion';
-  wrap.innerHTML = `<div class="modal-in" ${isChamp?'style="border:2px solid var(--gold);background:var(--gold-bg)"':''}><div class="medal" ${isChamp?'style="background:linear-gradient(135deg,#F6C94E,#FFE08A);color:var(--gold-deep);box-shadow:0 6px 24px rgba(246,201,78,.5)"':''}>${ic(m.icon,'')}</div><span class="eyebrow">${m.kind==='level'?'New level':isChamp?'All badges!':'Badge unlocked'}</span><h2 style="font-size:26px">${esc(m.title)}</h2><p class="muted" style="margin:0">${esc(m.desc)}</p><button class="btn sun block" id="modalOk">${isChamp?'View care report':m.kind==='badge'?`Nice! +${XP.badge} XP`:'Keep going'}</button></div>`;
+  wrap.innerHTML = `<div class="modal-in" ${isChamp?'style="border:2px solid var(--gold);background:var(--gold-bg)"':''}><div class="medal" ${isChamp?'style="background:linear-gradient(135deg,#F6C94E,#FFE08A);color:var(--gold-deep);box-shadow:0 6px 24px rgba(246,201,78,.5)"':''}>${ic(m.icon,'')}</div><span class="eyebrow">${m.kind==='level'?'New level':isChamp?'All badges!':'Badge unlocked'}</span><h2 style="font-size:26px">${esc(m.title)}</h2><p class="muted" style="margin:0">${esc(m.desc)}</p><button class="btn sun block" id="modalOk">${isChamp?t('champ_cta'):m.kind==='badge'?`Nice! +${XP.badge} XP`:'Keep going'}</button></div>`;
   layer.appendChild(wrap);
   burst({clientX:innerWidth/2, clientY:innerHeight/2-60}, 26);
   const ok = wrap.querySelector('#modalOk'); ok.focus();
@@ -682,7 +839,7 @@ function checkBadges(){
   if (!S.badges._champion && allBadgesEarned()){
     S.badges._champion = today();
     S.xp += 100;
-    queueModal({kind:'champion', title:`${S.pet.name} is a legend!`, desc:`You collected every badge. ${S.pet.name} has the most dedicated family in the world. +100 XP`, icon:'trophy'});
+    queueModal({kind:'champion', title:t('champ_title',S.pet.name), desc:t('champ_desc',S.pet.name), icon:'trophy'});
   }
 }
 function toast(msg, undo){
@@ -715,15 +872,15 @@ function renderOnboarding(){
       <div class="splash"><div class="sunball"></div>${mascot('dog','happy','mascot')}</div>
       <div class="stack" style="gap:8px">
         <h1>Fed, dosed and ready to travel.</h1>
-        <p class="muted" style="margin:0;font-size:16px">One shared place for meals, medicine, vaccines and trips. Earn XP every time you care.</p>
+        <p class="muted" style="margin:0;font-size:16px">${t('ob_tagline')}</p>
       </div>
       <div class="feat">
         <div>${ic('bowl','ico-s')}Shared feeding</div><div>${ic('pill','ico-s')}Meds &amp; vaccines</div>
         <div>${ic('plane','ico-s')}Trip checklist</div><div>${ic('book','ico-s')}Age guide</div>
       </div>
       <div class="stack" style="gap:8px;margin-top:auto">
-        <button class="btn ink xl block" data-a="obStart">Add my pet</button>
-        <button class="btn soft block" data-a="obSample">Explore with a sample pet</button>
+        <button class="btn ink xl block" data-a="obStart">${t('ob_add')}</button>
+        <button class="btn soft block" data-a="obSample">${t('ob_sample')}</button>
       </div>
     </div>`;
   }
@@ -764,7 +921,7 @@ function renderOnboarding(){
     </div>
     <div class="row"><input class="in grow" id="obMember" maxlength="24" placeholder="Add a name, e.g. Giorgi" aria-label="Family member name"><button type="button" class="btn soft" data-a="obAddMember" style="min-height:50px">${ic('plus','ico-s')}Add</button></div>
     <div class="card"><span class="badge-ico sun">${ic('users')}</span><div class="grow"><div class="t">How it works</div><div class="s">Open Kudi on each phone and pick your name. Everyone sees who fed ${esc(o.pet.name||'the pet')} and when.</div></div></div>
-    <button class="btn sun xl block" style="margin-top:auto" type="submit">Start caring  ·  +50 XP</button>
+    <button class="btn sun xl block" style="margin-top:auto" type="submit">${t('ob_start')}</button>
   </form>`;
 }
 
@@ -783,7 +940,7 @@ function heroBlock(){
     </div>
     <div class="grow" style="position:relative;z-index:1">
       <h2>${esc(S.pet.name)}</h2>
-      <div style="font-size:13px;font-weight:700;opacity:.85">${mood==='hungry'?'Is anyone feeding me?':mood==='happy'?'All done today. Best day!':`${tt.done} of ${tt.total} things done today`}</div>
+      <div style="font-size:13px;font-weight:700;opacity:.85">${mood==='hungry'?t('today_hungry'):mood==='happy'?t('today_happy'):t('today_of',tt.done,tt.total)}</div>
       <div class="meta"><span class="pill sun">${ic('flame','ico-s')}<span class="num">${st}</span> day streak</span><span class="pill">Lv ${L.i+1} · ${esc(L.name)}</span></div>
       <div style="margin-top:10px"><div class="xpbar" role="progressbar" aria-label="Level progress" aria-valuenow="${Math.round(L.pct*100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.round(L.pct*100)}%"></i></div>
       <div class="small num" style="margin-top:4px;opacity:.85">${S.xp} XP${L.toNext?` · ${L.toNext} to next level`:''}</div></div>
@@ -850,7 +1007,7 @@ function viewToday(){
       <div class="row" style="justify-content:space-between"><span class="row" style="gap:8px;font-weight:800">${ic('bowl','ico-s')}${esc(m.name)} · <span class="num">${esc(m.time)}</span></span>
       ${f?'<span class="pill ink">Fed</span>':late?'<span class="pill late">Late</span>':'<span class="pill">Not yet</span>'}</div>
       ${f ? `<div class="done-line"><span class="check ${fresh?'pop':''}">${ic('check','ico-s')}</span><span class="grow">${f.by===me?'You':esc(nameOf(f.by))} fed ${esc(pet)} at <span class="num">${esc(f.time)}</span>${m.food?` · ${esc(m.food)}`:''}</span><button class="btn ghost sm" data-a="unlog" data-id="${f.id}">Undo</button></div>`
-          : `<div class="big">Has ${esc(pet)} had ${esc(m.name.toLowerCase())}?</div>${m.food?`<div class="s">${esc(m.food)}${m.portion?` · ${esc(m.portion)}`:''}</div>`:''}<button class="btn sun xl block" data-a="feed" data-id="${m.id}">${ic('check')}Mark as fed · +${XP.meal} XP</button>`}
+          : `<div class="big">Has ${esc(pet)} had ${esc(m.name.toLowerCase())}?</div>${m.food?`<div class="s">${esc(m.food)}${m.portion?` · ${esc(m.portion)}`:''}</div>`:''}<button class="btn sun xl block" data-a="feed" data-id="${m.id}">${ic('check')}${t('today_mark_fed')} · +${XP.meal} XP</button>`}
     </div>`;
   }).join('') || `<div class="empty">No meal times yet.<button class="btn soft sm" data-a="sheet" data-type="meal">${ic('plus','ico-s')}Add a meal time</button></div>`;
 
@@ -889,7 +1046,7 @@ function viewToday(){
 
     <section class="sec"><div class="sec-h"><h3>Meals</h3></div>${mealCards}</section>
     ${doseRows?`<section class="sec"><div class="sec-h"><h3>Medicine today</h3><button class="link" data-a="go" data-tab="health" data-seg="meds">All meds</button></div>${doseRows}</section>`:''}
-    <section class="sec"><div class="sec-h"><h3>Quick log</h3><span class="small muted">+5 XP each</span></div>
+    <section class="sec"><div class="sec-h"><h3>${t('today_quick')}</h3><span class="small muted">${t('today_each')}</span></div>
       <div class="quick">
         <button class="qbtn" data-a="quick" data-k="treat">${ic('bone')}Treat</button>
         <button class="qbtn" data-a="quick" data-k="walk">${ic('walk')}Walk</button>
@@ -899,8 +1056,8 @@ function viewToday(){
     </section>
     ${insightsBlock()}
     ${weeklyBlock()}
-    <section class="sec"><div class="sec-h"><h3>Today in the family</h3></div>
-      ${logs.length?`<div class="list">${logs.map(l=>`<div class="li"><span class="badge-ico" style="width:36px;height:36px;border-radius:12px">${ic(icon(l),'ico-s')}</span><div class="grow"><div class="t" style="font-size:14px">${esc(nameOf(l.by))} ${esc(verb(l))}</div><div class="s num">${esc(l.time)}</div></div><button class="iconbtn sm" data-a="unlog" data-id="${l.id}" aria-label="Delete this entry">${ic('x','ico-s')}</button></div>`).join('')}</div>`:'<div class="empty">Nothing logged yet today. Feeding, treats and walks show up here for everyone.</div>'}
+    <section class="sec"><div class="sec-h"><h3>${t('today_family')}</h3></div>
+      ${logs.length?`<div class="list">${logs.map(l=>`<div class="li"><span class="badge-ico" style="width:36px;height:36px;border-radius:12px">${ic(icon(l),'ico-s')}</span><div class="grow"><div class="t" style="font-size:14px">${esc(nameOf(l.by))} ${esc(verb(l))}</div><div class="s num">${esc(l.time)}</div></div><button class="iconbtn sm" data-a="unlog" data-id="${l.id}" aria-label="Delete this entry">${ic('x','ico-s')}</button></div>`).join('')}</div>`:`<div class="empty">${t('today_nothing')}</div>`}
     </section>`;
 }
 function viewHealth(){
@@ -919,29 +1076,29 @@ function viewHealth(){
         <div class="bar"><i style="width:${Math.round(pct*100)}%"></i></div>
         <div class="row small muted num" style="justify-content:space-between;font-weight:700"><span>${p.given} of ${p.total} doses</span><span>${fmtS(m.start)} – ${fmtS(end)}</span></div>
       </div>`; };
-    body = `<button class="card" data-a="sheet" data-type="med" style="text-align:left;width:100%;border-style:dashed"><span class="badge-ico sun">${ic('plus')}</span><div class="grow"><div class="t">Add a prescription</div><div class="s">Name, dose, times a day and how many days</div></div></button>
-      ${active.length?`<div class="eyebrow" style="margin-top:6px">Current</div>${active.map(card).join('')}`:'<div class="empty">No medicine right now. When the vet prescribes something, add it here and Kudi reminds everyone.</div>'}
+    body = `<button class="card" data-a="sheet" data-type="med" style="text-align:left;width:100%;border-style:dashed"><span class="badge-ico sun">${ic('plus')}</span><div class="grow"><div class="t">${t('health_add_presc')}</div><div class="s">${t('health_add_presc_s')}</div></div></button>
+      ${active.length?`<div class="eyebrow" style="margin-top:6px">Current</div>${active.map(card).join('')}`:`<div class="empty">${t('health_no_meds')}</div>`}
       ${past.length?`<div class="eyebrow" style="margin-top:6px">Finished</div>${past.map(card).join('')}`:''}`;
   } else if (seg === 'heat'){
     body = heatBody();
   } else if (seg === 'vaccines'){
     const sorted = [...S.vaccines].sort((a,b)=>(a.due||'9999').localeCompare(b.due||'9999'));
-    body = `<button class="card" data-a="sheet" data-type="vac" style="text-align:left;width:100%;border-style:dashed"><span class="badge-ico sun">${ic('plus')}</span><div class="grow"><div class="t">Add a vaccine</div><div class="s">Date given and when the next one is due</div></div></button>
+    body = `<button class="card" data-a="sheet" data-type="vac" style="text-align:left;width:100%;border-style:dashed"><span class="badge-ico sun">${ic('plus')}</span><div class="grow"><div class="t">${t('health_add_vac')}</div><div class="s">${t('health_add_vac_s')}</div></div></button>
       ${sorted.length?`<div class="list">${sorted.map(v=>{ const st = vacStatus(v); return `<div class="li ${ui.flash==='vac:'+v.id?'enter':''}">
         <div class="grow"><div class="t">${esc(v.name)}</div><div class="s">Given ${fmt(v.given)||'—'}${v.notes?` · ${esc(v.notes)}`:''}</div></div>
         <span class="pill ${st.k==='ok'?'':st.k==='soon'?'sun':'ink'}">${st.k==='over'?ic('alert','ico-s'):''}${esc(st.label)}</span>
         ${st.k!=='ok'?`<button class="btn sun sm" data-a="vacToday" data-id="${v.id}">Done today</button>`:''}
-        <button class="iconbtn sm" data-a="sheet" data-type="vac" data-id="${v.id}" aria-label="Edit ${esc(v.name)}">${ic('edit','ico-s')}</button></div>`; }).join('')}</div>`:'<div class="empty">No vaccines recorded yet. Copy them from the vet passport.</div>'}`;
+        <button class="iconbtn sm" data-a="sheet" data-type="vac" data-id="${v.id}" aria-label="Edit ${esc(v.name)}">${ic('edit','ico-s')}</button></div>`; }).join('')}</div>`:`<div class="empty">${t('health_no_vac')}</div>`}`;
   } else {
     const ws = S.log.filter(l=>l.type==='weight').sort((a,b)=>b.at-a.at);
     const spark = (() => { const pts = ws.slice(0,10).reverse(); if (pts.length<2) return ''; const vals = pts.map(p=>+p.value); const mn=Math.min(...vals), mx=Math.max(...vals); const W=300,H=70, rng = (mx-mn)||1; const xy = pts.map((p,i)=>[10+i*(W-20)/(pts.length-1), H-10-((+p.value-mn)/rng)*(H-20)]); return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;max-width:100%" role="img" aria-label="Weight trend from ${vals[0]} to ${vals[vals.length-1]} kg"><polyline points="${xy.map(a=>a.join(',')).join(' ')}" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${xy[xy.length-1][0]}" cy="${xy[xy.length-1][1]}" r="6" fill="#FFC23C" stroke="var(--ink)" stroke-width="2"/></svg>`; })();
-    body = `<button class="btn ink block" data-a="sheet" data-type="weight">${ic('scale','ico-s')}Log weight</button>
+    body = `<button class="btn ink block" data-a="sheet" data-type="weight">${ic('scale','ico-s')}${t('health_log_w')}</button>
       ${spark?`<div class="card col"><div class="row" style="justify-content:space-between"><span class="t">Trend</span><span class="pill num">${esc(ws[0].value)} kg now</span></div>${spark}</div>`:''}
-      ${ws.length?`<div class="list">${ws.map(w=>`<div class="li"><div class="grow"><div class="t num">${esc(w.value)} kg</div><div class="s">${fmt(w.date)} · ${esc(nameOf(w.by))}</div></div><button class="iconbtn sm" data-a="unlog" data-id="${w.id}" aria-label="Delete weight entry">${ic('x','ico-s')}</button></div>`).join('')}</div>`:'<div class="empty">No weights yet. Weigh monthly while growing.</div>'}`;
+      ${ws.length?`<div class="list">${ws.map(w=>`<div class="li"><div class="grow"><div class="t num">${esc(w.value)} kg</div><div class="s">${fmt(w.date)} · ${esc(nameOf(w.by))}</div></div><button class="iconbtn sm" data-a="unlog" data-id="${w.id}" aria-label="Delete weight entry">${ic('x','ico-s')}</button></div>`).join('')}</div>`:`<div class="empty">${t('health_no_w')}</div>`}`;
   }
-  const insuranceCard = `<div class="aff-card" style="margin-top:8px"><span class="badge-ico" style="background:var(--lav)">${ic('heart')}</span><div class="grow"><div class="aff-tag">Partner</div><div class="t" style="font-size:15px">Pet insurance for ${esc(S.pet.name)}</div><div class="s">Vet bills covered from €15/month. Compare plans from leading providers.</div><div class="aff-links"><a href="https://www.petinsurance.com/?ref=kudiapp" target="_blank" rel="noopener">${ic('right','ico-s')}Compare plans</a></div></div></div>`;
-  return `${header('Health', `${S.pet.name} · ${ageLabel(monthsOld(S.pet.birthday))}`)}
-    <div class="seg">${segBtn('meds','Meds')}${segBtn('vaccines',`Vaccines${healthAlerts()?` (${healthAlerts()})`:''}`)}${heatTab()?segBtn('heat','Heat'):''}${segBtn('weight','Weight')}</div>
+  const insuranceCard = `<div class="aff-card" style="margin-top:8px"><span class="badge-ico" style="background:var(--lav)">${ic('heart')}</span><div class="grow"><div class="aff-tag">Partner</div><div class="t" style="font-size:15px">${t('health_ins_t')} — ${esc(S.pet.name)}</div><div class="s">${t('health_ins_s')}</div><div class="aff-links"><a href="https://www.petinsurance.com/?ref=kudiapp" target="_blank" rel="noopener">${ic('right','ico-s')}${t('health_ins_cta')}</a></div></div></div>`;
+  return `${header(t('health_title'), `${S.pet.name} · ${ageLabel(monthsOld(S.pet.birthday))}`)}
+    <div class="seg">${segBtn('meds',t('health_meds'))}${segBtn('vaccines',t('health_vacc')+(healthAlerts()?` (${healthAlerts()})`:''))}${heatTab()?segBtn('heat',t('health_heat')):''}${segBtn('weight',t('health_weight'))}</div>
     <div class="stack" style="margin-top:14px">${body}${insuranceCard}</div>`;
 }
 function viewFood(){
@@ -950,16 +1107,16 @@ function viewFood(){
   let body = '';
   if (seg === 'meals'){
     const meals = [...S.meals].sort((a,b)=>hmToMin(a.time)-hmToMin(b.time));
-    body = `${meals.map(m=>`<div class="card ${ui.flash==='mealedit:'+m.id?'enter':''}"><span class="badge-ico sun">${ic('bowl')}</span><div class="grow"><div class="t">${esc(m.name)} · <span class="num">${esc(m.time)}</span></div><div class="s">${esc(m.food||'No food set')}${m.portion?` · ${esc(m.portion)}`:''}</div></div><button class="iconbtn sm" data-a="sheet" data-type="meal" data-id="${m.id}" aria-label="Edit ${esc(m.name)}">${ic('edit','ico-s')}</button></div>`).join('') || '<div class="empty">No meal times yet.</div>'}
-      <button class="btn soft block" data-a="sheet" data-type="meal">${ic('plus','ico-s')}Add meal time</button>`;
+    body = `${meals.map(m=>`<div class="card ${ui.flash==='mealedit:'+m.id?'enter':''}"><span class="badge-ico sun">${ic('bowl')}</span><div class="grow"><div class="t">${esc(m.name)} · <span class="num">${esc(m.time)}</span></div><div class="s">${esc(m.food||'No food set')}${m.portion?` · ${esc(m.portion)}`:''}</div></div><button class="iconbtn sm" data-a="sheet" data-type="meal" data-id="${m.id}" aria-label="Edit ${esc(m.name)}">${ic('edit','ico-s')}</button></div>`).join('') || `<div class="empty">${t('food_no_meals')}</div>`}
+      <button class="btn soft block" data-a="sheet" data-type="meal">${ic('plus','ico-s')}${t('food_add_meal')}</button>`;
   } else if (seg === 'pantry'){
-    const kinds = [['food','Food','bowl'],['treat','Treats','bone'],['toy','Toys','ball']];
+    const kinds = [['food',t('pantry_food'),'bowl'],['treat',t('pantry_treats'),'bone'],['toy',t('pantry_toys'),'ball']];
     const foodItems = S.items.filter(i=>i.kind==='food');
     body = kinds.map(([k,label,icn]) => { const list = S.items.filter(i=>i.kind===k);
-      return `<div class="sec-h" style="margin-top:6px"><h3>${label}</h3><button class="link" data-a="sheet" data-type="item" data-kind="${k}">Add</button></div>
-      ${list.length?`<div class="list">${list.map(i=>`<div class="li ${ui.flash==='item:'+i.id?'enter':''}"><span class="badge-ico" style="width:36px;height:36px;border-radius:12px">${ic(icn,'ico-s')}</span><div class="grow"><div class="t">${esc(i.name)}</div>${i.note?`<div class="s">${esc(i.note)}</div>`:''}</div>${k==='food'?`<a href="${amazonPetLink(i.name)}" target="_blank" rel="noopener" class="btn ghost sm" style="font-size:12px;padding:0 10px;min-height:34px" aria-label="Shop ${esc(i.name)} on Amazon">Shop</a>`:''}
+      return `<div class="sec-h" style="margin-top:6px"><h3>${label}</h3><button class="link" data-a="sheet" data-type="item" data-kind="${k}">${t('act_add')}</button></div>
+      ${list.length?`<div class="list">${list.map(i=>`<div class="li ${ui.flash==='item:'+i.id?'enter':''}"><span class="badge-ico" style="width:36px;height:36px;border-radius:12px">${ic(icn,'ico-s')}</span><div class="grow"><div class="t">${esc(i.name)}</div>${i.note?`<div class="s">${esc(i.note)}</div>`:''}</div>${k==='food'?`<a href="${amazonPetLink(i.name)}" target="_blank" rel="noopener" class="btn ghost sm" style="font-size:12px;padding:0 10px;min-height:34px" aria-label="Shop ${esc(i.name)} on Amazon">${t('pantry_shop')}</a>`:''}
         <button class="iconbtn sm" data-a="fav" data-id="${i.id}" aria-pressed="${!!i.fav}" aria-label="${i.fav?'Remove from favourites':'Mark as favourite'}" style="${i.fav?'background:var(--blush);color:var(--blush-ink)':''}">${ic('heart','ico-s')}</button><button class="iconbtn sm" data-a="sheet" data-type="item" data-id="${i.id}" aria-label="Edit ${esc(i.name)}">${ic('edit','ico-s')}</button></div>`).join('')}</div>`:`<div class="empty">No ${label.toLowerCase()} saved yet.</div>`}`; }).join('');
-    body += `<div class="aff-card" style="margin-top:8px"><span class="badge-ico sun">${ic('bone')}</span><div class="grow"><div class="aff-tag">Partner stores</div><div class="t" style="font-size:15px">Shop ${esc(S.pet.name)}'s food online</div><div class="s">${foodItems.length?`Based on your pantry: ${foodItems.slice(0,2).map(i=>esc(i.name)).join(', ')}${foodItems.length>2?` +${foodItems.length-2} more`:''}`:('Find food, treats and supplies')}</div><div class="aff-links"><a href="${foodItems.length?amazonPetLink(foodItems[0].name):'https://www.amazon.com/s?tag=kudiapp-20&k='+encodeURIComponent(S.pet.species+' pet food')}" target="_blank" rel="noopener">${ic('right','ico-s')}Amazon</a><a href="${foodItems.length?chewyLink(foodItems[0].name):'https://www.chewy.com/s?query='+encodeURIComponent(S.pet.species+' food')}" target="_blank" rel="noopener">${ic('right','ico-s')}Chewy</a></div></div></div>`;
+    body += `<div class="aff-card" style="margin-top:8px"><span class="badge-ico sun">${ic('bone')}</span><div class="grow"><div class="aff-tag">${t('set_partner')}</div><div class="t" style="font-size:15px">${t('set_shop',esc(S.pet.name))}</div><div class="s">${foodItems.length?foodItems.slice(0,2).map(i=>esc(i.name)).join(', ')+(foodItems.length>2?` +${foodItems.length-2} more`:''):'Find food, treats and supplies'}</div><div class="aff-links"><a href="${foodItems.length?amazonPetLink(foodItems[0].name):'https://www.amazon.com/s?tag=kudiapp-20&k='+encodeURIComponent(S.pet.species+' pet food')}" target="_blank" rel="noopener">${ic('right','ico-s')}Amazon</a><a href="${foodItems.length?chewyLink(foodItems[0].name):'https://www.chewy.com/s?query='+encodeURIComponent(S.pet.species+' food')}" target="_blank" rel="noopener">${ic('right','ico-s')}Chewy</a></div></div></div>`;
   } else {
     const st = stageOf();
     const sp = S.pet.species;
@@ -973,8 +1130,8 @@ function viewFood(){
       <div class="card col"><div class="row" style="gap:8px">${ic('ban')}<span class="t">Never give</span></div><div class="chips">${(NEVER[sp]||NEVER.dog).map(n=>`<span class="pill">${esc(n)}</span>`).join('')}</div></div>
       <p class="small muted" style="margin:0;text-align:center">General guidance. Your vet's advice comes first.</p>`;
   }
-  return `${header('Food & play', S.pet.name)}
-    <div class="seg">${segBtn('meals','Meals')}${segBtn('pantry','Pantry')}${segBtn('guide','Age guide')}</div>
+  return `${header(t('food_section'), S.pet.name)}
+    <div class="seg">${segBtn('meals',t('food_meals'))}${segBtn('pantry',t('food_pantry'))}${segBtn('guide',t('food_guide'))}</div>
     <div class="stack" style="margin-top:14px">${body}</div>`;
 }
 function tripStats(t){ const done = t.steps.filter(s=>s.done).length; const next = t.steps.find(s=>!s.done); return {done, total:t.steps.length, pct: t.steps.length? done/t.steps.length : 0, next, days: diffDays(today(), t.date)}; }
@@ -1001,12 +1158,12 @@ function viewTravel(){
       </section>`;
   }
   const trips = [...S.trips].sort((a,b)=>a.date.localeCompare(b.date));
-  return `${header('Travel', `${S.pet.name}'s trips`)}
-    <button class="card" data-a="sheet" data-type="trip" style="text-align:left;width:100%;border-style:dashed"><span class="badge-ico sun">${ic('plus')}</span><div class="grow"><div class="t">Plan a trip</div><div class="s">Pick the country and date. Kudi builds the checklist with deadlines.</div></div></button>
-    <div class="stack" style="margin-top:12px">${trips.map(t=>{ const st = tripStats(t); return `<button class="card col" data-a="openTrip" data-id="${t.id}" style="text-align:left;width:100%">
-      <div class="row"><span class="badge-ico ink">${ic('plane')}</span><div class="grow"><div class="t">Tbilisi → ${esc(t.place||DESTS[t.dest].label)}</div><div class="s">${fmt(t.date)} · ${st.days>=0?`${st.days} days to go`:'Trip date passed'}</div></div>${ic('right','ico-s')}</div>
+  return `${header(t('travel_title'), `${S.pet.name}'s trips`)}
+    <button class="card" data-a="sheet" data-type="trip" style="text-align:left;width:100%;border-style:dashed"><span class="badge-ico sun">${ic('plus')}</span><div class="grow"><div class="t">${t('travel_plan')}</div><div class="s">${t('travel_plan_s')}</div></div></button>
+    <div class="stack" style="margin-top:12px">${trips.map(tr=>{ const st = tripStats(tr); return `<button class="card col" data-a="openTrip" data-id="${tr.id}" style="text-align:left;width:100%">
+      <div class="row"><span class="badge-ico ink">${ic('plane')}</span><div class="grow"><div class="t">Tbilisi → ${esc(tr.place||DESTS[tr.dest].label)}</div><div class="s">${fmt(tr.date)} · ${st.days>=0?`${st.days} days to go`:'Trip date passed'}</div></div>${ic('right','ico-s')}</div>
       <div class="bar sun"><i style="width:${Math.round(st.pct*100)}%"></i></div>
-      <div class="small muted" style="font-weight:700">${st.done} of ${st.total} steps${st.next?` · Next: ${esc(st.next.title)}`:' · Ready to fly'}</div></button>`; }).join('') || '<div class="empty">No trips planned. Travel from Georgia to the EU takes at least 4 months of preparation, so start early.</div>'}</div>`;
+      <div class="small muted" style="font-weight:700">${st.done} of ${st.total} steps${st.next?` · Next: ${esc(st.next.title)}`:' · Ready to fly'}</div></button>`; }).join('') || `<div class="empty">${t('travel_none')}</div>`}</div>`;
 }
 function viewMe(){
   const L = levelOf(S.xp);
@@ -1014,60 +1171,63 @@ function viewMe(){
   return `${header(S.pet.name, 'Profile & family')}
     <div class="card"><span class="badge-ico sun" style="width:60px;height:60px;border-radius:50%;overflow:hidden">${mascot(S.pet.species,'happy')}</span><div class="grow"><div class="t" style="font-size:18px">${esc(S.pet.name)}</div><div class="s">${esc({dog:'Dog',cat:'Cat',other:'Pet'}[S.pet.species]||'Pet')}${S.pet.breed?` · ${esc(S.pet.breed)}`:''}${S.pet.birthday?` · born ${fmt(S.pet.birthday)}`:''}</div></div><button class="iconbtn sm" data-a="sheet" data-type="pet" aria-label="Edit pet">${ic('edit','ico-s')}</button></div>
 
-    <section class="sec"><div class="sec-h"><h3>Badges</h3><span class="pill num">${earned} / ${BADGES.length}</span></div>
+    <section class="sec"><div class="sec-h"><h3>${t('me_badges')}</h3><span class="pill num">${earned} / ${BADGES.length}</span></div>
       <div class="badges">
         ${allBadgesEarned() ? `<div class="bdg champion-all"><div class="medal">${ic('trophy')}</div><div><div style="font-size:15px;font-weight:800;color:var(--gold-deep)">Champion!</div><div style="font-size:13px;color:var(--muted);font-weight:700">${esc(S.pet.name)} collected every badge.</div></div></div>` : ''}
-        ${BADGES.map(b=>`<div class="bdg ${S.badges[b.id]?'on':''}" title="${esc(b.desc)}"><span class="medal">${ic(b.icon)}</span><span>${esc(b.name)}</span></div>`).join('')}
+        ${BADGES.map(b=>`<div class="bdg ${S.badges[b.id]?'on':''}" title="${esc(b.desc)}"><span class="medal">${ic(b.icon)}</span><span>${t('bd_'+b.id)}</span></div>`).join('')}
       </div>
-      <div class="card"><span class="badge-ico ${allBadgesEarned()?'':'ink'}" style="${allBadgesEarned()?'background:linear-gradient(135deg,#F6C94E,#FFE08A);color:var(--gold-deep)':''}">${ic('trophy')}</span><div class="grow"><div class="t">Level ${L.i+1} · ${esc(L.name)}</div><div class="bar sun" style="margin-top:6px"><i style="width:${Math.round(L.pct*100)}%"></i></div><div class="s num" style="margin-top:4px">${S.xp} XP${L.toNext?` · ${L.toNext} to ${esc(LEVELS[L.i+1])}`:' · Top level'}</div></div></div>
-      <button class="card" data-a="sheet" data-type="report" style="text-align:left;width:100%"><span class="badge-ico sun">${ic('star')}</span><div class="grow"><div class="t">View care report</div><div class="s">Meals, meds, streaks, trips and more.</div></div>${ic('right','ico-s')}</button>
+      <div class="card"><span class="badge-ico ${allBadgesEarned()?'':'ink'}" style="${allBadgesEarned()?'background:linear-gradient(135deg,#F6C94E,#FFE08A);color:var(--gold-deep)':''}">${ic('trophy')}</span><div class="grow"><div class="t">${t('me_level')} ${L.i+1} · ${t('lv'+L.i)}</div><div class="bar sun" style="margin-top:6px"><i style="width:${Math.round(L.pct*100)}%"></i></div><div class="s num" style="margin-top:4px">${S.xp} XP${L.toNext?` · ${L.toNext} to ${t('lv'+(L.i+1))}`:' · Top level'}</div></div></div>
+      <button class="card" data-a="sheet" data-type="report" style="text-align:left;width:100%"><span class="badge-ico sun">${ic('star')}</span><div class="grow"><div class="t">${t('me_report')}</div><div class="s">${t('me_report_s')}</div></div>${ic('right','ico-s')}</button>
     </section>
 
-    <section class="sec"><div class="sec-h"><h3>Family</h3>${subscribed ? `<button class="link" data-a="sheet" data-type="member">Add</button>` : ''}</div>
-      ${!subscribed ? `<button class="card" data-a="sheet" data-type="subscribe" style="text-align:left;width:100%;border:1.5px dashed var(--blue)"><span class="badge-ico sun">${ic('cloud')}</span><div class="grow"><div class="t">Share with your family <span class="sub-badge">${ic('trophy','ico-s')}$3.99/mo</span></div><div class="s">Sync meals, meds and reminders to every family phone in real time.</div></div>${ic('right','ico-s')}</button>` : (homeCode && syncMode==='shared' ? `<div class="card col"><div class="t">Invite your family</div><div class="s">Send this link. Whoever opens it shares ${esc(S.pet.name)}'s meals, meds and reminders with you.</div><div class="row"><input class="in grow" id="inviteLink" readonly value="${esc(location.origin + '/?home=' + homeCode)}" aria-label="Invite link" style="font-size:13px"><button class="btn ink" data-a="copyInvite">Copy</button></div></div>` : '')}
+    <section class="sec"><div class="sec-h"><h3>${t('me_family')}</h3>${subscribed ? `<button class="link" data-a="sheet" data-type="member">${t('act_add')}</button>` : ''}</div>
+      ${!subscribed ? `<button class="card" data-a="sheet" data-type="subscribe" style="text-align:left;width:100%;border:1.5px dashed var(--blue)"><span class="badge-ico sun">${ic('cloud')}</span><div class="grow"><div class="t">${t('sub_upsell')} <span class="sub-badge">${ic('trophy','ico-s')}$3.99/mo</span></div><div class="s">${t('sub_upsell_s')}</div></div>${ic('right','ico-s')}</button>` : (homeCode && syncMode==='shared' ? `<div class="card col"><div class="t">${t('me_invite_t')}</div><div class="s">${t('me_invite_s',esc(S.pet.name))}</div><div class="row"><input class="in grow" id="inviteLink" readonly value="${esc(location.origin + '/?home=' + homeCode)}" aria-label="Invite link" style="font-size:13px"><button class="btn ink" data-a="copyInvite">${t('act_copy')}</button></div></div>` : '')}
       <p class="small muted" style="margin:0">${subscribed ? 'Pick who is using this phone. Logs show this name.' : 'Solo use is always free. Subscribe to share with family.'}</p>
       <div class="list">${S.members.map(m=>`<div class="li"><span class="badge-ico ${m.id===me?'sun':''}" style="border-radius:50%;font-weight:800">${esc(m.name.slice(0,1).toUpperCase())}</span><div class="grow"><div class="t">${esc(m.name)}</div><div class="s">${S.log.filter(l=>l.by===m.id && l.type==='meal').length} meals fed recently</div></div>
         ${m.id===me?'<span class="pill ink">This phone</span>':`<button class="btn soft sm" data-a="iam" data-id="${m.id}">That's me</button>`}
         ${S.members.length>1?`<button class="iconbtn sm" data-a="confirm" data-what="member" data-id="${m.id}" aria-label="Remove ${esc(m.name)}">${ic('x','ico-s')}</button>`:''}</div>`).join('')}</div>
     </section>
 
-    <section class="sec"><div class="sec-h"><h3>Reminders</h3></div>
+    <section class="sec"><div class="sec-h"><h3>${t('me_reminders')}</h3></div>
       <button class="card" data-a="sheet" data-type="remind" style="text-align:left;width:100%"><span class="badge-ico sun">${ic('bell')}</span><div class="grow"><div class="t">Feeding, medicine and vaccine reminders</div><div class="s">${['meals','meds','vacc','trips'].filter(k=>REM[k]).length} of 4 types on · ${REM.lead?`${REM.lead} min early`:'at the time'} · add them to your phone calendar</div></div>${ic('right','ico-s')}</button>
     </section>
 
-    <section class="sec"><div class="sec-h"><h3>App</h3></div>
-      ${subscribed ? `<div class="card"><span class="badge-ico sun">${ic('trophy')}</span><div class="grow"><div class="t">Family Plan · $3.99/mo</div><div class="s">Family sharing is active.</div></div><button class="btn ghost sm" data-a="cancelSub">Cancel</button></div>` : `<button class="card" data-a="sheet" data-type="subscribe" style="text-align:left;width:100%"><span class="badge-ico">${ic('cloud')}</span><div class="grow"><div class="t">Free plan</div><div class="s">Upgrade to Family Plan to sync with your household.</div></div>${ic('right','ico-s')}</button>`}
-      <div class="card"><span class="badge-ico">${ic('cloud')}</span><div class="grow"><div class="t">${syncMode==='shared'?'Synced':'Saved on this device'}</div><div class="s">${syncMode==='shared' ? (IN_ARTIFACT ? 'Changes appear live for everyone who opens this app link.' : 'Shared with everyone who joined with your family link.') : dbMissing ? 'Data stays on this phone. Family sharing turns on once the app has a database.' : 'Data stays in this browser.'}</div></div></div>
+    <section class="sec"><div class="sec-h"><h3>${t('me_app')}</h3></div>
+      ${subscribed ? `<div class="card"><span class="badge-ico sun">${ic('trophy')}</span><div class="grow"><div class="t">${t('sub_active')}</div><div class="s">${t('sub_active_s')}</div></div><button class="btn ghost sm" data-a="cancelSub">${t('sub_cancel')}</button></div>` : `<button class="card" data-a="sheet" data-type="subscribe" style="text-align:left;width:100%"><span class="badge-ico">${ic('cloud')}</span><div class="grow"><div class="t">${t('sub_free')}</div><div class="s">${t('sub_free_s')}</div></div>${ic('right','ico-s')}</button>`}
+      <div class="card"><span class="badge-ico">${ic('cloud')}</span><div class="grow"><div class="t">${syncMode==='shared'?t('me_sync_on'):t('me_sync_off')}</div><div class="s">${syncMode==='shared' ? (IN_ARTIFACT ? 'Changes appear live for everyone who opens this app link.' : 'Shared with everyone who joined with your family link.') : dbMissing ? 'Data stays on this phone. Family sharing turns on once the app has a database.' : 'Data stays in this browser.'}</div></div></div>
+      <section class="sec"><div class="sec-h"><h3>${t('language')}</h3></div>
+        <div class="seg">${['en','ru','ka'].map(l=>`<button data-a="setLang" data-l="${l}" aria-pressed="${lang===l}">${t('lang_'+l)}</button>`).join('')}</div>
+      </section>
       <div class="row" style="flex-wrap:wrap">
-        <button class="btn ghost" data-a="confirm" data-what="reset">${ic('trash','ico-s')}${S.sample?'Clear sample and start fresh':'Reset all data'}</button>
+        <button class="btn ghost" data-a="confirm" data-what="reset">${ic('trash','ico-s')}${S.sample?t('me_clear'):t('me_reset')}</button>
       </div>
     </section>`;
 }
 function nav(){
   const b = (tab, label, icn, dot) => `<button data-a="go" data-tab="${tab}" ${ui.tab===tab?'aria-current="page"':''}>${dot?'<span class="dot" aria-hidden="true"></span>':''}${ic(icn)}${label}</button>`;
   const fedAll = S.meals.every(m=>mealFed(S,m.id,today()));
-  return `<nav class="nav" aria-label="Main"><div class="nav-in">${b('today','Today','home',!fedAll)}${b('health','Health','pill',healthAlerts()>0)}${b('food','Food','bowl')}${b('travel','Travel','plane')}${b('me','Me','user')}</div></nav>`;
+  return `<nav class="nav" aria-label="Main"><div class="nav-in">${b('today',t('nav_today'),'home',!fedAll)}${b('health',t('nav_health'),'pill',healthAlerts()>0)}${b('food',t('nav_food'),'bowl')}${b('travel',t('nav_travel'),'plane')}${b('me',t('nav_me'),'user')}</div></nav>`;
 }
 
 /* ---------- subscription sheet ---------- */
 function subscribeSheet(){
   return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle">
     <div class="grab"></div>
-    <h2 id="shTitle" style="text-align:center">Family sharing</h2>
+    <h2 id="shTitle" style="text-align:center">${t('sub_title')}</h2>
     <div class="sub-hero">
-      <div style="font-size:14px;font-weight:800;color:var(--on-sun);margin-bottom:8px">KUDI FAMILY PLAN</div>
+      <div style="font-size:14px;font-weight:800;color:var(--on-sun);margin-bottom:8px">${t('sub_plan')}</div>
       <div class="price"><sup>$</sup>3.99<sub>/mo</sub></div>
-      <div style="margin-top:8px;font-size:14px;color:var(--muted)">Share with your whole household</div>
+      <div style="margin-top:8px;font-size:14px;color:var(--muted)">${t('sub_plan_s')}</div>
     </div>
     <ul class="sub-feats">
-      <li>${ic('cloud','ico-s')}<span>Live sync across all family phones</span></li>
-      <li>${ic('user','ico-s')}<span>Invite unlimited family members</span></li>
-      <li>${ic('bell','ico-s')}<span>Everyone gets feeding & medicine alerts</span></li>
-      <li>${ic('check','ico-s')}<span>See who fed or gave meds in real time</span></li>
+      <li>${ic('cloud','ico-s')}<span>${t('sub_f1')}</span></li>
+      <li>${ic('user','ico-s')}<span>${t('sub_f2')}</span></li>
+      <li>${ic('bell','ico-s')}<span>${t('sub_f3')}</span></li>
+      <li>${ic('check','ico-s')}<span>${t('sub_f4')}</span></li>
     </ul>
-    <p class="small muted" style="margin:0 0 4px;text-align:center">Cancel any time. Solo use always stays free.</p>
-    <button class="btn ink xl block" data-a="subscribe">Start for $3.99 / month</button>
-    <button class="btn ghost block" data-a="close" style="margin-top:4px">Maybe later</button>
+    <p class="small muted" style="margin:0 0 4px;text-align:center">${t('sub_note')}</p>
+    <button class="btn ink xl block" data-a="subscribe">${t('sub_cta')}</button>
+    <button class="btn ghost block" data-a="close" style="margin-top:4px">${t('sub_later')}</button>
   </div>`;
 }
 
@@ -1080,25 +1240,25 @@ function careReportSheet(){
     <div class="grab"></div>
     <div style="text-align:center;margin-bottom:16px">
       <div style="width:80px;height:80px;border-radius:50%;background:${champ?'linear-gradient(135deg,#F6C94E,#FFE08A)':'var(--sun)'};margin:0 auto 10px;display:grid;place-items:center;${champ?'box-shadow:0 6px 24px rgba(246,201,78,.4)':''}overflow:hidden">${mascot(S.pet.species,'happy')}</div>
-      <h2 id="shTitle" style="margin-bottom:2px">${esc(S.pet.name)}'s Care Report</h2>
-      <span class="pill ${champ?'sun':'ink'}">${champ?'Champion · All badges':'Level '+( L.i+1)+' · '+L.name}</span>
+      <h2 id="shTitle" style="margin-bottom:2px">${esc(S.pet.name)} · ${t('rep_title')}</h2>
+      <span class="pill ${champ?'sun':'ink'}">${champ?`Champion · ${t('me_badges')}`:`${t('me_level')} ${L.i+1} · ${t('lv'+L.i)}`}</span>
     </div>
     <div class="card col" style="gap:0;padding:0 14px">
-      ${cs.days ? row('Days of care', cs.days, 'days') : ''}
-      ${row('Meals logged', cs.meals, 'meals')}
-      ${row('Current streak', streak(S), 'days')}
-      ${cs.topFeeder ? row('Top feeder', esc(cs.topFeeder)) : ''}
-      ${cs.meds ? row('Medicine doses', cs.meds, 'doses') : ''}
-      ${cs.vaccines ? row('Vaccines recorded', cs.vaccines) : ''}
-      ${cs.treats ? row('Treats given', cs.treats) : ''}
-      ${cs.walks ? row('Walks logged', cs.walks) : ''}
-      ${cs.water ? row('Water top-ups', cs.water) : ''}
-      ${cs.tripsComplete ? row('Trips completed', cs.tripsComplete) : ''}
-      ${row('Total XP', S.xp, 'XP')}
-      ${row('Badges collected', `${earned} / ${BADGES.length}`)}
+      ${cs.days ? row(t('rep_days'), cs.days, 'days') : ''}
+      ${row(t('rep_meals'), cs.meals)}
+      ${row(t('rep_streak'), streak(S), 'days')}
+      ${cs.topFeeder ? row(t('rep_top'), esc(cs.topFeeder)) : ''}
+      ${cs.meds ? row(t('rep_meds'), cs.meds) : ''}
+      ${cs.vaccines ? row(t('rep_vac'), cs.vaccines) : ''}
+      ${cs.treats ? row(t('rep_treats'), cs.treats) : ''}
+      ${cs.walks ? row(t('rep_walks'), cs.walks) : ''}
+      ${cs.water ? row(t('rep_water'), cs.water) : ''}
+      ${cs.tripsComplete ? row(t('rep_trips'), cs.tripsComplete) : ''}
+      ${row(t('rep_xp'), S.xp, 'XP')}
+      ${row(t('rep_badges'), `${earned} / ${BADGES.length}`)}
     </div>
-    ${champ ? `<p class="small muted" style="text-align:center;margin:12px 0 0">Every badge collected. ${esc(S.pet.name)} is the luckiest pet.</p>` : `<button class="card" data-a="close" style="margin-top:10px;width:100%;justify-content:center;font-weight:800">Close</button>`}
-    ${champ ? `<button class="btn ghost block" style="margin-top:8px" data-a="close">Close</button>` : ''}
+    ${champ ? `<p class="small muted" style="text-align:center;margin:12px 0 0">${t('rep_champ',esc(S.pet.name))}</p>` : ''}
+    <button class="btn ghost block" style="margin-top:8px" data-a="close">${t('act_close')}</button>
   </div>`;
 }
 
@@ -1109,9 +1269,9 @@ function sheetHTML(){
   if (sh.type === 'subscribe') return subscribeSheet();
   if (sh.type === 'report') return careReportSheet();
   if (sh.type === 'whoami') return `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle"><div class="grab"></div>
-    <h2 id="shTitle">Who is using this phone?</h2><p class="muted" style="margin:0 0 14px">Your name shows next to everything you log for ${esc(S.pet.name)}.</p>
+    <h2 id="shTitle">${t('whoami_t')}</h2><p class="muted" style="margin:0 0 14px">Your name shows next to everything you log for ${esc(S.pet.name)}.</p>
     <div class="stack">${S.members.map(m=>`<button class="card" data-a="iam" data-id="${m.id}" style="text-align:left;width:100%"><span class="badge-ico sun" style="border-radius:50%;font-weight:800">${esc(m.name.slice(0,1).toUpperCase())}</span><div class="grow t">I'm ${esc(m.name)}</div>${ic('right','ico-s')}</button>`).join('')}
-    <form class="row" data-form="joinme"><input class="in grow" id="joinName" name="name" maxlength="24" placeholder="Someone new? Type your name" aria-label="Your name"><button class="btn ink" type="submit">Join</button></form></div></div>`;
+    <form class="row" data-form="joinme"><input class="in grow" id="joinName" name="name" maxlength="24" placeholder="${t('whoami_new')}" aria-label="Your name"><button class="btn ink" type="submit">${t('act_join')}</button></form></div></div>`;
   let title = '', body = '';
   const f = (id, label, input) => `<div class="field"><label for="${id}">${label}</label>${input}</div>`;
   if (sh.type === 'meal'){
@@ -1316,10 +1476,11 @@ const A = {
   step(d, ev){ const t = S.trips.find(x=>x.id===d.trip); const s = t && t.steps.find(x=>x.id===d.id); if (!s) return; s.done = !s.done; if (s.done){ award(XP.step, ev); burst(ev, 12); buzz(); } else award(-XP.step); ui.flash = 'step:'+s.id; commit({keepScroll:true}); },
   delStep(d){ const t = S.trips.find(x=>x.id===d.trip); if (!t) return; const i = t.steps.findIndex(x=>x.id===d.id); const [s] = t.steps.splice(i,1); commit({keepScroll:true}); toast('Step removed', () => { t.steps.splice(i,0,s); commit({keepScroll:true}); }); },
   iam(d){ me = d.id; lsSet(LSME, me); if (ui.sheet && ui.sheet.type==='whoami') ui.sheet = null; render({keepScroll:true}); toast(`This phone is now ${meName()}`); },
-  copyInvite(d, ev, el){ const inp = document.getElementById('inviteLink'); const done = () => toast('Invite link copied'); try { navigator.clipboard.writeText(inp.value).then(done, () => { inp.select(); toast('Press Ctrl+C to copy'); }); } catch(e){ inp.select(); } },
+  copyInvite(d, ev, el){ const inp = document.getElementById('inviteLink'); const done = () => toast(t('toast_copied')); try { navigator.clipboard.writeText(inp.value).then(done, () => { inp.select(); toast('Press Ctrl+C to copy'); }); } catch(e){ inp.select(); } },
   allowNotify(){ if (!CAN_NOTIFY) return; Notification.requestPermission().then(p => { REM.push = p === 'granted'; saveRem(); toast(p === 'granted' ? 'Notifications are on' : 'Notifications are blocked in this browser'); render({keepScroll:true}); }); },
-  subscribe(){ subscribed = true; lsSet(LSSUB, '1'); ui.sheet = null; render({keepScroll:true}); toast('Family Plan activated! Family sharing is now on.'); if (!remote) startHttpSync(); },
-  cancelSub(){ subscribed = false; lsDel(LSSUB); render({keepScroll:true}); toast('Subscription cancelled. Data stays on this device.'); },
+  subscribe(){ subscribed = true; lsSet(LSSUB, '1'); ui.sheet = null; render({keepScroll:true}); toast(t('toast_sub_on')); if (!remote) startHttpSync(); },
+  cancelSub(){ subscribed = false; lsDel(LSSUB); render({keepScroll:true}); toast(t('toast_sub_off')); },
+  setLang(d){ lang = d.l; lsSet(LSLANG, lang); render({keepScroll:true}); },
   theme(){ const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme === 'dark' : (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches); r.dataset.theme = dark ? 'light' : 'dark'; lsSet('kudi.theme', r.dataset.theme); }
 };
 
@@ -1694,6 +1855,7 @@ async function startHttpSync(){
   if (raw){ try { S = normalize(JSON.parse(raw)); } catch(e){ S = null; } }
   me = lsGet(LSME);
   subscribed = lsGet(LSSUB) === '1';
+  const savedLang = lsGet(LSLANG); if (savedLang && STRINGS[savedLang]) lang = savedLang;
   const tab = lsGet(LSTAB); if (tab && ['today','health','food','travel','me'].includes(tab)) ui.tab = tab;
   if (S && !S.members.find(m=>m.id===me)) me = S.members[0] && S.members[0].id;
   render();
