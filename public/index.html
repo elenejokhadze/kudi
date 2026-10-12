@@ -188,6 +188,13 @@ textarea.in{padding:12px 14px;min-height:80px}
 .splash svg.mascot{position:relative;width:190px;height:190px;animation:bob 3s ease-in-out infinite}
 .feat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .feat div{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-weight:800;font-size:14px}
+.sub-hero{background:linear-gradient(135deg,var(--sun) 0%,var(--tint2) 100%);border-radius:22px;padding:22px 18px;text-align:center;border:1px solid var(--line)}
+.sub-hero .price{font-family:var(--f-display);font-weight:800;font-size:42px;letter-spacing:-.03em;line-height:1}
+.sub-hero .price sup{font-size:22px;vertical-align:super;letter-spacing:0}
+.sub-hero .price sub{font-size:16px;vertical-align:baseline;opacity:.65}
+.sub-feats{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.sub-feats li{list-style:none;display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
+.sub-badge{display:inline-flex;align-items:center;gap:5px;background:var(--mint);color:var(--mint-ink);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:800}
 
 /* overlays: toast, xp float, confetti, badge modal */
 .toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--ink);color:var(--on-ink);border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px;z-index:40;display:flex;gap:10px;align-items:center;animation:toast 2.6s ease forwards;white-space:nowrap;max-width:calc(100% - 32px)}
@@ -494,7 +501,9 @@ let me = null;              // this device's member id
 let ui = {tab:'today', sheet:null, healthSeg:'meds', foodSeg:'meals', tripId:null, ob:null, confirm:null, flash:null};
 let db = null, ref = null, syncMode = 'device', pushTimer = null, lastPushed = '';
 let remote = null, homeCode = null, dbMissing = false;
+let subscribed = false;
 const LSHOME = 'kudi.home';
+const LSSUB = 'kudi.sub';
 const IN_ARTIFACT = !!(window.claude && typeof window.claude.use === 'function');
 const CAN_NOTIFY = !IN_ARTIFACT && 'Notification' in window && 'serviceWorker' in navigator && location.protocol !== 'file:';
 const LS = 'kudi.state.v1', LSME = 'kudi.me', LSTAB = 'kudi.tab';
@@ -961,9 +970,9 @@ function viewMe(){
       <div class="card"><span class="badge-ico ink">${ic('trophy')}</span><div class="grow"><div class="t">Level ${L.i+1} · ${esc(L.name)}</div><div class="bar sun" style="margin-top:6px"><i style="width:${Math.round(L.pct*100)}%"></i></div><div class="s num" style="margin-top:4px">${S.xp} XP${L.toNext?` · ${L.toNext} to ${esc(LEVELS[L.i+1])}`:' · Top level'}</div></div></div>
     </section>
 
-    <section class="sec"><div class="sec-h"><h3>Family</h3><button class="link" data-a="sheet" data-type="member">Add</button></div>
-      ${homeCode && syncMode==='shared' ? `<div class="card col"><div class="t">Invite your family</div><div class="s">Send this link. Whoever opens it shares ${esc(S.pet.name)}'s meals, meds and reminders with you.</div><div class="row"><input class="in grow" id="inviteLink" readonly value="${esc(location.origin + '/?home=' + homeCode)}" aria-label="Invite link" style="font-size:13px"><button class="btn ink" data-a="copyInvite">Copy</button></div></div>` : ''}
-      <p class="small muted" style="margin:0">Pick who is using this phone. Logs show this name.</p>
+    <section class="sec"><div class="sec-h"><h3>Family</h3>${subscribed ? `<button class="link" data-a="sheet" data-type="member">Add</button>` : ''}</div>
+      ${!subscribed ? `<button class="card" data-a="sheet" data-type="subscribe" style="text-align:left;width:100%;border:1.5px dashed var(--blue)"><span class="badge-ico sun">${ic('cloud')}</span><div class="grow"><div class="t">Share with your family <span class="sub-badge">${ic('trophy','ico-s')}$3.99/mo</span></div><div class="s">Sync meals, meds and reminders to every family phone in real time.</div></div>${ic('right','ico-s')}</button>` : (homeCode && syncMode==='shared' ? `<div class="card col"><div class="t">Invite your family</div><div class="s">Send this link. Whoever opens it shares ${esc(S.pet.name)}'s meals, meds and reminders with you.</div><div class="row"><input class="in grow" id="inviteLink" readonly value="${esc(location.origin + '/?home=' + homeCode)}" aria-label="Invite link" style="font-size:13px"><button class="btn ink" data-a="copyInvite">Copy</button></div></div>` : '')}
+      <p class="small muted" style="margin:0">${subscribed ? 'Pick who is using this phone. Logs show this name.' : 'Solo use is always free. Subscribe to share with family.'}</p>
       <div class="list">${S.members.map(m=>`<div class="li"><span class="badge-ico ${m.id===me?'sun':''}" style="border-radius:50%;font-weight:800">${esc(m.name.slice(0,1).toUpperCase())}</span><div class="grow"><div class="t">${esc(m.name)}</div><div class="s">${S.log.filter(l=>l.by===m.id && l.type==='meal').length} meals fed recently</div></div>
         ${m.id===me?'<span class="pill ink">This phone</span>':`<button class="btn soft sm" data-a="iam" data-id="${m.id}">That's me</button>`}
         ${S.members.length>1?`<button class="iconbtn sm" data-a="confirm" data-what="member" data-id="${m.id}" aria-label="Remove ${esc(m.name)}">${ic('x','ico-s')}</button>`:''}</div>`).join('')}</div>
@@ -974,6 +983,7 @@ function viewMe(){
     </section>
 
     <section class="sec"><div class="sec-h"><h3>App</h3></div>
+      ${subscribed ? `<div class="card"><span class="badge-ico sun">${ic('trophy')}</span><div class="grow"><div class="t">Family Plan · $3.99/mo</div><div class="s">Family sharing is active.</div></div><button class="btn ghost sm" data-a="cancelSub">Cancel</button></div>` : `<button class="card" data-a="sheet" data-type="subscribe" style="text-align:left;width:100%"><span class="badge-ico">${ic('cloud')}</span><div class="grow"><div class="t">Free plan</div><div class="s">Upgrade to Family Plan to sync with your household.</div></div>${ic('right','ico-s')}</button>`}
       <div class="card"><span class="badge-ico">${ic('cloud')}</span><div class="grow"><div class="t">${syncMode==='shared'?'Synced':'Saved on this device'}</div><div class="s">${syncMode==='shared' ? (IN_ARTIFACT ? 'Changes appear live for everyone who opens this app link.' : 'Shared with everyone who joined with your family link.') : dbMissing ? 'Data stays on this phone. Family sharing turns on once the app has a database.' : 'Data stays in this browser.'}</div></div></div>
       <div class="row" style="flex-wrap:wrap">
         <button class="btn ghost" data-a="confirm" data-what="reset">${ic('trash','ico-s')}${S.sample?'Clear sample and start fresh':'Reset all data'}</button>
@@ -986,10 +996,33 @@ function nav(){
   return `<nav class="nav" aria-label="Main"><div class="nav-in">${b('today','Today','home',!fedAll)}${b('health','Health','pill',healthAlerts()>0)}${b('food','Food','bowl')}${b('travel','Travel','plane')}${b('me','Me','user')}</div></nav>`;
 }
 
+/* ---------- subscription sheet ---------- */
+function subscribeSheet(){
+  return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle">
+    <div class="grab"></div>
+    <h2 id="shTitle" style="text-align:center">Family sharing</h2>
+    <div class="sub-hero">
+      <div style="font-size:14px;font-weight:800;color:var(--on-sun);margin-bottom:8px">KUDI FAMILY PLAN</div>
+      <div class="price"><sup>$</sup>3.99<sub>/mo</sub></div>
+      <div style="margin-top:8px;font-size:14px;color:var(--muted)">Share with your whole household</div>
+    </div>
+    <ul class="sub-feats">
+      <li>${ic('cloud','ico-s')}<span>Live sync across all family phones</span></li>
+      <li>${ic('user','ico-s')}<span>Invite unlimited family members</span></li>
+      <li>${ic('bell','ico-s')}<span>Everyone gets feeding & medicine alerts</span></li>
+      <li>${ic('check','ico-s')}<span>See who fed or gave meds in real time</span></li>
+    </ul>
+    <p class="small muted" style="margin:0 0 4px;text-align:center">Cancel any time. Solo use always stays free.</p>
+    <button class="btn ink xl block" data-a="subscribe">Start for $3.99 / month</button>
+    <button class="btn ghost block" data-a="close" style="margin-top:4px">Maybe later</button>
+  </div>`;
+}
+
 /* ---------- sheets ---------- */
 function sheetHTML(){
   const sh = ui.sheet; if (!sh) return '';
   if (sh.type === 'remind') return remindSheet();
+  if (sh.type === 'subscribe') return subscribeSheet();
   if (sh.type === 'whoami') return `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle"><div class="grab"></div>
     <h2 id="shTitle">Who is using this phone?</h2><p class="muted" style="margin:0 0 14px">Your name shows next to everything you log for ${esc(S.pet.name)}.</p>
     <div class="stack">${S.members.map(m=>`<button class="card" data-a="iam" data-id="${m.id}" style="text-align:left;width:100%"><span class="badge-ico sun" style="border-radius:50%;font-weight:800">${esc(m.name.slice(0,1).toUpperCase())}</span><div class="grow t">I'm ${esc(m.name)}</div>${ic('right','ico-s')}</button>`).join('')}
@@ -1200,6 +1233,8 @@ const A = {
   iam(d){ me = d.id; lsSet(LSME, me); if (ui.sheet && ui.sheet.type==='whoami') ui.sheet = null; render({keepScroll:true}); toast(`This phone is now ${meName()}`); },
   copyInvite(d, ev, el){ const inp = document.getElementById('inviteLink'); const done = () => toast('Invite link copied'); try { navigator.clipboard.writeText(inp.value).then(done, () => { inp.select(); toast('Press Ctrl+C to copy'); }); } catch(e){ inp.select(); } },
   allowNotify(){ if (!CAN_NOTIFY) return; Notification.requestPermission().then(p => { REM.push = p === 'granted'; saveRem(); toast(p === 'granted' ? 'Notifications are on' : 'Notifications are blocked in this browser'); render({keepScroll:true}); }); },
+  subscribe(){ subscribed = true; lsSet(LSSUB, '1'); ui.sheet = null; render({keepScroll:true}); toast('Family Plan activated! Family sharing is now on.'); if (!remote) startHttpSync(); },
+  cancelSub(){ subscribed = false; lsDel(LSSUB); render({keepScroll:true}); toast('Subscription cancelled. Data stays on this device.'); },
   theme(){ const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme === 'dark' : (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches); r.dataset.theme = dark ? 'light' : 'dark'; lsSet('kudi.theme', r.dataset.theme); }
 };
 
@@ -1545,6 +1580,7 @@ Object.assign(A, {
 function newCode(){ const c = 'abcdefghjkmnpqrstuvwxyz23456789'; let x = ''; const r = new Uint32Array(12); try { crypto.getRandomValues(r); } catch(e){ for (let i=0;i<12;i++) r[i] = Math.random()*1e9; } for (let i=0;i<12;i++) x += c[r[i] % c.length]; return x; }
 async function startHttpSync(){
   if (location.protocol === 'file:') return;
+  if (!subscribed) return;
   const qp = new URLSearchParams(location.search), joined = (qp.get('home') || '').toLowerCase();
   if (joined && /^[a-z0-9]{8,24}$/.test(joined)){
     if (lsGet(LSHOME) !== joined){ lsSet(LSHOME, joined); S = null; lsDel(LS); lsDel(LSME); me = null; ui.ob = null; }
@@ -1572,6 +1608,7 @@ async function startHttpSync(){
   const raw = lsGet(LS);
   if (raw){ try { S = normalize(JSON.parse(raw)); } catch(e){ S = null; } }
   me = lsGet(LSME);
+  subscribed = lsGet(LSSUB) === '1';
   const tab = lsGet(LSTAB); if (tab && ['today','health','food','travel','me'].includes(tab)) ui.tab = tab;
   if (S && !S.members.find(m=>m.id===me)) me = S.members[0] && S.members[0].id;
   render();
