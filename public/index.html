@@ -426,7 +426,7 @@ function mascot(species, mood, extraClass){
 const pad = n => String(n).padStart(2,'0');
 const keyOf = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 const today = () => keyOf(new Date());
-const parseKey = k => { const [y,m,d] = k.spliT('-').map(Number); return new Date(y, m-1, d); };
+const parseKey = k => { const [y,m,d] = k.split('-').map(Number); return new Date(y, m-1, d); };
 const addDays = (k, n) => { const d = parseKey(k); d.setDate(d.getDate()+n); return keyOf(d); };
 const addMonths = (k, n) => { const d = parseKey(k); const day = d.getDate(); d.setDate(1); d.setMonth(d.getMonth()+n); const last = new Date(d.getFullYear(), d.getMonth()+1, 0).getDate(); d.setDate(Math.min(day,last)); return keyOf(d); };
 const diffDays = (a, b) => Math.round((parseKey(b) - parseKey(a)) / 86400000);
@@ -434,7 +434,7 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
 const fmt = k => { if(!k) return ''; const d = parseKey(k); return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`; };
 const fmtS = k => { if(!k) return ''; const d = parseKey(k); return `${d.getDate()} ${MONTHS[d.getMonth()]}`; };
 const nowHM = () => { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; };
-const hmToMin = t => { const [h,m] = (t||'0:0').spliT(':').map(Number); return h*60+m; };
+const hmToMin = t => { const [h,m] = (t||'0:0').split(':').map(Number); return h*60+m; };
 const monthsOld = b => { if(!b) return null; const a = parseKey(b), n = new Date(); let m = (n.getFullYear()-a.getFullYear())*12 + (n.getMonth()-a.getMonth()); if (n.getDate() < a.getDate()) m--; return Math.max(0,m); };
 const ageLabel = m => m == null ? '' : m < 12 ? `${m} month${m===1?'':'s'}` : `${Math.floor(m/12)} yr${Math.floor(m/12)>1?'s':''}${m%12?` ${m%12} mo`:''}`;
 
@@ -816,7 +816,7 @@ function award(n, ev){
 }
 function floatXP(n, ev){
   const x = ev && ev.clientX ? ev.clientX : innerWidth/2, y = ev && ev.clientY ? ev.clientY : innerHeight/2;
-  const el = document.createElemenT('div'); el.className='xpfloat'; el.textContent = `+${n} XP`;
+  const el = document.createElement('div'); el.className='xpfloat'; el.textContent = `+${n} XP`;
   el.style.left = x+'px'; el.style.top = (y-20)+'px';
   document.body.appendChild(el); setTimeout(()=>el.remove(), 1200);
 }
@@ -824,7 +824,7 @@ function burst(ev, count=16){
   if (reduced()) return;
   const x = ev && ev.clientX ? ev.clientX : innerWidth/2, y = ev && ev.clientY ? ev.clientY : innerHeight/2;
   for (let i=0;i<count;i++){
-    const b = document.createElemenT('div'); b.className='bit';
+    const b = document.createElement('div'); b.className='bit';
     const paw = i % 3 === 0;
     const PAL = ['#F2BBC8','#A9DEC4','#B9CCF3','#F6D58E','#D9CFF6']; b.innerHTML = paw ? `<svg viewBox="0 0 24 24" width="14" height="14" fill="#9DB9EE" aria-hidden="true">${P.paw.replace(/<path/,'<path')}</svg>` : '';
     if (!paw){ b.style.borderRadius = i%2 ? '50%' : '3px'; b.style.background = PAL[i % PAL.length]; b.style.width = b.style.height = (6+Math.random()*6)+'px'; }
@@ -841,7 +841,7 @@ function queueModal(m){ modalQ.push(m); if (modalQ.length === 1) showModal(); }
 function showModal(){
   const m = modalQ[0]; if (!m) return;
   const layer = document.getElementById('layer');
-  const wrap = document.createElemenT('div'); wrap.className='modal'; wrap.setAttribute('role','dialog'); wrap.setAttribute('aria-modal','true');
+  const wrap = document.createElement('div'); wrap.className='modal'; wrap.setAttribute('role','dialog'); wrap.setAttribute('aria-modal','true');
   const isChamp = m.kind==='champion';
   wrap.innerHTML = `<div class="modal-in" ${isChamp?'style="border:2px solid var(--gold);background:var(--gold-bg)"':''}><div class="medal" ${isChamp?'style="background:linear-gradient(135deg,#F6C94E,#FFE08A);color:var(--gold-deep);box-shadow:0 6px 24px rgba(246,201,78,.5)"':''}>${ic(m.icon,'')}</div><span class="eyebrow">${m.kind==='level'?'New level':isChamp?'All badges!':'Badge unlocked'}</span><h2 style="font-size:26px">${esc(m.title)}</h2><p class="muted" style="margin:0">${esc(m.desc)}</p><button class="btn sun block" id="modalOk">${isChamp?T('champ_cta'):m.kind==='badge'?`Nice! +${XP.badge} XP`:'Keep going'}</button></div>`;
   layer.appendChild(wrap);
@@ -865,7 +865,7 @@ function checkBadges(){
 }
 function toast(msg, undo){
   document.querySelectorAll('.toast').forEach(t=>t.remove());
-  const t = document.createElemenT('div'); t.className='toast'; t.setAttribute('role','status');
+  const t = document.createElement('div'); t.className='toast'; t.setAttribute('role','status');
   t.innerHTML = `<span>${esc(msg)}</span>${undo?'<button type="button">Undo</button>':''}`;
   if (undo) t.querySelector('button').addEventListener('click', () => { undo(); t.remove(); });
   document.body.appendChild(t); setTimeout(()=>t.remove(), 2700);
@@ -890,7 +890,7 @@ function renderOnboarding(){
         <div class="row" style="gap:8px"><span class="badge-ico ink" style="width:38px;height:38px;border-radius:12px">${ic('paw','ico-s')}</span><span style="font-family:var(--f-display);font-weight:800;font-size:26px">kudi</span></div>
         <span class="pill">ქარ · EN · РУ</span>
       </div>
-      <div class="splash"><div class="sunball"></div>${mascoT('dog','happy','mascot')}</div>
+      <div class="splash"><div class="sunball"></div>${mascot('dog','happy','mascot')}</div>
       <div class="stack" style="gap:8px">
         <h1>Fed, dosed and ready to travel.</h1>
         <p class="muted" style="margin:0;font-size:16px">${T('ob_tagline')}</p>
@@ -1519,7 +1519,7 @@ function syncObForm(){
 
 /* ---------- forms ---------- */
 function onSubmit(e){
-  const form = e.target.closesT('form[data-form]'); if (!form) return;
+  const form = e.target.closest('form[data-form]'); if (!form) return;
   e.preventDefault();
   const fd = new FormData(form); const v = k => (fd.get(k)||'').toString().trim();
   const kind = form.dataset.form;
@@ -1586,7 +1586,7 @@ function onSubmit(e){
 
 /* ---------- events ---------- */
 document.addEventListener('click', e => {
-  const el = e.target.closesT('[data-a]'); if (!el) return;
+  const el = e.target.closest('[data-a]'); if (!el) return;
   const fn = A[el.dataset.a]; if (!fn) return;
   e.preventDefault();
   fn(Object.assign({}, el.dataset), e, el);
@@ -1769,13 +1769,13 @@ function drawBanner(){
   </div>`;
 }
 function gcal(title, dateKey, time, mins, details, recur){
-  const [h, m] = time.spliT(':').map(Number);
+  const [h, m] = time.split(':').map(Number);
   const s = parseKey(dateKey); s.setHours(h, m, 0, 0);
   const e = new Date(s.getTime() + mins * 60000);
   const g = x => `${x.getFullYear()}${pad(x.getMonth()+1)}${pad(x.getDate())}T${pad(x.getHours())}${pad(x.getMinutes())}00`;
   let tz = 'Asia/Tbilisi'; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch(e){}
   const q = new URLSearchParams({action:'TEMPLATE', text:title, dates:`${g(s)}/${g(e)}`, details, ctz:tz});
-  if (recur) q.seT('recur', 'RRULE:' + recur);
+  if (recur) q.set('recur', 'RRULE:' + recur);
   return 'https://calendar.google.com/calendar/render?' + q.toString();
 }
 function remindSheet(){
@@ -1849,7 +1849,7 @@ function newCode(){ const c = 'abcdefghjkmnpqrstuvwxyz23456789'; let x = ''; con
 async function startHttpSync(){
   if (location.protocol === 'file:') return;
   if (!subscribed) return;
-  const qp = new URLSearchParams(location.search), joined = (qp.geT('home') || '').toLowerCase();
+  const qp = new URLSearchParams(location.search), joined = (qp.get('home') || '').toLowerCase();
   if (joined && /^[a-z0-9]{8,24}$/.test(joined)){
     if (lsGet(LSHOME) !== joined){ lsSet(LSHOME, joined); S = null; lsDel(LS); lsDel(LSME); me = null; ui.ob = null; }
     history.replaceState(null, '', location.pathname);
@@ -1908,7 +1908,7 @@ async function startHttpSync(){
   setInterval(checkReminders, 20000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) checkReminders(); });
   document.addEventListener('click', e => {
-    const a = e.target.closesT('a[data-cal]'); if (!a) return;
+    const a = e.target.closest('a[data-cal]'); if (!a) return;
     let o = {}; try { o = JSON.parse(lsGet('kudi.cal') || '{}'); } catch(err){}
     o[a.dataset.cal] = Date.now(); lsSet('kudi.cal', JSON.stringify(o));
     setTimeout(() => { a.classList.remove('soft'); a.classList.add('ghost'); a.innerHTML = ic('check','ico-s') + 'Opened'; }, 300);
