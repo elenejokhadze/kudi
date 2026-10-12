@@ -1,0 +1,14 @@
+{
+  "name": "kudi-pet-care",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Kudi: shared pet care app (feeding, medicine, vaccines, heat, travel, reminders).",
+  "scripts": {
+    "dev": "vercel dev",
+    "preview": "npx --yes serve public -l 3000",
+    "deploy": "vercel deploy",
+    "deploy:prod": "vercel deploy --prod"
+  },
+  "engines": { "node": ">=18" }
+}
