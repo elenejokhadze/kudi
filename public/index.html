@@ -209,6 +209,29 @@ textarea.in{padding:12px 14px;min-height:80px}
 .splash svg.mascot{position:relative;width:190px;height:190px;animation:bob 3s ease-in-out infinite}
 .feat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .feat div{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-weight:800;font-size:14px}
+/* pawmates */
+.pm-card{background:var(--card);border-radius:28px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .15s}
+.pm-photo{height:240px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.pm-photo svg{width:190px;height:190px}
+.pm-info{padding:16px 16px 12px}
+.pm-name{font-family:var(--f-display);font-weight:800;font-size:26px;letter-spacing:-.02em}
+.pm-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.pm-pass{border:0;border-radius:999px;min-height:58px;font-size:26px;background:var(--tint2);cursor:pointer;transition:transform .12s,background .15s}
+.pm-like{border:0;border-radius:999px;min-height:58px;font-size:26px;background:var(--blush);cursor:pointer;transition:transform .12s,background .15s}
+.pm-pass:active{transform:scale(.92)}
+.pm-like:active{transform:scale(.92)}
+.pm-swipe-r{animation:pmSwipeR .32s ease forwards}
+.pm-swipe-l{animation:pmSwipeL .32s ease forwards}
+@keyframes pmSwipeR{to{transform:translateX(130%) rotate(18deg);opacity:0}}
+@keyframes pmSwipeL{to{transform:translateX(-130%) rotate(-18deg);opacity:0}}
+.pm-match{text-align:center;padding:8px 0 4px}
+.pm-match-avs{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:14px}
+.pm-match-av{width:80px;height:80px;border-radius:50%;overflow:hidden;border:3px solid var(--card);background:var(--sun)}
+.pm-match-av+.pm-match-av{margin-left:-16px}
+.pm-match-heart{width:36px;height:36px;border-radius:50%;background:var(--blush);display:grid;place-items:center;z-index:1;border:3px solid var(--card);font-size:16px;margin:0 -4px}
+.pm-tag{display:inline-flex;background:rgba(255,255,255,.8);backdrop-filter:blur(6px);border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800;color:var(--ink)}
+[data-theme=dark] .pm-tag{background:rgba(0,0,0,.4);color:var(--ink)}
+.pm-mascot{width:190px;height:190px;animation:bob 3.4s ease-in-out infinite}
 .sub-hero{background:linear-gradient(135deg,var(--sun) 0%,var(--tint2) 100%);border-radius:22px;padding:22px 18px;text-align:center;border:1px solid var(--line)}
 .sub-hero .price{font-family:var(--f-display);font-weight:800;font-size:42px;letter-spacing:-.03em;line-height:1}
 .sub-hero .price sup{font-size:22px;vertical-align:super;letter-spacing:0}
@@ -533,6 +556,29 @@ const BADGES = [
   {id:'ready', name:'Trip ready', icon:'plane', desc:'Ticked every step for a trip.', test:s => s.trips.some(t=>t.steps.length && t.steps.every(x=>x.done))},
   {id:'pantry', name:'Well stocked', icon:'bone', desc:'Saved 5 foods, treats or toys.', test:s => s.items.length >= 5}
 ];
+
+/* ---------- pawmates ---------- */
+const PAWMATES = [
+  {id:'pm1',name:'Luna',species:'dog',breed:'Golden Retriever',age:2,bio:'Loves fetch and belly rubs. Looking for a running partner!',gender:'f',tags:['Playful','Friendly'],color:'#D5E3FA'},
+  {id:'pm2',name:'Max',species:'dog',breed:'Labrador',age:3,bio:'Certified good boy. Knows 5 tricks. Very treat-motivated.',gender:'m',tags:['Calm','Smart'],color:'#D5E3FA'},
+  {id:'pm3',name:'Bella',species:'cat',breed:'Persian',age:4,bio:'Prefers gourmet food and sunny spots. Very selective.',gender:'f',tags:['Regal','Indoor'],color:'#E8E5F9'},
+  {id:'pm4',name:'Charlie',species:'dog',breed:'French Bulldog',age:1,bio:'Small dog, huge personality. Master of the puppy eyes.',gender:'m',tags:['Cuddly','Funny'],color:'#DDF0D4'},
+  {id:'pm5',name:'Mia',species:'cat',breed:'British Shorthair',age:2,bio:'Independent but will occasionally grace you with her presence.',gender:'f',tags:['Quiet','Clean'],color:'#E8E5F9'},
+  {id:'pm6',name:'Rocky',species:'dog',breed:'German Shepherd',age:5,bio:'Retired guard dog, now just guards the sofa. Very loyal.',gender:'m',tags:['Loyal','Brave'],color:'#D5E3FA'},
+  {id:'pm7',name:'Cleo',species:'cat',breed:'Siamese',age:3,bio:'Talks a lot, knows everything. Looking for a good listener.',gender:'f',tags:['Vocal','Curious'],color:'#F8DFDA'},
+  {id:'pm8',name:'Buddy',species:'dog',breed:'Beagle',age:2,bio:'Nose-first adventurer. Will follow any interesting smell forever.',gender:'m',tags:['Curious','Foodie'],color:'#DDF0D4'},
+  {id:'pm9',name:'Daisy',species:'dog',breed:'Corgi',age:2,bio:'Short legs, maximum zoomies. Queen of the dog park.',gender:'f',tags:['Funny','Energetic'],color:'#F8DFDA'},
+  {id:'pm10',name:'Leo',species:'cat',breed:'Maine Coon',age:4,bio:'Big fluffball with an even bigger personality and a tiny meow.',gender:'m',tags:['Fluffy','Gentle'],color:'#E8E5F9'},
+  {id:'pm11',name:'Shadow',species:'dog',breed:'Husky',age:3,bio:'Dramatic, vocal, and absolutely beautiful. Needs someone who understands.',gender:'m',tags:['Active','Dramatic'],color:'#D5E3FA'},
+  {id:'pm12',name:'Zara',species:'dog',breed:'Dalmatian',age:2,bio:'Born to run. Looking for a friend who can keep up.',gender:'f',tags:['Fast','Adventurous'],color:'#DDF0D4'},
+  {id:'pm13',name:'Nino',species:'dog',breed:'Poodle',age:1,bio:'Smartest dog in the room and she knows it. Speaks 3 languages.',gender:'f',tags:['Smart','Stylish'],color:'#F8DFDA'},
+  {id:'pm14',name:'Bear',species:'dog',breed:'Chow Chow',age:4,bio:'Majestic, fluffy, extremely selective with friends. Worth it.',gender:'m',tags:['Majestic','Fluffy'],color:'#D5E3FA'},
+  {id:'pm15',name:'Pixie',species:'cat',breed:'Abyssinian',age:2,bio:'Athletic and mischievous. Will knock things off tables. On purpose.',gender:'f',tags:['Athletic','Chaos'],color:'#F8DFDA'},
+];
+const LSMATCH = 'kudi.pawmates';
+function loadPawmates(){ try { return JSON.parse(lsGet(LSMATCH)||'{"liked":[],"passed":[],"matched":[]}'); } catch(e){ return {liked:[],passed:[],matched:[]}; } }
+function savePawmates(ms){ lsSet(LSMATCH, JSON.stringify(ms)); }
+function nextPawmate(ms){ return PAWMATES.find(p => !ms.liked.includes(p.id) && !ms.passed.includes(p.id)); }
 
 /* ---------- i18n ---------- */
 const STRINGS = {
@@ -1077,6 +1123,7 @@ function viewToday(){
     </section>
     ${insightsBlock()}
     ${weeklyBlock()}
+    ${(()=>{ const ms = loadPawmates(); const matched = ms.matched.length; const remaining = PAWMATES.length - ms.liked.length - ms.passed.length; return `<button class="card" data-a="sheet" data-type="pawmates" style="text-align:left;width:100%;background:linear-gradient(135deg,var(--blush) 0%,var(--lav) 100%);border-color:transparent"><span class="badge-ico" style="background:rgba(255,255,255,.6)">${ic('heart')}</span><div class="grow"><div class="t">Pawmates 🐾</div><div class="s">${matched?`${matched} match${matched>1?'es':''} · `:''} ${remaining>0?`${remaining} pets waiting`:'All seen — check back soon'}</div></div>${ic('right','ico-s')}</button>`; })()}
     <section class="sec"><div class="sec-h"><h3>${T('today_family')}</h3></div>
       ${logs.length?`<div class="list">${logs.map(l=>`<div class="li"><span class="badge-ico" style="width:36px;height:36px;border-radius:12px">${ic(icon(l),'ico-s')}</span><div class="grow"><div class="t" style="font-size:14px">${esc(nameOf(l.by))} ${esc(verb(l))}</div><div class="s num">${esc(l.time)}</div></div><button class="iconbtn sm" data-a="unlog" data-id="${l.id}" aria-label="Delete this entry">${ic('x','ico-s')}</button></div>`).join('')}</div>`:`<div class="empty">${T('today_nothing')}</div>`}
     </section>`;
@@ -1231,6 +1278,72 @@ function nav(){
   return `<nav class="nav" aria-label="Main"><div class="nav-in">${b('today',T('nav_today'),'home',!fedAll)}${b('health',T('nav_health'),'pill',healthAlerts()>0)}${b('food',T('nav_food'),'bowl')}${b('travel',T('nav_travel'),'plane')}${b('me',T('nav_me'),'user')}</div></nav>`;
 }
 
+/* ---------- pawmates sheet ---------- */
+function pawmatesSheet(){
+  const ms = loadPawmates();
+  const matched = ms.matched.length;
+
+  // Just-matched celebration screen
+  if (ui.sheet && ui.sheet.justMatched) {
+    const p = PAWMATES.find(x=>x.id===ui.sheet.justMatched);
+    if (p) return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))">
+      <div class="grab"></div>
+      <div class="pm-match">
+        <div class="pm-match-avs">
+          <div class="pm-match-av" style="background:${p.color}">${mascot(p.species,'happy')}</div>
+          <div class="pm-match-heart">❤️</div>
+          <div class="pm-match-av" style="background:var(--sun)">${mascot(S.pet.species,'happy')}</div>
+        </div>
+        <h2 id="pmTitle" style="font-size:28px;margin-bottom:6px">It's a match!</h2>
+        <p class="muted" style="margin:0 0 6px">${esc(p.name)} liked ${esc(S.pet.name)} back!</p>
+        <span class="pill sun" style="margin-bottom:16px">${matched} match${matched>1?'es':''} total</span>
+        <div class="card" style="text-align:left;gap:14px">
+          <div class="pm-match-av" style="width:52px;height:52px;flex-shrink:0;background:${p.color}">${mascot(p.species,'happy')}</div>
+          <div><div class="t">${esc(p.name)}, ${p.age} yr${p.age>1?'s':''} · ${esc(p.breed)}</div><div class="s">${esc(p.bio)}</div></div>
+        </div>
+      </div>
+      <button class="btn ink xl block" style="margin-top:14px" data-a="pawmatesContinue">Keep swiping</button>
+      <button class="btn ghost block" style="margin-top:6px" data-a="close">Close</button>
+    </div>`;
+  }
+
+  const p = nextPawmate(ms);
+  if (!p) return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))">
+    <div class="grab"></div>
+    <div style="text-align:center;padding:24px 0">
+      <div style="font-size:52px;margin-bottom:12px">🐾</div>
+      <h2 id="pmTitle">No more pets nearby!</h2>
+      <p class="muted" style="margin:0 0 16px">You've seen everyone. New pets join every week.</p>
+      ${matched?`<span class="pill sun">${matched} match${matched>1?'es':''} total ❤️</span>`:''}
+    </div>
+    <button class="btn ghost block" data-a="pawmatesReset" style="margin-top:8px">Start over</button>
+    <button class="btn ink block" style="margin-top:8px" data-a="close">Close</button>
+  </div>`;
+
+  return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))">
+    <div class="grab"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <h2 id="pmTitle" style="margin:0">Pawmates 🐾</h2>
+      ${matched?`<span class="pill sun">❤️ ${matched}</span>`:'<span class="small muted">${PAWMATES.length - ms.liked.length - ms.passed.length} left</span>'}
+    </div>
+    <div class="pm-card" id="pmCard">
+      <div class="pm-photo" style="background:${p.color}">${mascot(p.species,'happy','pm-mascot')}
+        <div style="position:absolute;bottom:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap">${p.tags.map(tag=>`<span class="pm-tag">${esc(tag)}</span>`).join('')}</div>
+      </div>
+      <div class="pm-info">
+        <div class="pm-name">${esc(p.name)}, ${p.age} yr${p.age>1?'s':''} ${p.gender==='f'?'♀':'♂'}</div>
+        <div class="s" style="margin-top:2px">${esc(p.breed)} · Tbilisi</div>
+        <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">${esc(p.bio)}</p>
+      </div>
+    </div>
+    <div class="pm-btns">
+      <button class="pm-pass" data-a="pawmatePass" data-pid="${p.id}" aria-label="Pass">✕</button>
+      <button class="pm-like" data-a="pawmateLike" data-pid="${p.id}" aria-label="Like">❤️</button>
+    </div>
+    <p class="small muted" style="text-align:center;margin:8px 0 0">Finding friends for ${esc(S.pet.name)}</p>
+  </div>`;
+}
+
 /* ---------- subscription sheet ---------- */
 function subscribeSheet(){
   return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle">
@@ -1289,6 +1402,7 @@ function sheetHTML(){
   const sh = ui.sheet; if (!sh) return '';
   if (sh.type === 'remind') return remindSheet();
   if (sh.type === 'subscribe') return subscribeSheet();
+  if (sh.type === 'pawmates') return pawmatesSheet();
   if (sh.type === 'report') return careReportSheet();
   if (sh.type === 'whoami') return `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle"><div class="grab"></div>
     <h2 id="shTitle">${T('whoami_t')}</h2><p class="muted" style="margin:0 0 14px">Your name shows next to everything you log for ${esc(S.pet.name)}.</p>
@@ -1500,6 +1614,26 @@ const A = {
   iam(d){ me = d.id; lsSet(LSME, me); if (ui.sheet && ui.sheet.type==='whoami') ui.sheet = null; render({keepScroll:true}); toast(`This phone is now ${meName()}`); },
   copyInvite(d, ev, el){ const inp = document.getElementById('inviteLink'); const done = () => toast(T('toast_copied')); try { navigator.clipboard.writeText(inp.value).then(done, () => { inp.select(); toast('Press Ctrl+C to copy'); }); } catch(e){ inp.select(); } },
   allowNotify(){ if (!CAN_NOTIFY) return; Notification.requestPermission().then(p => { REM.push = p === 'granted'; saveRem(); toast(p === 'granted' ? 'Notifications are on' : 'Notifications are blocked in this browser'); render({keepScroll:true}); }); },
+  pawmateLike(d){
+    const ms = loadPawmates();
+    if (!ms.liked.includes(d.pid)) ms.liked.push(d.pid);
+    const isMatch = Math.random() < 0.45;
+    if (isMatch && !ms.matched.includes(d.pid)) ms.matched.push(d.pid);
+    savePawmates(ms);
+    const card = document.getElementById('pmCard');
+    if (card){ card.classList.add('pm-swipe-r'); setTimeout(()=>{ ui.sheet = {type:'pawmates', justMatched: isMatch ? d.pid : null}; render({keepScroll:true}); if (isMatch) burst({clientX:innerWidth/2, clientY:innerHeight/3},28); }, 320); }
+    else { ui.sheet = {type:'pawmates', justMatched: isMatch ? d.pid : null}; render({keepScroll:true}); }
+  },
+  pawmatePass(d){
+    const ms = loadPawmates();
+    if (!ms.passed.includes(d.pid)) ms.passed.push(d.pid);
+    savePawmates(ms);
+    const card = document.getElementById('pmCard');
+    if (card){ card.classList.add('pm-swipe-l'); setTimeout(()=>{ ui.sheet = {type:'pawmates'}; render({keepScroll:true}); }, 320); }
+    else { ui.sheet = {type:'pawmates'}; render({keepScroll:true}); }
+  },
+  pawmatesContinue(){ ui.sheet = {type:'pawmates'}; render({keepScroll:true}); },
+  pawmatesReset(){ savePawmates({liked:[],passed:[],matched:[]}); ui.sheet = {type:'pawmates'}; render({keepScroll:true}); },
   subscribe(){ subscribed = true; lsSet(LSSUB, '1'); ui.sheet = null; render({keepScroll:true}); toast(T('toast_sub_on')); if (!remote) startHttpSync(); },
   cancelSub(){ subscribed = false; lsDel(LSSUB); render({keepScroll:true}); toast(T('toast_sub_off')); },
   setLang(d){ lang = d.l; lsSet(LSLANG, lang); render({keepScroll:true}); },
