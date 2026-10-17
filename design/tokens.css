@@ -1,8 +1,8 @@
-/* Kudi design tokens · v0.2
-   Clean first: white and soft-grey surfaces, near-black ink, neutral greys with a faint green bias.
-   Brand colour appears only as a highlight: lime for the primary button and progress, pink for small
-   details (badges, the active tab dot, avatar rings, hearts, today marker), pastel category tiles,
-   status pills and one soft gradient card per screen.
+/* Kudi design tokens · v0.3
+   Palette after the Froli identity: deep forest green, bubblegum pink, lime, cream, with orange
+   and yellow sparks. Screens stay clean: white and soft-grey surfaces with green-black ink.
+   Colour lives in a few places only: the lime primary button, pink details (badges, dots,
+   avatar rings, hearts), pastel category tiles, and at most one deep-green feature card per screen.
    Primitives (raw scales) come first; components use only the semantic tokens below them.
    Font: Figtree (Google Fonts), weights 400-700. */
 
@@ -10,32 +10,31 @@
   color-scheme:light;
 
   /* ---------- Primitives ---------- */
-  /* neutrals: the bulk of every screen */
+  /* neutrals: the bulk of every screen, with a faint green bias */
   --grey-0:#FFFFFF;   --grey-25:#FAFBFA;  --grey-50:#F4F5F3;  --grey-100:#ECEEEB; --grey-200:#DEE1DD;
   --grey-300:#C5CAC5; --grey-400:#9AA19C; --grey-500:#6A726D; --grey-600:#555D58; --grey-700:#3B423E;
-  --grey-800:#242A26; --grey-900:#141915; --grey-950:#0C0F0D;
 
-  /* brand highlights, taken from the dog illustrations */
-  --lime-50:#F8FCE4;  --lime-100:#EFF8C2;  --lime-200:#E2F48A;  --lime-300:#D6EF3F;  --lime-400:#C2DE22;  --lime-600:#7D9410;
-  --forest-50:#EDF6EF; --forest-100:#D3E9D9; --forest-300:#6FB383; --forest-500:#1E7B3F; --forest-700:#115328; --forest-900:#0A2E17;
-  --mint-50:#F1F8F7;  --mint-100:#DFEFED;  --mint-300:#A5D0CC;  --mint-700:#33605C;
-  --sun-50:#FFFBE6;   --sun-100:#FEF6C8;   --sun-300:#F9DD4A;   --sun-700:#7E6300;
-  --blush-50:#FEF6F8; --blush-100:#FDEEF1; --blush-200:#F8D5DC; --blush-300:#F2BAC6; --blush-400:#EA9DB0; --blush-700:#963B51;
-  --cocoa-700:#4A1C24;
-  --coral-50:#FEF3EF; --coral-100:#FCE4DC; --coral-300:#F09B81; --coral-500:#E0614A; --coral-700:#A23824;
-  --olive-100:#F0F1CF; --olive-300:#C8CA52; --olive-700:#5C5E19;
-  --cream-50:#FCF8EF; --cream-100:#F6EFDE;
+  /* brand: deep forest green, bubblegum pink, lime, cream, with orange and yellow as sparks */
+  --forest-50:#EAF3EE;  --forest-100:#CFE3D7; --forest-200:#9FC7B0; --forest-300:#5FA07D; --forest-500:#1D7A4C;
+  --forest-700:#0F5E38; --forest-800:#0B4A2C; --forest-900:#08361F; --forest-950:#06241A;
+  --pink-50:#FEF2FB;   --pink-100:#FCE1F6;  --pink-200:#F9C6EE;  --pink-300:#F5A3E3;  --pink-400:#EE7FD6;
+  --pink-600:#C04BA6;  --pink-800:#6E1F5C;
+  --lime-50:#F8FCE8;   --lime-100:#F1F9D2;  --lime-200:#E1F2A0;  --lime-300:#C9EA62;  --lime-400:#B5DA3E;  --lime-600:#6F8A16;
+  --cream-50:#FBF8F0;  --cream-100:#F6EFDF; --cream-200:#EDE2C9;
+  --orange-50:#FEF3EA; --orange-100:#FDE6D6; --orange-300:#F79A5C; --orange-500:#F2731F; --orange-700:#A8460A;
+  --yellow-50:#FFFBE8; --yellow-100:#FDF4C9; --yellow-300:#F4CF34; --yellow-700:#7A6200;
+  --red-50:#FEF1EE;    --red-300:#F59C8E;   --red-700:#B3261E;
 
   /* ---------- Semantic colour (light) ---------- */
   --color-bg:var(--grey-0);                /* app background */
   --color-surface:var(--grey-0);           /* cards, sheets */
   --color-surface-2:var(--grey-50);        /* secondary button, inputs, segmented track */
   --color-surface-3:var(--grey-100);       /* pressed / hover */
-  --color-ink:var(--grey-900);             /* primary text, icons */
+  --color-ink:var(--forest-950);           /* primary text and icons: green-black */
   --color-ink-2:var(--grey-500);           /* secondary text */
   --color-ink-3:var(--grey-400);           /* hints, placeholders, disabled */
-  --color-line:rgba(20,25,21,.08);         /* hairlines, dividers */
-  --color-line-strong:rgba(20,25,21,.16);  /* input borders, focused rows */
+  --color-line:rgba(6,36,26,.08);          /* hairlines, dividers */
+  --color-line-strong:rgba(6,36,26,.16);   /* input borders */
 
   /* the one prominent colour: primary action */
   --color-primary:var(--lime-300);
@@ -43,31 +42,39 @@
   --color-primary-pressed:var(--lime-400);
   --color-on-primary:var(--forest-900);
 
-  --color-brand:var(--forest-500);         /* wordmark, links, selected tab icon */
+  --color-brand:var(--forest-700);         /* wordmark, links, selected tab icon */
+  --color-focus:var(--forest-700);
+  --color-tooltip:var(--forest-900);       /* dark callouts, toasts */
+  --color-on-tooltip:var(--cream-50);
 
-  /* the small detail colour: pink, never on large areas */
-  --color-pink:var(--blush-300);           /* badges, active tab dot, avatar rings, today marker */
-  --color-pink-strong:var(--blush-400);    /* hearts, favourite, notification dot */
-  --color-pink-soft:var(--blush-50);       /* selected chip, text selection */
-  --color-on-pink:var(--cocoa-700);
-  --color-focus:var(--forest-500);
-  --color-tooltip:var(--grey-900);         /* dark callouts, toasts */
-  --color-on-tooltip:var(--grey-0);
+  /* pink: small details, never a button or a light card */
+  --color-pink:var(--pink-300);            /* badges, avatar rings, active tab dot, today marker */
+  --color-pink-strong:var(--pink-600);     /* hearts, notification dot (3:1 on white) */
+  --color-pink-soft:var(--pink-50);        /* selected chip, text selection */
+  --color-on-pink:var(--forest-900);
 
-  /* soft highlight card (one per screen at most) */
-  --gradient-highlight:linear-gradient(160deg,var(--mint-50) 0%,var(--grey-25) 45%,var(--cream-50) 75%,var(--blush-50) 100%);
+  /* feature card: the Froli look, deep green with pink and lime. One per screen at most */
+  --color-feature:var(--forest-800);
+  --color-on-feature:var(--cream-50);
+  --color-feature-title:var(--pink-300);
+  --color-feature-ink-2:rgba(251,248,240,.72);
+  --color-feature-line:rgba(251,248,240,.18);
 
-  --color-success:var(--forest-500);  --color-success-bg:var(--forest-50);
-  --color-warning:var(--sun-700);     --color-warning-bg:var(--sun-50);
-  --color-danger:var(--coral-700);    --color-danger-bg:var(--coral-50);
-  --color-info:var(--mint-700);       --color-info-bg:var(--mint-50);
+  /* sparks: tiny moments only (streak, "new" sticker, celebration) */
+  --color-spark:var(--orange-500);  --color-on-spark:var(--forest-900);
+  --color-sun:var(--yellow-300);
+
+  --color-success:var(--forest-700);  --color-success-bg:var(--forest-50);
+  --color-warning:var(--yellow-700);  --color-warning-bg:var(--yellow-50);
+  --color-danger:var(--red-700);      --color-danger-bg:var(--red-50);
+  --color-info:var(--pink-800);       --color-info-bg:var(--pink-50);
 
   /* Pet-care categories: pale tile + ink, only on icon tiles, chips and calendar dots */
-  --cat-feed-bg:var(--sun-100);     --cat-feed-ink:var(--sun-700);
-  --cat-meds-bg:var(--blush-100);   --cat-meds-ink:var(--blush-700);
-  --cat-vax-bg:var(--mint-100);     --cat-vax-ink:var(--mint-700);
-  --cat-heat-bg:var(--coral-100);   --cat-heat-ink:var(--coral-700);
-  --cat-weight-bg:var(--olive-100); --cat-weight-ink:var(--olive-700);
+  --cat-feed-bg:var(--yellow-100);  --cat-feed-ink:var(--yellow-700);
+  --cat-meds-bg:var(--pink-100);    --cat-meds-ink:var(--pink-800);
+  --cat-vax-bg:var(--forest-50);    --cat-vax-ink:var(--forest-700);
+  --cat-heat-bg:var(--orange-100);  --cat-heat-ink:var(--orange-700);
+  --cat-weight-bg:var(--cream-100); --cat-weight-ink:var(--forest-800);
   --cat-trip-bg:var(--lime-100);    --cat-trip-ink:var(--forest-700);
 
   /* ---------- Typography ---------- */
@@ -134,50 +141,54 @@
   --z-header:5; --z-tabbar:10; --z-scrim:20; --z-sheet:21; --z-toast:40;
 }
 
-/* ---------- Dark: near-black neutrals, the same lime action ---------- */
+/* ---------- Dark: green-black night, cream ink, the same lime and pink ---------- */
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --color-bg:var(--grey-950); --color-surface:#141816; --color-surface-2:#1C211E; --color-surface-3:#262C28;
-    --color-ink:#F2F4F1; --color-ink-2:var(--grey-400); --color-ink-3:var(--grey-500);
-    --color-line:rgba(242,244,241,.08); --color-line-strong:rgba(242,244,241,.16);
+    --color-bg:#06170F; --color-surface:#0C2118; --color-surface-2:#132A20; --color-surface-3:#1B352A;
+    --color-ink:var(--cream-100); --color-ink-2:#A2B2A8; --color-ink-3:#73857A;
+    --color-line:rgba(246,239,223,.08); --color-line-strong:rgba(246,239,223,.16);
     --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
-    --color-brand:var(--forest-300); --color-focus:var(--lime-300);
-    --color-pink:var(--blush-300); --color-pink-strong:var(--blush-400); --color-pink-soft:#2D1A1F; --color-on-pink:var(--cocoa-700);
-    --color-tooltip:#F2F4F1; --color-on-tooltip:var(--grey-950);
-    --gradient-highlight:linear-gradient(160deg,#14211F 0%,#141816 45%,#1C1A14 75%,#221719 100%);
-    --color-success:var(--forest-300); --color-success-bg:#15261A;
-    --color-warning:var(--sun-300);    --color-warning-bg:#2A2510;
-    --color-danger:var(--coral-300);   --color-danger-bg:#2E1814;
-    --color-info:var(--mint-300);      --color-info-bg:#14272A;
-    --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--sun-300);
-    --cat-meds-bg:#2D1A1F;   --cat-meds-ink:var(--blush-300);
-    --cat-vax-bg:#14272A;    --cat-vax-ink:var(--mint-300);
-    --cat-heat-bg:#2E1814;   --cat-heat-ink:var(--coral-300);
-    --cat-weight-bg:#24250F; --cat-weight-ink:var(--olive-300);
-    --cat-trip-bg:#1F2810;   --cat-trip-ink:var(--lime-300);
+    --color-brand:var(--pink-300); --color-focus:var(--lime-300);
+    --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
+    --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1A33; --color-on-pink:var(--forest-900);
+    --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--pink-300);
+    --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
+    --color-spark:var(--orange-500); --color-on-spark:var(--forest-900); --color-sun:var(--yellow-300);
+    --color-success:var(--lime-300);   --color-success-bg:#1A2C12;
+    --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
+    --color-danger:var(--red-300);     --color-danger-bg:#331A16;
+    --color-info:var(--pink-300);      --color-info-bg:#3A1A33;
+    --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
+    --cat-meds-bg:#3A1A33;   --cat-meds-ink:var(--pink-300);
+    --cat-vax-bg:#123A27;    --cat-vax-ink:var(--forest-200);
+    --cat-heat-bg:#3A200F;   --cat-heat-ink:var(--orange-300);
+    --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
+    --cat-trip-bg:#1F2E10;   --cat-trip-ink:var(--lime-300);
     --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --color-bg:var(--grey-950); --color-surface:#141816; --color-surface-2:#1C211E; --color-surface-3:#262C28;
-  --color-ink:#F2F4F1; --color-ink-2:var(--grey-400); --color-ink-3:var(--grey-500);
-  --color-line:rgba(242,244,241,.08); --color-line-strong:rgba(242,244,241,.16);
+  --color-bg:#06170F; --color-surface:#0C2118; --color-surface-2:#132A20; --color-surface-3:#1B352A;
+  --color-ink:var(--cream-100); --color-ink-2:#A2B2A8; --color-ink-3:#73857A;
+  --color-line:rgba(246,239,223,.08); --color-line-strong:rgba(246,239,223,.16);
   --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
-  --color-brand:var(--forest-300); --color-focus:var(--lime-300);
-    --color-pink:var(--blush-300); --color-pink-strong:var(--blush-400); --color-pink-soft:#2D1A1F; --color-on-pink:var(--cocoa-700);
-  --color-tooltip:#F2F4F1; --color-on-tooltip:var(--grey-950);
-  --gradient-highlight:linear-gradient(160deg,#14211F 0%,#141816 45%,#1C1A14 75%,#221719 100%);
-  --color-success:var(--forest-300); --color-success-bg:#15261A;
-  --color-warning:var(--sun-300);    --color-warning-bg:#2A2510;
-  --color-danger:var(--coral-300);   --color-danger-bg:#2E1814;
-  --color-info:var(--mint-300);      --color-info-bg:#14272A;
-  --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--sun-300);
-  --cat-meds-bg:#2D1A1F;   --cat-meds-ink:var(--blush-300);
-  --cat-vax-bg:#14272A;    --cat-vax-ink:var(--mint-300);
-  --cat-heat-bg:#2E1814;   --cat-heat-ink:var(--coral-300);
-  --cat-weight-bg:#24250F; --cat-weight-ink:var(--olive-300);
-  --cat-trip-bg:#1F2810;   --cat-trip-ink:var(--lime-300);
+  --color-brand:var(--pink-300); --color-focus:var(--lime-300);
+  --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
+  --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1A33; --color-on-pink:var(--forest-900);
+  --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--pink-300);
+  --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
+  --color-spark:var(--orange-500); --color-on-spark:var(--forest-900); --color-sun:var(--yellow-300);
+  --color-success:var(--lime-300);   --color-success-bg:#1A2C12;
+  --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
+  --color-danger:var(--red-300);     --color-danger-bg:#331A16;
+  --color-info:var(--pink-300);      --color-info-bg:#3A1A33;
+  --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
+  --cat-meds-bg:#3A1A33;   --cat-meds-ink:var(--pink-300);
+  --cat-vax-bg:#123A27;    --cat-vax-ink:var(--forest-200);
+  --cat-heat-bg:#3A200F;   --cat-heat-ink:var(--orange-300);
+  --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
+  --cat-trip-bg:#1F2E10;   --cat-trip-ink:var(--lime-300);
   --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
 }

@@ -8,7 +8,14 @@
     "dev": "vercel dev",
     "preview": "npx --yes serve public -l 3000",
     "deploy": "vercel deploy",
-    "deploy:prod": "vercel deploy --prod"
+    "deploy:prod": "vercel deploy --prod",
+    "test": "node --test evals/design/*.test.mjs",
+    "eval:jev": "node evals/decisions/palette.eval.mjs"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@typesafe-ai/sdk": "^0.6.0"
+  }
 }

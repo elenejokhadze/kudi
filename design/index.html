@@ -8,11 +8,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
 <style>
-/* Kudi design tokens · v0.2
-   Clean first: white and soft-grey surfaces, near-black ink, neutral greys with a faint green bias.
-   Brand colour appears only as a highlight: lime for the primary button and progress, pink for small
-   details (badges, the active tab dot, avatar rings, hearts, today marker), pastel category tiles,
-   status pills and one soft gradient card per screen.
+/* Kudi design tokens · v0.3
+   Palette after the Froli identity: deep forest green, bubblegum pink, lime, cream, with orange
+   and yellow sparks. Screens stay clean: white and soft-grey surfaces with green-black ink.
+   Colour lives in a few places only: the lime primary button, pink details (badges, dots,
+   avatar rings, hearts), pastel category tiles, and at most one deep-green feature card per screen.
    Primitives (raw scales) come first; components use only the semantic tokens below them.
    Font: Figtree (Google Fonts), weights 400-700. */
 
@@ -20,32 +20,31 @@
   color-scheme:light;
 
   /* ---------- Primitives ---------- */
-  /* neutrals: the bulk of every screen */
+  /* neutrals: the bulk of every screen, with a faint green bias */
   --grey-0:#FFFFFF;   --grey-25:#FAFBFA;  --grey-50:#F4F5F3;  --grey-100:#ECEEEB; --grey-200:#DEE1DD;
   --grey-300:#C5CAC5; --grey-400:#9AA19C; --grey-500:#6A726D; --grey-600:#555D58; --grey-700:#3B423E;
-  --grey-800:#242A26; --grey-900:#141915; --grey-950:#0C0F0D;
 
-  /* brand highlights, taken from the dog illustrations */
-  --lime-50:#F8FCE4;  --lime-100:#EFF8C2;  --lime-200:#E2F48A;  --lime-300:#D6EF3F;  --lime-400:#C2DE22;  --lime-600:#7D9410;
-  --forest-50:#EDF6EF; --forest-100:#D3E9D9; --forest-300:#6FB383; --forest-500:#1E7B3F; --forest-700:#115328; --forest-900:#0A2E17;
-  --mint-50:#F1F8F7;  --mint-100:#DFEFED;  --mint-300:#A5D0CC;  --mint-700:#33605C;
-  --sun-50:#FFFBE6;   --sun-100:#FEF6C8;   --sun-300:#F9DD4A;   --sun-700:#7E6300;
-  --blush-50:#FEF6F8; --blush-100:#FDEEF1; --blush-200:#F8D5DC; --blush-300:#F2BAC6; --blush-400:#EA9DB0; --blush-700:#963B51;
-  --cocoa-700:#4A1C24;
-  --coral-50:#FEF3EF; --coral-100:#FCE4DC; --coral-300:#F09B81; --coral-500:#E0614A; --coral-700:#A23824;
-  --olive-100:#F0F1CF; --olive-300:#C8CA52; --olive-700:#5C5E19;
-  --cream-50:#FCF8EF; --cream-100:#F6EFDE;
+  /* brand: deep forest green, bubblegum pink, lime, cream, with orange and yellow as sparks */
+  --forest-50:#EAF3EE;  --forest-100:#CFE3D7; --forest-200:#9FC7B0; --forest-300:#5FA07D; --forest-500:#1D7A4C;
+  --forest-700:#0F5E38; --forest-800:#0B4A2C; --forest-900:#08361F; --forest-950:#06241A;
+  --pink-50:#FEF2FB;   --pink-100:#FCE1F6;  --pink-200:#F9C6EE;  --pink-300:#F5A3E3;  --pink-400:#EE7FD6;
+  --pink-600:#C04BA6;  --pink-800:#6E1F5C;
+  --lime-50:#F8FCE8;   --lime-100:#F1F9D2;  --lime-200:#E1F2A0;  --lime-300:#C9EA62;  --lime-400:#B5DA3E;  --lime-600:#6F8A16;
+  --cream-50:#FBF8F0;  --cream-100:#F6EFDF; --cream-200:#EDE2C9;
+  --orange-50:#FEF3EA; --orange-100:#FDE6D6; --orange-300:#F79A5C; --orange-500:#F2731F; --orange-700:#A8460A;
+  --yellow-50:#FFFBE8; --yellow-100:#FDF4C9; --yellow-300:#F4CF34; --yellow-700:#7A6200;
+  --red-50:#FEF1EE;    --red-300:#F59C8E;   --red-700:#B3261E;
 
   /* ---------- Semantic colour (light) ---------- */
   --color-bg:var(--grey-0);                /* app background */
   --color-surface:var(--grey-0);           /* cards, sheets */
   --color-surface-2:var(--grey-50);        /* secondary button, inputs, segmented track */
   --color-surface-3:var(--grey-100);       /* pressed / hover */
-  --color-ink:var(--grey-900);             /* primary text, icons */
+  --color-ink:var(--forest-950);           /* primary text and icons: green-black */
   --color-ink-2:var(--grey-500);           /* secondary text */
   --color-ink-3:var(--grey-400);           /* hints, placeholders, disabled */
-  --color-line:rgba(20,25,21,.08);         /* hairlines, dividers */
-  --color-line-strong:rgba(20,25,21,.16);  /* input borders, focused rows */
+  --color-line:rgba(6,36,26,.08);          /* hairlines, dividers */
+  --color-line-strong:rgba(6,36,26,.16);   /* input borders */
 
   /* the one prominent colour: primary action */
   --color-primary:var(--lime-300);
@@ -53,31 +52,39 @@
   --color-primary-pressed:var(--lime-400);
   --color-on-primary:var(--forest-900);
 
-  --color-brand:var(--forest-500);         /* wordmark, links, selected tab icon */
+  --color-brand:var(--forest-700);         /* wordmark, links, selected tab icon */
+  --color-focus:var(--forest-700);
+  --color-tooltip:var(--forest-900);       /* dark callouts, toasts */
+  --color-on-tooltip:var(--cream-50);
 
-  /* the small detail colour: pink, never on large areas */
-  --color-pink:var(--blush-300);           /* badges, active tab dot, avatar rings, today marker */
-  --color-pink-strong:var(--blush-400);    /* hearts, favourite, notification dot */
-  --color-pink-soft:var(--blush-50);       /* selected chip, text selection */
-  --color-on-pink:var(--cocoa-700);
-  --color-focus:var(--forest-500);
-  --color-tooltip:var(--grey-900);         /* dark callouts, toasts */
-  --color-on-tooltip:var(--grey-0);
+  /* pink: small details, never a button or a light card */
+  --color-pink:var(--pink-300);            /* badges, avatar rings, active tab dot, today marker */
+  --color-pink-strong:var(--pink-600);     /* hearts, notification dot (3:1 on white) */
+  --color-pink-soft:var(--pink-50);        /* selected chip, text selection */
+  --color-on-pink:var(--forest-900);
 
-  /* soft highlight card (one per screen at most) */
-  --gradient-highlight:linear-gradient(160deg,var(--mint-50) 0%,var(--grey-25) 45%,var(--cream-50) 75%,var(--blush-50) 100%);
+  /* feature card: the Froli look, deep green with pink and lime. One per screen at most */
+  --color-feature:var(--forest-800);
+  --color-on-feature:var(--cream-50);
+  --color-feature-title:var(--pink-300);
+  --color-feature-ink-2:rgba(251,248,240,.72);
+  --color-feature-line:rgba(251,248,240,.18);
 
-  --color-success:var(--forest-500);  --color-success-bg:var(--forest-50);
-  --color-warning:var(--sun-700);     --color-warning-bg:var(--sun-50);
-  --color-danger:var(--coral-700);    --color-danger-bg:var(--coral-50);
-  --color-info:var(--mint-700);       --color-info-bg:var(--mint-50);
+  /* sparks: tiny moments only (streak, "new" sticker, celebration) */
+  --color-spark:var(--orange-500);  --color-on-spark:var(--forest-900);
+  --color-sun:var(--yellow-300);
+
+  --color-success:var(--forest-700);  --color-success-bg:var(--forest-50);
+  --color-warning:var(--yellow-700);  --color-warning-bg:var(--yellow-50);
+  --color-danger:var(--red-700);      --color-danger-bg:var(--red-50);
+  --color-info:var(--pink-800);       --color-info-bg:var(--pink-50);
 
   /* Pet-care categories: pale tile + ink, only on icon tiles, chips and calendar dots */
-  --cat-feed-bg:var(--sun-100);     --cat-feed-ink:var(--sun-700);
-  --cat-meds-bg:var(--blush-100);   --cat-meds-ink:var(--blush-700);
-  --cat-vax-bg:var(--mint-100);     --cat-vax-ink:var(--mint-700);
-  --cat-heat-bg:var(--coral-100);   --cat-heat-ink:var(--coral-700);
-  --cat-weight-bg:var(--olive-100); --cat-weight-ink:var(--olive-700);
+  --cat-feed-bg:var(--yellow-100);  --cat-feed-ink:var(--yellow-700);
+  --cat-meds-bg:var(--pink-100);    --cat-meds-ink:var(--pink-800);
+  --cat-vax-bg:var(--forest-50);    --cat-vax-ink:var(--forest-700);
+  --cat-heat-bg:var(--orange-100);  --cat-heat-ink:var(--orange-700);
+  --cat-weight-bg:var(--cream-100); --cat-weight-ink:var(--forest-800);
   --cat-trip-bg:var(--lime-100);    --cat-trip-ink:var(--forest-700);
 
   /* ---------- Typography ---------- */
@@ -144,51 +151,55 @@
   --z-header:5; --z-tabbar:10; --z-scrim:20; --z-sheet:21; --z-toast:40;
 }
 
-/* ---------- Dark: near-black neutrals, the same lime action ---------- */
+/* ---------- Dark: green-black night, cream ink, the same lime and pink ---------- */
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --color-bg:var(--grey-950); --color-surface:#141816; --color-surface-2:#1C211E; --color-surface-3:#262C28;
-    --color-ink:#F2F4F1; --color-ink-2:var(--grey-400); --color-ink-3:var(--grey-500);
-    --color-line:rgba(242,244,241,.08); --color-line-strong:rgba(242,244,241,.16);
+    --color-bg:#06170F; --color-surface:#0C2118; --color-surface-2:#132A20; --color-surface-3:#1B352A;
+    --color-ink:var(--cream-100); --color-ink-2:#A2B2A8; --color-ink-3:#73857A;
+    --color-line:rgba(246,239,223,.08); --color-line-strong:rgba(246,239,223,.16);
     --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
-    --color-brand:var(--forest-300); --color-focus:var(--lime-300);
-    --color-pink:var(--blush-300); --color-pink-strong:var(--blush-400); --color-pink-soft:#2D1A1F; --color-on-pink:var(--cocoa-700);
-    --color-tooltip:#F2F4F1; --color-on-tooltip:var(--grey-950);
-    --gradient-highlight:linear-gradient(160deg,#14211F 0%,#141816 45%,#1C1A14 75%,#221719 100%);
-    --color-success:var(--forest-300); --color-success-bg:#15261A;
-    --color-warning:var(--sun-300);    --color-warning-bg:#2A2510;
-    --color-danger:var(--coral-300);   --color-danger-bg:#2E1814;
-    --color-info:var(--mint-300);      --color-info-bg:#14272A;
-    --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--sun-300);
-    --cat-meds-bg:#2D1A1F;   --cat-meds-ink:var(--blush-300);
-    --cat-vax-bg:#14272A;    --cat-vax-ink:var(--mint-300);
-    --cat-heat-bg:#2E1814;   --cat-heat-ink:var(--coral-300);
-    --cat-weight-bg:#24250F; --cat-weight-ink:var(--olive-300);
-    --cat-trip-bg:#1F2810;   --cat-trip-ink:var(--lime-300);
+    --color-brand:var(--pink-300); --color-focus:var(--lime-300);
+    --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
+    --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1A33; --color-on-pink:var(--forest-900);
+    --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--pink-300);
+    --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
+    --color-spark:var(--orange-500); --color-on-spark:var(--forest-900); --color-sun:var(--yellow-300);
+    --color-success:var(--lime-300);   --color-success-bg:#1A2C12;
+    --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
+    --color-danger:var(--red-300);     --color-danger-bg:#331A16;
+    --color-info:var(--pink-300);      --color-info-bg:#3A1A33;
+    --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
+    --cat-meds-bg:#3A1A33;   --cat-meds-ink:var(--pink-300);
+    --cat-vax-bg:#123A27;    --cat-vax-ink:var(--forest-200);
+    --cat-heat-bg:#3A200F;   --cat-heat-ink:var(--orange-300);
+    --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
+    --cat-trip-bg:#1F2E10;   --cat-trip-ink:var(--lime-300);
     --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --color-bg:var(--grey-950); --color-surface:#141816; --color-surface-2:#1C211E; --color-surface-3:#262C28;
-  --color-ink:#F2F4F1; --color-ink-2:var(--grey-400); --color-ink-3:var(--grey-500);
-  --color-line:rgba(242,244,241,.08); --color-line-strong:rgba(242,244,241,.16);
+  --color-bg:#06170F; --color-surface:#0C2118; --color-surface-2:#132A20; --color-surface-3:#1B352A;
+  --color-ink:var(--cream-100); --color-ink-2:#A2B2A8; --color-ink-3:#73857A;
+  --color-line:rgba(246,239,223,.08); --color-line-strong:rgba(246,239,223,.16);
   --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
-  --color-brand:var(--forest-300); --color-focus:var(--lime-300);
-    --color-pink:var(--blush-300); --color-pink-strong:var(--blush-400); --color-pink-soft:#2D1A1F; --color-on-pink:var(--cocoa-700);
-  --color-tooltip:#F2F4F1; --color-on-tooltip:var(--grey-950);
-  --gradient-highlight:linear-gradient(160deg,#14211F 0%,#141816 45%,#1C1A14 75%,#221719 100%);
-  --color-success:var(--forest-300); --color-success-bg:#15261A;
-  --color-warning:var(--sun-300);    --color-warning-bg:#2A2510;
-  --color-danger:var(--coral-300);   --color-danger-bg:#2E1814;
-  --color-info:var(--mint-300);      --color-info-bg:#14272A;
-  --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--sun-300);
-  --cat-meds-bg:#2D1A1F;   --cat-meds-ink:var(--blush-300);
-  --cat-vax-bg:#14272A;    --cat-vax-ink:var(--mint-300);
-  --cat-heat-bg:#2E1814;   --cat-heat-ink:var(--coral-300);
-  --cat-weight-bg:#24250F; --cat-weight-ink:var(--olive-300);
-  --cat-trip-bg:#1F2810;   --cat-trip-ink:var(--lime-300);
+  --color-brand:var(--pink-300); --color-focus:var(--lime-300);
+  --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
+  --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1A33; --color-on-pink:var(--forest-900);
+  --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--pink-300);
+  --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
+  --color-spark:var(--orange-500); --color-on-spark:var(--forest-900); --color-sun:var(--yellow-300);
+  --color-success:var(--lime-300);   --color-success-bg:#1A2C12;
+  --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
+  --color-danger:var(--red-300);     --color-danger-bg:#331A16;
+  --color-info:var(--pink-300);      --color-info-bg:#3A1A33;
+  --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
+  --cat-meds-bg:#3A1A33;   --cat-meds-ink:var(--pink-300);
+  --cat-vax-bg:#123A27;    --cat-vax-ink:var(--forest-200);
+  --cat-heat-bg:#3A200F;   --cat-heat-ink:var(--orange-300);
+  --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
+  --cat-trip-bg:#1F2E10;   --cat-trip-ink:var(--lime-300);
   --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
 }
 
@@ -209,11 +220,19 @@ button{font:inherit;color:inherit;cursor:pointer}
 svg.i{width:var(--icon-md);height:var(--icon-md);flex-shrink:0}
 
 /* masthead */
-.mast{padding-block:var(--space-10) var(--space-6);border-bottom:var(--stroke-hair) solid var(--color-line)}
+.mast{background:var(--color-feature);color:var(--color-on-feature);border-radius:0 0 var(--radius-xl) var(--radius-xl);
+  margin-inline:calc(-1 * max(16px, env(safe-area-inset-left, 0px)));padding:var(--space-10) max(16px, env(safe-area-inset-left, 0px)) var(--space-8);position:relative;overflow:hidden}
+.mast .paw{position:absolute;right:-30px;bottom:-96px;width:170px;height:170px;color:var(--color-primary);opacity:.95}
+.mast .zig{position:absolute;right:190px;top:28px;width:70px;height:40px;color:var(--color-sun)}
+.mast .eyebrow{color:var(--color-feature-ink-2)}
+.mast .seg{background:var(--color-feature);border:var(--stroke-hair) solid var(--color-feature-line)}
+.mast .seg button{color:var(--color-on-feature)}
+.mast .seg button[aria-pressed="true"]{background:var(--color-pink);color:var(--color-on-pink)}
 .mast .wrap{display:flex;flex-wrap:wrap;gap:var(--space-6);align-items:flex-end;justify-content:space-between}
-.wordmark{display:flex;align-items:center;gap:var(--space-3);font:var(--weight-bold) 40px/1 var(--font-sans);letter-spacing:var(--tracking-display);color:var(--color-ink)}
-.wordmark i{width:14px;height:14px;border-radius:var(--radius-round);background:var(--color-primary);display:block}
-.mast p{max-width:52ch;margin-top:var(--space-3);color:var(--color-ink-2)}
+.wordmark{display:flex;align-items:center;gap:var(--space-3);font:var(--weight-bold) 72px/1 var(--font-sans);letter-spacing:var(--tracking-display);color:var(--color-feature-title)}
+.wordmark i{width:20px;height:20px;border-radius:var(--radius-round);background:var(--color-primary);display:block}
+.mast p{max-width:52ch;margin-top:var(--space-3);color:var(--color-feature-ink-2)}
+.mast .wrap{position:relative;z-index:1}
 .seg{display:inline-grid;grid-auto-flow:column;background:var(--color-surface-2);border-radius:var(--radius-pill);padding:var(--space-1);gap:var(--space-1)}
 .seg button{border:0;background:transparent;border-radius:var(--radius-pill);min-height:var(--tap-sm);padding:0 var(--space-4);font:var(--type-label);color:var(--color-ink-2)}
 .seg button[aria-pressed="true"]{background:var(--color-surface);color:var(--color-ink);box-shadow:var(--shadow-1)}
@@ -296,7 +315,7 @@ section{margin-top:var(--space-12);display:flex;flex-direction:column;gap:var(--
 .details{display:flex;flex-wrap:wrap;gap:var(--space-6);align-items:center}
 .details figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:var(--space-2)}
 .details figcaption{font:var(--type-caption);color:var(--color-ink-2)}
-.week div.today{color:var(--color-ink);font-weight:var(--weight-bold)}
+.week div.today{color:var(--color-on-feature);font-weight:var(--weight-bold)}
 .week div.today::after{content:"";width:5px;height:5px;border-radius:var(--radius-round);background:var(--color-pink-strong)}
 ::selection{background:var(--color-pink-soft)}
 
@@ -328,11 +347,11 @@ section{margin-top:var(--space-12);display:flex;flex-direction:column;gap:var(--
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--space-4)}
 .phone{width:min(280px,100%);margin:0 auto;aspect-ratio:280/560;border:6px solid var(--color-ink);border-radius:40px;background:var(--color-bg);position:relative;overflow:hidden}
 .phone .hd{position:absolute;inset:0 0 auto;height:56px;border-bottom:var(--stroke-hair) solid var(--color-line);display:flex;align-items:flex-end;padding:0 12px 8px;font:var(--type-caption);font-weight:600}
-.phone .g{position:absolute;top:0;bottom:0;width:12px;background:repeating-linear-gradient(45deg,var(--coral-100) 0 3px,transparent 3px 7px)}
+.phone .g{position:absolute;top:0;bottom:0;width:12px;background:repeating-linear-gradient(45deg,var(--pink-100) 0 3px,transparent 3px 7px)}
 .phone .g.l{left:0}.phone .g.r{right:0}
 .phone .col{position:absolute;left:12px;right:12px;top:68px;display:flex;flex-direction:column;gap:8px}
 .phone .col i{display:block;height:38px;border-radius:12px;background:var(--color-surface-2)}
-.phone .col i.h{height:150px;background:var(--gradient-highlight);border:var(--stroke-hair) solid var(--color-line)}
+.phone .col i.h{height:150px;background:var(--color-feature)}
 .phone .ab{position:absolute;left:0;right:0;bottom:0;height:64px;border-top:var(--stroke-hair) solid var(--color-line);display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 12px 14px}
 .phone .ab i{border-radius:999px;background:var(--color-surface-2)}
 .phone .ab i.p{background:var(--color-primary)}
@@ -352,19 +371,21 @@ section{margin-top:var(--space-12);display:flex;flex-direction:column;gap:var(--
 .stat .big{font:var(--type-display);letter-spacing:var(--tracking-display);font-variant-numeric:tabular-nums}
 .stat .big small{font-size:var(--text-h2);letter-spacing:0;color:var(--color-ink-2);margin-left:var(--space-1)}
 .stat .meta{display:flex;gap:var(--space-4);flex-wrap:wrap;justify-content:center;font:var(--type-label);color:var(--color-ink-2);font-variant-numeric:tabular-nums}
-.hl{background:var(--gradient-highlight);border-radius:var(--radius-lg);padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-4);border:var(--stroke-hair) solid var(--color-line)}
+.hl{background:var(--color-feature);color:var(--color-on-feature);border-radius:var(--radius-lg);padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-4)}
 .hl .bars{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-2)}
-.hl .bars i{height:3px;border-radius:var(--radius-pill);background:var(--color-line-strong)}
-.hl .bars i.on{background:var(--color-ink)}
+.hl .bars i{height:3px;border-radius:var(--radius-pill);background:var(--color-feature-line)}
+.hl .bars i.on{background:var(--color-primary)}
 .hl .hrow{display:flex;justify-content:space-between;align-items:center;font:var(--type-body-strong)}
-.hl .hrow > span:last-child{display:flex;align-items:center;gap:var(--space-1);font:var(--type-label);color:var(--color-brand);font-weight:var(--weight-semibold)}
+.hl .hrow > span:last-child{display:flex;align-items:center;gap:var(--space-1);font:var(--type-label);color:var(--color-primary);font-weight:var(--weight-semibold)}
 .week{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--space-2);align-items:end;height:110px;position:relative;padding-top:var(--space-8)}
-.week div{display:flex;flex-direction:column;align-items:center;gap:var(--space-1);font:var(--type-micro);color:var(--color-ink-3);height:100%;justify-content:flex-end}
-.week b{width:100%;max-width:26px;border-radius:var(--radius-xs);background:var(--color-surface-3);display:block}
+.week div{display:flex;flex-direction:column;align-items:center;gap:var(--space-1);font:var(--type-micro);color:var(--color-feature-ink-2);height:100%;justify-content:flex-end}
+.week b{width:100%;max-width:26px;border-radius:var(--radius-xs);background:var(--color-feature-line);display:block}
 .week b.on{background:var(--color-primary)}
-.tip{position:absolute;top:0;right:8%;background:var(--color-tooltip);color:var(--color-on-tooltip);border-radius:var(--radius-pill);padding:var(--space-1) var(--space-3);font:var(--type-label);font-weight:var(--weight-semibold);display:flex;gap:var(--space-1);align-items:center;box-shadow:var(--shadow-3)}
-.hl h4{font:var(--type-h2);text-align:center}
-.hl p{text-align:center;color:var(--color-ink-2);font:var(--type-label)}
+.tip{position:absolute;top:0;right:8%;background:var(--color-pink);color:var(--color-on-pink);border-radius:var(--radius-pill);padding:var(--space-1) var(--space-3);font:var(--type-label);font-weight:var(--weight-semibold);display:flex;gap:var(--space-1);align-items:center;box-shadow:var(--shadow-3)}
+.hl h4{font:var(--type-h2);text-align:center;color:var(--color-feature-title)}
+.hl p{text-align:center;color:var(--color-feature-ink-2);font:var(--type-label)}
+.hl .av{box-shadow:0 0 0 2px var(--color-feature),0 0 0 4px var(--color-pink);background:var(--color-on-feature);color:var(--forest-900)}
+.spark{display:inline-grid;place-items:center;width:64px;height:64px;background:var(--color-spark);color:var(--color-on-spark);font:var(--weight-bold) 13px/1 var(--font-sans);clip-path:polygon(50% 0,61% 18%,82% 9%,80% 31%,100% 38%,86% 55%,98% 74%,76% 78%,72% 100%,54% 88%,36% 100%,28% 80%,6% 78%,16% 58%,0 40%,20% 32%,16% 10%,38% 18%)}
 .hl .center{display:flex;justify-content:center}
 .s-list{display:flex;flex-direction:column}
 .li{display:flex;align-items:center;gap:var(--space-3);padding-block:var(--space-3);border-bottom:var(--stroke-hair) solid var(--color-line)}
@@ -393,11 +414,13 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
 </style>
 
 <header class="mast">
+  <svg class="zig" viewBox="0 0 70 40" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 30 18 8l12 22L44 8l12 22 10-14"/></svg>
+  <svg class="paw" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><ellipse cx="7" cy="8" rx="2.2" ry="2.8"/><ellipse cx="12" cy="5.5" rx="2.2" ry="2.8"/><ellipse cx="17" cy="8" rx="2.2" ry="2.8"/><ellipse cx="4" cy="13" rx="1.9" ry="2.4"/><path d="M12 11c-3.6 0-6.5 4.2-6.5 6.8 0 2.3 2 3.2 6.5 3.2s6.5-.9 6.5-3.2C18.5 15.2 15.6 11 12 11Z"/></svg>
   <div class="wrap">
     <div>
-      <div class="eyebrow">Design tokens · v0.2</div>
+      <div class="eyebrow">Design tokens · v0.3</div>
       <div class="wordmark" style="margin-top:var(--space-2)">Kudi<i aria-hidden="true"></i></div>
-      <p>Clean and mostly neutral, so the pet stays the focus. Lime marks the main action on every screen. Pink picks out small details. Mint, sunshine and coral come from the dog illustrations and only show up as small tiles.</p>
+      <p>Healthy care for happy tails. Inside the app, screens stay white and calm. Deep forest green, bubblegum pink and lime come from the Froli palette, with cream, and orange and yellow as tiny sparks.</p>
     </div>
     <div class="seg" role="group" aria-label="Theme">
       <button type="button" id="th-system" data-t="system">System</button>
@@ -411,22 +434,24 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
 
 <section id="usage">
   <div class="sec-h"><h2>How much colour</h2>
-    <p>Most of a screen is white, grey and near-black text. Lime is reserved for the action you most want people to take, and pastel tints show what kind of care an item is.</p></div>
+    <p>Most of a screen is white, grey and green-black text. Lime marks the action you most want people to take, pink picks out small details, and one deep-green card per screen carries the brand.</p></div>
   <div class="panel">
     <div class="ratio" aria-hidden="true">
-      <span style="flex:62;background:var(--color-bg);color:var(--color-ink-2)">Background 62%</span>
+      <span style="flex:56;background:var(--color-bg);color:var(--color-ink-2)">Background 62%</span>
       <span style="flex:20;background:var(--color-surface-2);color:var(--color-ink-2)">Grey 20%</span>
       <span style="flex:10;background:var(--color-ink);color:var(--color-bg)">Ink 10%</span>
       <span style="flex:5;background:var(--color-primary);color:var(--color-on-primary)">Lime</span>
       <span style="flex:2;background:var(--color-pink)"></span>
-      <span style="flex:2;background:linear-gradient(90deg,var(--cat-feed-bg),var(--cat-meds-bg),var(--cat-vax-bg),var(--cat-heat-bg))"></span>
+      <span style="flex:6;background:var(--color-feature);color:var(--color-on-feature)">Green card</span>
+      <span style="flex:1;background:var(--color-spark)"></span>
     </div>
     <div class="rules">
       <div class="rule"><i style="background:var(--color-primary)"></i><div><b>Lime: one per screen</b><span>The primary button, the active progress bar, today's bar in a chart.</span></div></div>
       <div class="rule"><i style="background:var(--color-pink)"></i><div><b>Pink: small details</b><span>Badges, the active tab dot, avatar rings, hearts, today's marker and selected chips. Never a button or a card.</span></div></div>
-      <div class="rule"><i style="background:var(--color-brand)"></i><div><b>Forest: brand and links</b><span>Wordmark, text links, the selected tab icon, success states.</span></div></div>
+      <div class="rule"><i style="background:var(--color-brand)"></i><div><b>Forest: text, brand and links</b><span>Text is a green-black; deep green for links, the selected tab icon and success.</span></div></div>
       <div class="rule"><i style="background:var(--cat-meds-bg)"></i><div><b>Pastels: small tiles only</b><span>Category icon tiles and status pills. Never a full card or a page background.</span></div></div>
-      <div class="rule"><i style="background:var(--gradient-highlight)"></i><div><b>One soft gradient card</b><span>At most one per screen, for the feature you want noticed.</span></div></div>
+      <div class="rule"><i style="background:var(--color-feature)"></i><div><b>One deep-green feature card</b><span>At most one per screen: green with a pink headline and lime accents, like the Froli pack.</span></div></div>
+      <div class="rule"><i style="background:var(--color-spark)"></i><div><b>Orange and yellow: sparks</b><span>A "New" sticker, a streak, a celebration. A few times in the whole app.</span></div></div>
     </div>
   </div>
 </section>
@@ -473,12 +498,13 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
   <div class="sec-h"><h2>Colour tokens</h2>
     <p>Primitives are raw scales. Screens use the semantic tokens, which change for dark mode. The contrast score is measured live.</p></div>
   <div class="panel"><div class="sub">Semantic</div><div class="pairs" id="pairs"></div></div>
-  <div class="panel"><div class="sub">Pink details</div>
+  <div class="panel"><div class="sub">Pink and spark details</div>
     <p class="muted" style="margin-bottom:var(--space-4)">Small, warm touches. Each one is a dot, ring, badge or outline, never a fill bigger than a chip.</p>
     <div class="details">
       <figure><button class="iconbtn fill" type="button" aria-label="Reminders, 1 new" id="p1">${ICON.bell}<span class="ndot"></span></button><figcaption>New reminder dot</figcaption></figure>
       <figure><span class="badge">3</span><figcaption>Count badge</figcaption></figure>
       <figure><span class="av">NB</span><figcaption>Who fed today</figcaption></figure>
+      <figure><span class="spark">New</span><figcaption>Spark sticker</figcaption></figure>
       <figure><span class="heart">${ICON.heart}</span><figcaption>Favourite</figcaption></figure>
       <figure><span style="display:flex;gap:var(--space-2)"><button class="chip" type="button" aria-pressed="true" id="p2">Dry food</button><button class="chip" type="button" aria-pressed="false" id="p3">Wet food</button></span><figcaption>Selected chip</figcaption></figure>
       <figure><span class="tabdemo"><span class="on">${ICON.home}Today</span><span>${ICON.paw}Pets</span><span>${ICON.bell}Care</span><span>${ICON.user}Me</span></span><figcaption>Active tab</figcaption></figure>
@@ -558,7 +584,7 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
       </div>
       <div class="hl">
         <div class="bars"><i class="on"></i><i class="on"></i><i></i><i></i></div>
-        <div class="hrow"><span style="color:var(--color-ink);font:var(--type-body-strong);gap:var(--space-2)">This week <span class="badge">3</span></span><span>${ICON.up}On track</span></div>
+        <div class="hrow"><span style="color:var(--color-on-feature);font:var(--type-body-strong);gap:var(--space-2)">This week <span class="badge">3</span></span><span>${ICON.up}On track</span></div>
         <div class="week">
           <span class="tip">${ICON.feed}470 g · Thu</span>
           <div><b style="height:70%"></b>M</div><div><b style="height:82%"></b>T</div><div><b style="height:64%"></b>W</div><div><b class="on" style="height:92%"></b>T</div><div><b style="height:58%"></b>F</div><div><b style="height:76%"></b>S</div><div class="today"><b style="height:40%"></b>S</div>
@@ -583,11 +609,11 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
     <p>The same file is saved in the repo at <code>design/tokens.css</code>.</p></div>
   <div class="panel" style="display:flex;flex-direction:column;gap:var(--space-3)">
     <div class="codebar"><span class="muted">Paste into the app's <code>&lt;style&gt;</code> or link it.</span><button class="btn secondary sm" type="button" id="copy">Copy CSS</button></div>
-    <pre id="src">/* Kudi design tokens · v0.2
-   Clean first: white and soft-grey surfaces, near-black ink, neutral greys with a faint green bias.
-   Brand colour appears only as a highlight: lime for the primary button and progress, pink for small
-   details (badges, the active tab dot, avatar rings, hearts, today marker), pastel category tiles,
-   status pills and one soft gradient card per screen.
+    <pre id="src">/* Kudi design tokens · v0.3
+   Palette after the Froli identity: deep forest green, bubblegum pink, lime, cream, with orange
+   and yellow sparks. Screens stay clean: white and soft-grey surfaces with green-black ink.
+   Colour lives in a few places only: the lime primary button, pink details (badges, dots,
+   avatar rings, hearts), pastel category tiles, and at most one deep-green feature card per screen.
    Primitives (raw scales) come first; components use only the semantic tokens below them.
    Font: Figtree (Google Fonts), weights 400-700. */
 
@@ -595,32 +621,31 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
   color-scheme:light;
 
   /* ---------- Primitives ---------- */
-  /* neutrals: the bulk of every screen */
+  /* neutrals: the bulk of every screen, with a faint green bias */
   --grey-0:#FFFFFF;   --grey-25:#FAFBFA;  --grey-50:#F4F5F3;  --grey-100:#ECEEEB; --grey-200:#DEE1DD;
   --grey-300:#C5CAC5; --grey-400:#9AA19C; --grey-500:#6A726D; --grey-600:#555D58; --grey-700:#3B423E;
-  --grey-800:#242A26; --grey-900:#141915; --grey-950:#0C0F0D;
 
-  /* brand highlights, taken from the dog illustrations */
-  --lime-50:#F8FCE4;  --lime-100:#EFF8C2;  --lime-200:#E2F48A;  --lime-300:#D6EF3F;  --lime-400:#C2DE22;  --lime-600:#7D9410;
-  --forest-50:#EDF6EF; --forest-100:#D3E9D9; --forest-300:#6FB383; --forest-500:#1E7B3F; --forest-700:#115328; --forest-900:#0A2E17;
-  --mint-50:#F1F8F7;  --mint-100:#DFEFED;  --mint-300:#A5D0CC;  --mint-700:#33605C;
-  --sun-50:#FFFBE6;   --sun-100:#FEF6C8;   --sun-300:#F9DD4A;   --sun-700:#7E6300;
-  --blush-50:#FEF6F8; --blush-100:#FDEEF1; --blush-200:#F8D5DC; --blush-300:#F2BAC6; --blush-400:#EA9DB0; --blush-700:#963B51;
-  --cocoa-700:#4A1C24;
-  --coral-50:#FEF3EF; --coral-100:#FCE4DC; --coral-300:#F09B81; --coral-500:#E0614A; --coral-700:#A23824;
-  --olive-100:#F0F1CF; --olive-300:#C8CA52; --olive-700:#5C5E19;
-  --cream-50:#FCF8EF; --cream-100:#F6EFDE;
+  /* brand: deep forest green, bubblegum pink, lime, cream, with orange and yellow as sparks */
+  --forest-50:#EAF3EE;  --forest-100:#CFE3D7; --forest-200:#9FC7B0; --forest-300:#5FA07D; --forest-500:#1D7A4C;
+  --forest-700:#0F5E38; --forest-800:#0B4A2C; --forest-900:#08361F; --forest-950:#06241A;
+  --pink-50:#FEF2FB;   --pink-100:#FCE1F6;  --pink-200:#F9C6EE;  --pink-300:#F5A3E3;  --pink-400:#EE7FD6;
+  --pink-600:#C04BA6;  --pink-800:#6E1F5C;
+  --lime-50:#F8FCE8;   --lime-100:#F1F9D2;  --lime-200:#E1F2A0;  --lime-300:#C9EA62;  --lime-400:#B5DA3E;  --lime-600:#6F8A16;
+  --cream-50:#FBF8F0;  --cream-100:#F6EFDF; --cream-200:#EDE2C9;
+  --orange-50:#FEF3EA; --orange-100:#FDE6D6; --orange-300:#F79A5C; --orange-500:#F2731F; --orange-700:#A8460A;
+  --yellow-50:#FFFBE8; --yellow-100:#FDF4C9; --yellow-300:#F4CF34; --yellow-700:#7A6200;
+  --red-50:#FEF1EE;    --red-300:#F59C8E;   --red-700:#B3261E;
 
   /* ---------- Semantic colour (light) ---------- */
   --color-bg:var(--grey-0);                /* app background */
   --color-surface:var(--grey-0);           /* cards, sheets */
   --color-surface-2:var(--grey-50);        /* secondary button, inputs, segmented track */
   --color-surface-3:var(--grey-100);       /* pressed / hover */
-  --color-ink:var(--grey-900);             /* primary text, icons */
+  --color-ink:var(--forest-950);           /* primary text and icons: green-black */
   --color-ink-2:var(--grey-500);           /* secondary text */
   --color-ink-3:var(--grey-400);           /* hints, placeholders, disabled */
-  --color-line:rgba(20,25,21,.08);         /* hairlines, dividers */
-  --color-line-strong:rgba(20,25,21,.16);  /* input borders, focused rows */
+  --color-line:rgba(6,36,26,.08);          /* hairlines, dividers */
+  --color-line-strong:rgba(6,36,26,.16);   /* input borders */
 
   /* the one prominent colour: primary action */
   --color-primary:var(--lime-300);
@@ -628,31 +653,39 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
   --color-primary-pressed:var(--lime-400);
   --color-on-primary:var(--forest-900);
 
-  --color-brand:var(--forest-500);         /* wordmark, links, selected tab icon */
+  --color-brand:var(--forest-700);         /* wordmark, links, selected tab icon */
+  --color-focus:var(--forest-700);
+  --color-tooltip:var(--forest-900);       /* dark callouts, toasts */
+  --color-on-tooltip:var(--cream-50);
 
-  /* the small detail colour: pink, never on large areas */
-  --color-pink:var(--blush-300);           /* badges, active tab dot, avatar rings, today marker */
-  --color-pink-strong:var(--blush-400);    /* hearts, favourite, notification dot */
-  --color-pink-soft:var(--blush-50);       /* selected chip, text selection */
-  --color-on-pink:var(--cocoa-700);
-  --color-focus:var(--forest-500);
-  --color-tooltip:var(--grey-900);         /* dark callouts, toasts */
-  --color-on-tooltip:var(--grey-0);
+  /* pink: small details, never a button or a light card */
+  --color-pink:var(--pink-300);            /* badges, avatar rings, active tab dot, today marker */
+  --color-pink-strong:var(--pink-600);     /* hearts, notification dot (3:1 on white) */
+  --color-pink-soft:var(--pink-50);        /* selected chip, text selection */
+  --color-on-pink:var(--forest-900);
 
-  /* soft highlight card (one per screen at most) */
-  --gradient-highlight:linear-gradient(160deg,var(--mint-50) 0%,var(--grey-25) 45%,var(--cream-50) 75%,var(--blush-50) 100%);
+  /* feature card: the Froli look, deep green with pink and lime. One per screen at most */
+  --color-feature:var(--forest-800);
+  --color-on-feature:var(--cream-50);
+  --color-feature-title:var(--pink-300);
+  --color-feature-ink-2:rgba(251,248,240,.72);
+  --color-feature-line:rgba(251,248,240,.18);
 
-  --color-success:var(--forest-500);  --color-success-bg:var(--forest-50);
-  --color-warning:var(--sun-700);     --color-warning-bg:var(--sun-50);
-  --color-danger:var(--coral-700);    --color-danger-bg:var(--coral-50);
-  --color-info:var(--mint-700);       --color-info-bg:var(--mint-50);
+  /* sparks: tiny moments only (streak, &quot;new&quot; sticker, celebration) */
+  --color-spark:var(--orange-500);  --color-on-spark:var(--forest-900);
+  --color-sun:var(--yellow-300);
+
+  --color-success:var(--forest-700);  --color-success-bg:var(--forest-50);
+  --color-warning:var(--yellow-700);  --color-warning-bg:var(--yellow-50);
+  --color-danger:var(--red-700);      --color-danger-bg:var(--red-50);
+  --color-info:var(--pink-800);       --color-info-bg:var(--pink-50);
 
   /* Pet-care categories: pale tile + ink, only on icon tiles, chips and calendar dots */
-  --cat-feed-bg:var(--sun-100);     --cat-feed-ink:var(--sun-700);
-  --cat-meds-bg:var(--blush-100);   --cat-meds-ink:var(--blush-700);
-  --cat-vax-bg:var(--mint-100);     --cat-vax-ink:var(--mint-700);
-  --cat-heat-bg:var(--coral-100);   --cat-heat-ink:var(--coral-700);
-  --cat-weight-bg:var(--olive-100); --cat-weight-ink:var(--olive-700);
+  --cat-feed-bg:var(--yellow-100);  --cat-feed-ink:var(--yellow-700);
+  --cat-meds-bg:var(--pink-100);    --cat-meds-ink:var(--pink-800);
+  --cat-vax-bg:var(--forest-50);    --cat-vax-ink:var(--forest-700);
+  --cat-heat-bg:var(--orange-100);  --cat-heat-ink:var(--orange-700);
+  --cat-weight-bg:var(--cream-100); --cat-weight-ink:var(--forest-800);
   --cat-trip-bg:var(--lime-100);    --cat-trip-ink:var(--forest-700);
 
   /* ---------- Typography ---------- */
@@ -719,51 +752,55 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
   --z-header:5; --z-tabbar:10; --z-scrim:20; --z-sheet:21; --z-toast:40;
 }
 
-/* ---------- Dark: near-black neutrals, the same lime action ---------- */
+/* ---------- Dark: green-black night, cream ink, the same lime and pink ---------- */
 @media (prefers-color-scheme:dark){
   :root:not([data-theme=&quot;light&quot;]){
     color-scheme:dark;
-    --color-bg:var(--grey-950); --color-surface:#141816; --color-surface-2:#1C211E; --color-surface-3:#262C28;
-    --color-ink:#F2F4F1; --color-ink-2:var(--grey-400); --color-ink-3:var(--grey-500);
-    --color-line:rgba(242,244,241,.08); --color-line-strong:rgba(242,244,241,.16);
+    --color-bg:#06170F; --color-surface:#0C2118; --color-surface-2:#132A20; --color-surface-3:#1B352A;
+    --color-ink:var(--cream-100); --color-ink-2:#A2B2A8; --color-ink-3:#73857A;
+    --color-line:rgba(246,239,223,.08); --color-line-strong:rgba(246,239,223,.16);
     --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
-    --color-brand:var(--forest-300); --color-focus:var(--lime-300);
-    --color-pink:var(--blush-300); --color-pink-strong:var(--blush-400); --color-pink-soft:#2D1A1F; --color-on-pink:var(--cocoa-700);
-    --color-tooltip:#F2F4F1; --color-on-tooltip:var(--grey-950);
-    --gradient-highlight:linear-gradient(160deg,#14211F 0%,#141816 45%,#1C1A14 75%,#221719 100%);
-    --color-success:var(--forest-300); --color-success-bg:#15261A;
-    --color-warning:var(--sun-300);    --color-warning-bg:#2A2510;
-    --color-danger:var(--coral-300);   --color-danger-bg:#2E1814;
-    --color-info:var(--mint-300);      --color-info-bg:#14272A;
-    --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--sun-300);
-    --cat-meds-bg:#2D1A1F;   --cat-meds-ink:var(--blush-300);
-    --cat-vax-bg:#14272A;    --cat-vax-ink:var(--mint-300);
-    --cat-heat-bg:#2E1814;   --cat-heat-ink:var(--coral-300);
-    --cat-weight-bg:#24250F; --cat-weight-ink:var(--olive-300);
-    --cat-trip-bg:#1F2810;   --cat-trip-ink:var(--lime-300);
+    --color-brand:var(--pink-300); --color-focus:var(--lime-300);
+    --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
+    --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1A33; --color-on-pink:var(--forest-900);
+    --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--pink-300);
+    --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
+    --color-spark:var(--orange-500); --color-on-spark:var(--forest-900); --color-sun:var(--yellow-300);
+    --color-success:var(--lime-300);   --color-success-bg:#1A2C12;
+    --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
+    --color-danger:var(--red-300);     --color-danger-bg:#331A16;
+    --color-info:var(--pink-300);      --color-info-bg:#3A1A33;
+    --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
+    --cat-meds-bg:#3A1A33;   --cat-meds-ink:var(--pink-300);
+    --cat-vax-bg:#123A27;    --cat-vax-ink:var(--forest-200);
+    --cat-heat-bg:#3A200F;   --cat-heat-ink:var(--orange-300);
+    --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
+    --cat-trip-bg:#1F2E10;   --cat-trip-ink:var(--lime-300);
     --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
   }
 }
 :root[data-theme=&quot;dark&quot;]{
   color-scheme:dark;
-  --color-bg:var(--grey-950); --color-surface:#141816; --color-surface-2:#1C211E; --color-surface-3:#262C28;
-  --color-ink:#F2F4F1; --color-ink-2:var(--grey-400); --color-ink-3:var(--grey-500);
-  --color-line:rgba(242,244,241,.08); --color-line-strong:rgba(242,244,241,.16);
+  --color-bg:#06170F; --color-surface:#0C2118; --color-surface-2:#132A20; --color-surface-3:#1B352A;
+  --color-ink:var(--cream-100); --color-ink-2:#A2B2A8; --color-ink-3:#73857A;
+  --color-line:rgba(246,239,223,.08); --color-line-strong:rgba(246,239,223,.16);
   --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
-  --color-brand:var(--forest-300); --color-focus:var(--lime-300);
-    --color-pink:var(--blush-300); --color-pink-strong:var(--blush-400); --color-pink-soft:#2D1A1F; --color-on-pink:var(--cocoa-700);
-  --color-tooltip:#F2F4F1; --color-on-tooltip:var(--grey-950);
-  --gradient-highlight:linear-gradient(160deg,#14211F 0%,#141816 45%,#1C1A14 75%,#221719 100%);
-  --color-success:var(--forest-300); --color-success-bg:#15261A;
-  --color-warning:var(--sun-300);    --color-warning-bg:#2A2510;
-  --color-danger:var(--coral-300);   --color-danger-bg:#2E1814;
-  --color-info:var(--mint-300);      --color-info-bg:#14272A;
-  --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--sun-300);
-  --cat-meds-bg:#2D1A1F;   --cat-meds-ink:var(--blush-300);
-  --cat-vax-bg:#14272A;    --cat-vax-ink:var(--mint-300);
-  --cat-heat-bg:#2E1814;   --cat-heat-ink:var(--coral-300);
-  --cat-weight-bg:#24250F; --cat-weight-ink:var(--olive-300);
-  --cat-trip-bg:#1F2810;   --cat-trip-ink:var(--lime-300);
+  --color-brand:var(--pink-300); --color-focus:var(--lime-300);
+  --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
+  --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1A33; --color-on-pink:var(--forest-900);
+  --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--pink-300);
+  --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
+  --color-spark:var(--orange-500); --color-on-spark:var(--forest-900); --color-sun:var(--yellow-300);
+  --color-success:var(--lime-300);   --color-success-bg:#1A2C12;
+  --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
+  --color-danger:var(--red-300);     --color-danger-bg:#331A16;
+  --color-info:var(--pink-300);      --color-info-bg:#3A1A33;
+  --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
+  --cat-meds-bg:#3A1A33;   --cat-meds-ink:var(--pink-300);
+  --cat-vax-bg:#123A27;    --cat-vax-ink:var(--forest-200);
+  --cat-heat-bg:#3A200F;   --cat-heat-ink:var(--orange-300);
+  --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
+  --cat-trip-bg:#1F2E10;   --cat-trip-ink:var(--lime-300);
   --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
 }
 </pre>
@@ -799,10 +836,10 @@ const ic=k=>`<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor
 const ICON=new Proxy({}, {get:(_,k)=>ic(k)});
 document.querySelectorAll('main').forEach(m=>{m.innerHTML=m.innerHTML.replace(/\$\{ICON\.(\w+)\}/g,(_,k)=>ic(k))});
 
-const SCALES={grey:[0,25,50,100,200,300,400,500,600,700,800,900,950],lime:[50,100,200,300,400,600],forest:[50,100,300,500,700,900],mint:[50,100,300,700],sun:[50,100,300,700],blush:[50,100,200,300,400,700],cocoa:[700],coral:[50,100,300,500,700],olive:[100,300,700],cream:[50,100]};
+const SCALES={forest:[50,100,200,300,500,700,800,900,950],pink:[50,100,200,300,400,600,800],lime:[50,100,200,300,400,600],cream:[50,100,200],orange:[50,100,300,500,700],yellow:[50,100,300,700],red:[50,300,700],grey:[0,25,50,100,200,300,400,500,600,700]};
 const PAIRS=[
   ['Background','--color-bg','--color-ink'],['Surface 2','--color-surface-2','--color-ink'],['Secondary text','--color-bg','--color-ink-2'],
-  ['Primary action','--color-primary','--color-on-primary'],['Tooltip','--color-tooltip','--color-on-tooltip'],['Brand link','--color-bg','--color-brand'],['Pink detail','--color-pink','--color-on-pink'],['Selected chip','--color-pink-soft','--color-ink'],
+  ['Primary action','--color-primary','--color-on-primary'],['Tooltip','--color-tooltip','--color-on-tooltip'],['Brand link','--color-bg','--color-brand'],['Pink detail','--color-pink','--color-on-pink'],['Feature card','--color-feature','--color-feature-title'],['Spark','--color-spark','--color-on-spark'],
   ['Success','--color-success-bg','--color-success'],['Warning','--color-warning-bg','--color-warning'],['Danger','--color-danger-bg','--color-danger'],['Info','--color-info-bg','--color-info']
 ];
 const CATS=[['feed','Feeding'],['meds','Medicine'],['vax','Vaccines'],['heat','Heat cycle'],['weight','Weight'],['trip','Travel']];

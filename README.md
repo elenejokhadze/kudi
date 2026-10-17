@@ -110,3 +110,9 @@ Then in Vercel: **Add New → Project → Import** that repository.
 - **Privacy:** the family invite link is the key to that household's data. Anyone with the link can see and change it. Fine for a pilot; add user accounts before a public launch.
 - **Medical content:** the age guide, vaccine repeat intervals, heat-cycle timings and travel rules are general guidance. Have a vet review them, and name someone to keep the travel rules current.
 - **Languages:** the language switch on the welcome screen is a placeholder; Georgian and Russian text still need translating.
+
+## Design system and evals
+
+- `design/tokens.css`: every colour, type size, spacing, radius and layout value. `design/index.html` shows them visually.
+- `npm test`: design evals (`evals/design/`). They check WCAG contrast for every text and UI colour pair in light and dark, that both dark blocks match, one lime primary colour, Figtree only, the type scale, the 4px spacing grid and the radius set. No install needed.
+- `npm run eval:jev`: Jev decision evals (`evals/decisions/`). Each palette decision is asked with its options in two orders to catch position bias; results go to `evals/results/`. Needs `npm install` and `TYPESAFE_API_KEY`.
