@@ -1839,7 +1839,7 @@ function syncObForm(){
 }
 
 /* ---------- forms ---------- */
-function onSubmit(e){
+async function onSubmit(e){
   const form = e.target.closest('form[data-form]'); if (!form) return;
   e.preventDefault();
   const fd = new FormData(form); const v = k => (fd.get(k)||'').toString().trim();
