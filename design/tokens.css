@@ -1,0 +1,177 @@
+/* Kudi design tokens
+   Palette drawn from retro pet-illustration branding: forest-green outlines and wordmark,
+   mint sky, sunshine yellow, olive, blush pink, coral bones and warm cream.
+   Primitives (raw scales) come first; components use only the semantic tokens below them.
+   Font: Figtree (Google Fonts), weights 400-800. */
+
+:root{
+  color-scheme:light;
+
+  /* ---------- Primitives ---------- */
+  --forest-50:#EDF6EF;  --forest-100:#D3E9D9; --forest-200:#A6D2B2; --forest-300:#6FB383;
+  --forest-400:#3F9459; --forest-500:#1E7B3F; --forest-600:#176832; --forest-700:#115328;
+  --forest-800:#0D3F1F; --forest-900:#0A2E17;
+
+  --mint-50:#F1F8F7;   --mint-100:#DFEFED;   --mint-200:#C3E2DF;   --mint-300:#A5D0CC;
+  --mint-400:#7FB9B4;  --mint-500:#5A9F99;   --mint-600:#437E79;   --mint-700:#33605C;
+
+  --sun-100:#FEF6C8;   --sun-200:#FCEB88;    --sun-300:#F9DD4A;    --sun-400:#F0CB1C;
+  --sun-500:#D4AE08;   --sun-700:#7E6300;
+
+  --olive-100:#F0F1CF; --olive-200:#E0E29B;  --olive-300:#C8CA52;  --olive-400:#ABAD35;
+  --olive-600:#6C6E1E;
+
+  --lime-200:#EAF7A6;  --lime-300:#D6EF3F;
+
+  --blush-100:#FDEEF1; --blush-200:#F8D5DC;  --blush-300:#F2BAC6;  --blush-500:#D77E92;
+  --blush-700:#963B51;
+
+  --coral-100:#FCE4DC; --coral-300:#F09B81;  --coral-500:#E0614A;  --coral-700:#A23824;
+
+  --cream-50:#FCF8EF;  --cream-100:#F6EFDE;  --cream-200:#EEE3CA;  --cream-300:#E1D3B1;
+
+  --cocoa-700:#4A1C24;
+
+  /* ---------- Semantic colour (light) ---------- */
+  --color-bg:var(--cream-50);              /* app background */
+  --color-surface:#FFFDF8;                 /* cards, sheets, lists */
+  --color-surface-2:var(--cream-100);      /* inset fields, segmented track */
+  --color-surface-3:var(--cream-200);      /* pressed / hover fill */
+  --color-ink:var(--forest-900);           /* primary text */
+  --color-ink-2:#3F5A49;                   /* secondary text */
+  --color-ink-3:#6E8576;                   /* hints, placeholders, disabled text */
+  --color-line:rgba(10,46,23,.12);         /* hairlines, card borders */
+  --color-line-strong:var(--forest-700);   /* sticker outline, focused field */
+
+  --color-brand:var(--forest-500);         /* wordmark, links, selected states */
+  --color-on-brand:var(--cream-50);
+  --color-accent:var(--sun-300);           /* primary action, today ring */
+  --color-on-accent:var(--forest-900);
+  --color-sky:var(--mint-300);             /* hero / splash backdrop */
+  --color-on-sky:var(--forest-800);
+  --color-focus:var(--forest-400);
+
+  --color-success:var(--forest-500);  --color-success-bg:var(--forest-100);
+  --color-warning:var(--sun-700);     --color-warning-bg:var(--sun-100);
+  --color-danger:var(--coral-700);    --color-danger-bg:var(--coral-100);
+  --color-info:var(--mint-700);       --color-info-bg:var(--mint-100);
+
+  /* Pet-care categories: one fill + one ink each, used on icons, chips and calendar dots */
+  --cat-feed-bg:var(--sun-200);     --cat-feed-ink:var(--forest-900);
+  --cat-meds-bg:var(--blush-200);   --cat-meds-ink:var(--blush-700);
+  --cat-vax-bg:var(--mint-200);     --cat-vax-ink:var(--mint-700);
+  --cat-heat-bg:var(--coral-100);   --cat-heat-ink:var(--coral-700);
+  --cat-weight-bg:var(--olive-200); --cat-weight-ink:var(--olive-600);
+  --cat-trip-bg:var(--lime-200);    --cat-trip-ink:var(--forest-700);
+
+  /* ---------- Typography ---------- */
+  --font-sans:'Figtree', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --weight-regular:400; --weight-medium:500; --weight-semibold:600; --weight-bold:700; --weight-heavy:800;
+
+  /* size / line-height pairs on a 4px rhythm */
+  --text-display:44px; --leading-display:48px;  /* splash, big numbers */
+  --text-h1:32px;      --leading-h1:38px;       /* screen titles */
+  --text-h2:26px;      --leading-h2:32px;       /* hero, sheet titles */
+  --text-h3:20px;      --leading-h3:26px;       /* section headings */
+  --text-title:17px;   --leading-title:24px;    /* card titles, buttons xl */
+  --text-body:15px;    --leading-body:22px;     /* default text, buttons */
+  --text-label:13px;   --leading-label:18px;    /* field labels, chips, small buttons */
+  --text-caption:12px; --leading-caption:16px;  /* timestamps, meta */
+  --text-micro:11px;   --leading-micro:14px;    /* tab bar labels, overlines */
+
+  --tracking-tight:-.02em; --tracking-normal:0; --tracking-wide:.08em;
+
+  /* ready-made font shorthands: font:var(--type-h1) */
+  --type-display:var(--weight-heavy) var(--text-display)/var(--leading-display) var(--font-sans);
+  --type-h1:var(--weight-heavy) var(--text-h1)/var(--leading-h1) var(--font-sans);
+  --type-h2:var(--weight-heavy) var(--text-h2)/var(--leading-h2) var(--font-sans);
+  --type-h3:var(--weight-bold) var(--text-h3)/var(--leading-h3) var(--font-sans);
+  --type-title:var(--weight-bold) var(--text-title)/var(--leading-title) var(--font-sans);
+  --type-body:var(--weight-regular) var(--text-body)/var(--leading-body) var(--font-sans);
+  --type-body-strong:var(--weight-bold) var(--text-body)/var(--leading-body) var(--font-sans);
+  --type-label:var(--weight-bold) var(--text-label)/var(--leading-label) var(--font-sans);
+  --type-caption:var(--weight-semibold) var(--text-caption)/var(--leading-caption) var(--font-sans);
+  --type-overline:var(--weight-heavy) var(--text-micro)/var(--leading-micro) var(--font-sans); /* + uppercase, tracking-wide */
+
+  /* ---------- Spacing (4px base) ---------- */
+  --space-0:0;     --space-px:2px;  --space-1:4px;   --space-2:8px;   --space-3:12px;
+  --space-4:16px;  --space-5:20px;  --space-6:24px;  --space-8:32px;  --space-10:40px;
+  --space-12:48px; --space-16:64px;
+
+  /* ---------- Radius ---------- */
+  --radius-xs:6px;    /* tags, checkbox */
+  --radius-sm:10px;   /* inputs, small tiles */
+  --radius-md:16px;   /* icon tiles, list rows, tab items */
+  --radius-lg:24px;   /* cards, hero, tab bar */
+  --radius-xl:32px;   /* bottom sheets (top corners), splash panels */
+  --radius-pill:999px;/* buttons, chips, pills, segmented control */
+  --radius-round:50%; /* avatars, icon buttons, ticks */
+
+  /* ---------- Stroke & elevation ---------- */
+  --stroke-hair:1px;   --stroke-ui:1.5px;   --stroke-sticker:2px;
+  --shadow-1:0 2px 8px rgba(10,46,23,.06);
+  --shadow-2:0 8px 24px rgba(10,46,23,.08);
+  --shadow-3:0 16px 40px rgba(10,46,23,.14);
+  --shadow-sticker:3px 3px 0 var(--color-line-strong); /* flat offset, like a die-cut sticker */
+
+  /* ---------- Layout ---------- */
+  --layout-max:480px;          /* one phone-width column, centred on wide screens */
+  --layout-gutter:16px;        /* side padding at every width */
+  --layout-gap:12px;           /* default gap between stacked cards */
+  --layout-section:24px;       /* gap between sections */
+  --layout-cols:4;             /* quick-action grid */
+  --header-h:56px;             /* sticky top bar */
+  --tabbar-h:72px;             /* bottom tab bar, plus safe-area inset */
+  --content-bottom:calc(var(--tabbar-h) + 48px); /* scroll clearance above tab bar */
+  --sheet-max-h:88%;
+  --tap-min:48px;              /* minimum touch target */
+  --tap-sm:36px;
+  --icon-sm:16px; --icon-md:22px; --icon-lg:28px;
+  --bp-sm:360px; --bp-md:480px; --bp-lg:768px; /* reference only: CSS can't read vars in @media */
+
+  --z-header:5; --z-tabbar:10; --z-scrim:20; --z-sheet:21; --z-toast:40;
+}
+
+/* ---------- Dark: deep forest night, cream ink ---------- */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --color-bg:#0B1F14; --color-surface:#12291C; --color-surface-2:#183424; --color-surface-3:#1F402D;
+    --color-ink:var(--cream-100); --color-ink-2:#B5C7BA; --color-ink-3:#80978A;
+    --color-line:rgba(246,239,222,.12); --color-line-strong:var(--forest-300);
+    --color-brand:var(--forest-300); --color-on-brand:var(--forest-900);
+    --color-accent:var(--sun-300); --color-on-accent:var(--forest-900);
+    --color-sky:#1C3F3C; --color-on-sky:var(--mint-100); --color-focus:var(--sun-300);
+    --color-success:var(--forest-300); --color-success-bg:#173A24;
+    --color-warning:var(--sun-300);    --color-warning-bg:#3A3310;
+    --color-danger:var(--coral-300);   --color-danger-bg:#46201A;
+    --color-info:var(--mint-300);      --color-info-bg:#183836;
+    --cat-feed-bg:#3A3310;   --cat-feed-ink:var(--sun-300);
+    --cat-meds-bg:#3E2129;   --cat-meds-ink:var(--blush-300);
+    --cat-vax-bg:#183836;    --cat-vax-ink:var(--mint-300);
+    --cat-heat-bg:#46201A;   --cat-heat-ink:var(--coral-300);
+    --cat-weight-bg:#33341A; --cat-weight-ink:var(--olive-300);
+    --cat-trip-bg:#2C3A12;   --cat-trip-ink:var(--lime-300);
+    --shadow-1:0 2px 8px rgba(0,0,0,.3); --shadow-2:0 8px 24px rgba(0,0,0,.35); --shadow-3:0 16px 40px rgba(0,0,0,.45);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --color-bg:#0B1F14; --color-surface:#12291C; --color-surface-2:#183424; --color-surface-3:#1F402D;
+  --color-ink:var(--cream-100); --color-ink-2:#B5C7BA; --color-ink-3:#80978A;
+  --color-line:rgba(246,239,222,.12); --color-line-strong:var(--forest-300);
+  --color-brand:var(--forest-300); --color-on-brand:var(--forest-900);
+  --color-accent:var(--sun-300); --color-on-accent:var(--forest-900);
+  --color-sky:#1C3F3C; --color-on-sky:var(--mint-100); --color-focus:var(--sun-300);
+  --color-success:var(--forest-300); --color-success-bg:#173A24;
+  --color-warning:var(--sun-300);    --color-warning-bg:#3A3310;
+  --color-danger:var(--coral-300);   --color-danger-bg:#46201A;
+  --color-info:var(--mint-300);      --color-info-bg:#183836;
+  --cat-feed-bg:#3A3310;   --cat-feed-ink:var(--sun-300);
+  --cat-meds-bg:#3E2129;   --cat-meds-ink:var(--blush-300);
+  --cat-vax-bg:#183836;    --cat-vax-ink:var(--mint-300);
+  --cat-heat-bg:#46201A;   --cat-heat-ink:var(--coral-300);
+  --cat-weight-bg:#33341A; --cat-weight-ink:var(--olive-300);
+  --cat-trip-bg:#2C3A12;   --cat-trip-ink:var(--lime-300);
+  --shadow-1:0 2px 8px rgba(0,0,0,.3); --shadow-2:0 8px 24px rgba(0,0,0,.35); --shadow-3:0 16px 40px rgba(0,0,0,.45);
+}
