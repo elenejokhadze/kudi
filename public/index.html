@@ -232,6 +232,22 @@ textarea.in{padding:12px 14px;min-height:80px}
 .pm-tag{display:inline-flex;background:rgba(255,255,255,.8);backdrop-filter:blur(6px);border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800;color:var(--ink)}
 [data-theme=dark] .pm-tag{background:rgba(0,0,0,.4);color:var(--ink)}
 .pm-mascot{width:190px;height:190px;animation:bob 3.4s ease-in-out infinite}
+/* chat */
+.chat-wrap{display:flex;flex-direction:column;height:min(72vh,540px)}
+.chat-msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px 0 12px}
+.chat-bubble{max-width:78%;padding:10px 14px;border-radius:18px;font-size:14px;font-weight:600;line-height:1.4;word-break:break-word}
+.chat-bubble.me{background:var(--sun);color:var(--on-sun);align-self:flex-end;border-bottom-right-radius:5px}
+.chat-bubble.them{background:var(--tint2);color:var(--ink);align-self:flex-start;border-bottom-left-radius:5px}
+.chat-bubble.typing{opacity:.6}
+.chat-ts{font-size:11px;color:var(--muted);font-weight:700;text-align:center;margin:4px 0}
+.chat-bar{display:flex;gap:8px;padding-top:10px;border-top:1px solid var(--line);margin-top:auto}
+.chat-bar input{flex:1;min-height:46px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);padding:0 14px;font-size:15px;font-weight:600}
+.chat-bar input:focus{border-color:var(--ink);outline:none}
+.chat-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.chat-av{width:42px;height:42px;border-radius:50%;overflow:hidden;flex-shrink:0}
+.match-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.match-row:last-child{border-bottom:none}
+.match-row .av{width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0}
 .sub-hero{background:linear-gradient(135deg,var(--sun) 0%,var(--tint2) 100%);border-radius:22px;padding:22px 18px;text-align:center;border:1px solid var(--line)}
 .sub-hero .price{font-family:var(--f-display);font-weight:800;font-size:42px;letter-spacing:-.03em;line-height:1}
 .sub-hero .price sup{font-size:22px;vertical-align:super;letter-spacing:0}
@@ -579,6 +595,34 @@ const LSMATCH = 'kudi.pawmates';
 function loadPawmates(){ try { return JSON.parse(lsGet(LSMATCH)||'{"liked":[],"passed":[],"matched":[]}'); } catch(e){ return {liked:[],passed:[],matched:[]}; } }
 function savePawmates(ms){ lsSet(LSMATCH, JSON.stringify(ms)); }
 function nextPawmate(ms){ return PAWMATES.find(p => !ms.liked.includes(p.id) && !ms.passed.includes(p.id)); }
+const PM_OPENERS = {
+  pm1:"Hi! Luna hasn't stopped wagging since she saw the profile 🐾 Would love a playdate at Vake Park — when are you free?",
+  pm2:"Hey! Max here (well, Max's human 😄). He's been staring at your pet's photo all morning. Shall we set something up?",
+  pm3:"Hello. Bella noticed your profile and seems... intrigued. She's very selective, so this is quite an honour.",
+  pm4:"OMG hi! Charlie literally knocked my phone over when he saw this 😂 He wants to meet ASAP. Is this weekend ok?",
+  pm5:"Hi there. Mia gave your profile exactly 3 seconds of attention, which honestly means she likes you a lot.",
+  pm6:"Hey! Rocky is very well-trained and gentle with other animals. He'd love to meet your pet. Vake or Lisi Lake?",
+  pm7:"Heyyy! Cleo has a LOT of opinions about everything and she has a lot to say about your pet (all good, don't worry 😄)",
+  pm8:"Hi! Buddy followed his nose to your profile and now he won't leave me alone about it. Playdate?",
+  pm9:"Hello! Daisy has approved this match after a thorough 0.5-second deliberation process 👑 When can they meet?",
+  pm10:"Hi. Leo is a gentle giant and he'd love to make a new friend. He's great with other animals, very patient.",
+  pm11:"HI HELLO HI 👋 Shadow is literally howling right now, he's so excited. Please say yes to a playdate!!",
+  pm12:"Hey! Zara could use a running partner who can actually keep up. Is your pet fast? 😄",
+  pm13:"Hi! Nino evaluated your pet's profile and issued a formal approval. She doesn't do that for just anyone 🧠",
+  pm14:"Good day. Bear has graced your profile with his attention. He is selective but fair. We could meet for a brief introduction.",
+  pm15:"Hiiiii! Pixie knocked three things off my desk trying to get to my phone when she saw this. That's basically a 5-star review 😂"
+};
+const PM_REPLIES = {
+  playful:["Yesss let's do it! 🎉","This weekend works perfectly!","They are going to be best friends, I just know it 🐾","Ok amazing, I'll DM you the exact spot!","Can't wait! Send me a pic when they meet 📸"],
+  calm:["Sounds good. Saturday morning perhaps?","That works for me. Lisi Lake is lovely this time of year.","Perfect. I'll bring some treats for the introduction.","Wonderful. Looking forward to it.","Excellent. Shall we say 10am?"],
+  curious:["Oh interesting! What does your pet like to eat?","Do they know any tricks?","How long have you had them?","What's their favourite spot in Tbilisi?","Do they get along with cats/dogs generally?"],
+  default:["That sounds great! When are you free?","Oh I'm sure they'd get along perfectly 🐾","Vake Park on Sunday morning?","How old is your pet exactly?","They would make such great friends!","Saturday works! See you there 🐾","Amazing, so excited for them to meet!"]
+};
+const PM_REPLY_SETS = {
+  pm1:'playful',pm2:'calm',pm3:'calm',pm4:'playful',pm5:'calm',pm6:'calm',
+  pm7:'curious',pm8:'curious',pm9:'playful',pm10:'calm',pm11:'playful',
+  pm12:'playful',pm13:'curious',pm14:'calm',pm15:'playful'
+};
 
 /* ---------- i18n ---------- */
 const STRINGS = {
@@ -1278,10 +1322,58 @@ function nav(){
   return `<nav class="nav" aria-label="Main"><div class="nav-in">${b('today',T('nav_today'),'home',!fedAll)}${b('health',T('nav_health'),'pill',healthAlerts()>0)}${b('food',T('nav_food'),'bowl')}${b('travel',T('nav_travel'),'plane')}${b('me',T('nav_me'),'user')}</div></nav>`;
 }
 
+/* ---------- chat sheet ---------- */
+function chatSheet(){
+  const pid = ui.sheet && ui.sheet.pid;
+  const p = PAWMATES.find(x=>x.id===pid);
+  if (!p) return pawmatesSheet();
+  const ms = loadPawmates();
+  if (!ms.chats) ms.chats = {};
+  const msgs = ms.chats[pid] || [];
+  const isTyping = ui.sheet && ui.sheet.typing;
+  const nowHr = new Date().getHours(), nowMin = new Date().getMinutes();
+  const timeStr = `${String(nowHr).padStart(2,'0')}:${String(nowMin).padStart(2,'0')}`;
+  const bubbles = msgs.map(m=>`<div class="chat-bubble ${m.from==='me'?'me':'them'}">${esc(m.text)}</div>`).join('');
+  return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="chatTitle" style="max-height:92%;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))">
+    <div class="grab"></div>
+    <div class="chat-header">
+      <button class="iconbtn sm" data-a="chatBack" aria-label="Back">${ic('back','ico-s')}</button>
+      <div class="chat-av" style="background:${p.color}">${mascot(p.species,'happy')}</div>
+      <div class="grow"><div class="t" id="chatTitle">${esc(p.name)}</div><div class="s">${esc(p.breed)} · ${p.age} yr${p.age>1?'s':''}</div></div>
+      <span class="pill sun" style="font-size:11px">❤️ Match</span>
+    </div>
+    <div class="chat-wrap">
+      <div class="chat-msgs" id="chatMsgs">
+        ${msgs.length===0?`<div class="chat-ts">Start of your conversation</div>`:''}
+        ${bubbles}
+        ${isTyping?`<div class="chat-bubble them typing">•••</div>`:''}
+      </div>
+      <form class="chat-bar" data-form="chat" data-pid="${p.id}">
+        <input id="chatInput" name="msg" maxlength="200" placeholder="Say something… 🐾" autocomplete="off">
+        <button class="btn ink sm" type="submit">${ic('right','ico-s')}</button>
+      </form>
+    </div>
+  </div>`;
+}
+
 /* ---------- pawmates sheet ---------- */
 function pawmatesSheet(){
   const ms = loadPawmates();
   const matched = ms.matched.length;
+
+  // Matches list view
+  if (ui.sheet && ui.sheet.showMatches){
+    const matchedProfiles = PAWMATES.filter(x=>ms.matched.includes(x.id));
+    return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))">
+      <div class="grab"></div>
+      <div class="chat-header"><button class="iconbtn sm" data-a="pawmatesContinue" aria-label="Back">${ic('back','ico-s')}</button><h2 id="pmTitle" style="margin:0">Your matches ❤️</h2></div>
+      ${matchedProfiles.length?`<div>${matchedProfiles.map(mp=>{ const msgs=(ms.chats||{})[mp.id]||[]; const last=msgs[msgs.length-1]; const unread=last&&last.from==='them'&&(!ui.sheet||ui.sheet.pid!==mp.id); return `<button class="match-row" data-a="chatOpen" data-pid="${mp.id}" style="width:100%;text-align:left;border:0;background:transparent">
+        <div class="av" style="background:${mp.color}">${mascot(mp.species,'happy')}</div>
+        <div class="grow"><div class="t" style="${unread?'font-weight:800':''}">${esc(mp.name)} · ${esc(mp.breed)}</div><div class="s">${last?esc(last.text.slice(0,44)+(last.text.length>44?'…':'')):'Tap to say hi 👋'}</div></div>
+        ${unread?'<span class="dot" style="position:static;width:10px;height:10px;background:var(--sun);border:none"></span>':''}${ic('right','ico-s')}</button>`; }).join('')}</div>`:`<p class="muted" style="text-align:center;margin:24px 0">No matches yet — keep swiping!</p>`}
+      <button class="btn ghost block" style="margin-top:12px" data-a="pawmatesContinue">Back to swiping</button>
+    </div>`;
+  }
 
   // Just-matched celebration screen
   if (ui.sheet && ui.sheet.justMatched) {
@@ -1302,29 +1394,36 @@ function pawmatesSheet(){
           <div><div class="t">${esc(p.name)}, ${p.age} yr${p.age>1?'s':''} · ${esc(p.breed)}</div><div class="s">${esc(p.bio)}</div></div>
         </div>
       </div>
-      <button class="btn ink xl block" style="margin-top:14px" data-a="pawmatesContinue">Keep swiping</button>
-      <button class="btn ghost block" style="margin-top:6px" data-a="close">Close</button>
+      <button class="btn ink xl block" style="margin-top:14px" data-a="chatOpen" data-pid="${p.id}">Send a woof! 🐾</button>
+      <button class="btn ghost block" style="margin-top:6px" data-a="pawmatesContinue">Keep swiping</button>
     </div>`;
   }
 
   const p = nextPawmate(ms);
-  if (!p) return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))">
+  if (!p){
+    const matchedProfiles = PAWMATES.filter(x=>ms.matched.includes(x.id));
+    return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))">
     <div class="grab"></div>
-    <div style="text-align:center;padding:24px 0">
-      <div style="font-size:52px;margin-bottom:12px">🐾</div>
-      <h2 id="pmTitle">No more pets nearby!</h2>
-      <p class="muted" style="margin:0 0 16px">You've seen everyone. New pets join every week.</p>
-      ${matched?`<span class="pill sun">${matched} match${matched>1?'es':''} total ❤️</span>`:''}
+    <div style="text-align:center;padding:20px 0 12px">
+      <div style="font-size:48px;margin-bottom:10px">🐾</div>
+      <h2 id="pmTitle">No more pets nearby</h2>
+      <p class="muted" style="margin:0 0 4px">You've seen everyone. New pets join every week.</p>
     </div>
-    <button class="btn ghost block" data-a="pawmatesReset" style="margin-top:8px">Start over</button>
+    ${matchedProfiles.length?`<div class="sec-h" style="margin-top:8px"><h3>Your matches</h3><span class="pill sun">❤️ ${matchedProfiles.length}</span></div>
+    <div>${matchedProfiles.map(mp=>{ const msgs = (ms.chats||{})[mp.id]||[]; const last = msgs[msgs.length-1]; return `<button class="match-row" data-a="chatOpen" data-pid="${mp.id}" style="width:100%;text-align:left;border:0;background:transparent">
+      <div class="av" style="background:${mp.color}">${mascot(mp.species,'happy')}</div>
+      <div class="grow"><div class="t">${esc(mp.name)} · ${esc(mp.breed)}</div><div class="s">${last?esc(last.text.slice(0,40)+(last.text.length>40?'…':'')):'Tap to say hi 👋'}</div></div>
+      ${ic('right','ico-s')}</button>`; }).join('')}</div>`:''}
+    <button class="btn ghost block" data-a="pawmatesReset" style="margin-top:12px">Start over</button>
     <button class="btn ink block" style="margin-top:8px" data-a="close">Close</button>
   </div>`;
+  }
 
   return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))">
     <div class="grab"></div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
       <h2 id="pmTitle" style="margin:0">Pawmates 🐾</h2>
-      ${matched?`<span class="pill sun">❤️ ${matched}</span>`:'<span class="small muted">${PAWMATES.length - ms.liked.length - ms.passed.length} left</span>'}
+      ${matched?`<button class="pill sun" data-a="pawmatesMatches" style="border:0;cursor:pointer">❤️ ${matched}</button>`:`<span class="small muted">${PAWMATES.length - ms.liked.length - ms.passed.length} left</span>`}
     </div>
     <div class="pm-card" id="pmCard">
       <div class="pm-photo" style="background:${p.color}">${mascot(p.species,'happy','pm-mascot')}
@@ -1403,6 +1502,7 @@ function sheetHTML(){
   if (sh.type === 'remind') return remindSheet();
   if (sh.type === 'subscribe') return subscribeSheet();
   if (sh.type === 'pawmates') return pawmatesSheet();
+  if (sh.type === 'chat') return chatSheet();
   if (sh.type === 'report') return careReportSheet();
   if (sh.type === 'whoami') return `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle"><div class="grab"></div>
     <h2 id="shTitle">${T('whoami_t')}</h2><p class="muted" style="margin:0 0 14px">Your name shows next to everything you log for ${esc(S.pet.name)}.</p>
@@ -1516,6 +1616,7 @@ function render(opts){
   else if (opts && opts.top) window.scrollTo(0,0);
   ui.flash = null;
   if (ui.sheet){ const first = layer.querySelector('.sheet input:not([type=radio]), .sheet select, .sheet button[data-a="confirmYes"]'); if (first) setTimeout(()=>{ try{ first.focus({preventScroll:true}); }catch(e){} }, 60); }
+  const chatMsgs = document.getElementById('chatMsgs'); if (chatMsgs) setTimeout(()=>{ chatMsgs.scrollTop = chatMsgs.scrollHeight; }, 30);
 }
 
 /* ---------- sample ---------- */
@@ -1633,7 +1734,10 @@ const A = {
     else { ui.sheet = {type:'pawmates'}; render({keepScroll:true}); }
   },
   pawmatesContinue(){ ui.sheet = {type:'pawmates'}; render({keepScroll:true}); },
-  pawmatesReset(){ savePawmates({liked:[],passed:[],matched:[]}); ui.sheet = {type:'pawmates'}; render({keepScroll:true}); },
+  pawmatesReset(){ savePawmates({liked:[],passed:[],matched:[],chats:{}}); ui.sheet = {type:'pawmates'}; render({keepScroll:true}); },
+  chatOpen(d){ ui.sheet = {type:'chat', pid:d.pid}; render({keepScroll:true}); },
+  chatBack(){ ui.sheet = {type:'pawmates'}; render({keepScroll:true}); },
+  pawmatesMatches(){ ui.sheet = {type:'pawmates', showMatches:true}; render({keepScroll:true}); },
   subscribe(){ subscribed = true; lsSet(LSSUB, '1'); ui.sheet = null; render({keepScroll:true}); toast(T('toast_sub_on')); if (!remote) startHttpSync(); },
   cancelSub(){ subscribed = false; lsDel(LSSUB); render({keepScroll:true}); toast(T('toast_sub_off')); },
   setLang(d){ lang = d.l; lsSet(LSLANG, lang); render({keepScroll:true}); },
@@ -1674,6 +1778,27 @@ function onSubmit(e){
     return;
   }
   if (kind === 'joinme'){ const n = v('name'); if (!n) return; const m = {id:uid(), name:n}; S.members.push(m); me = m.id; lsSet(LSME, me); ui.sheet = null; commit({keepScroll:true}); toast(`Welcome, ${n}!`); return; }
+  if (kind === 'chat'){
+    const pid = form.dataset.pid; const text = (v('msg')||'').trim(); if (!text) return;
+    const ms = loadPawmates(); if (!ms.chats) ms.chats = {};
+    if (!ms.chats[pid]) ms.chats[pid] = [];
+    // opener message if first message ever
+    if (ms.chats[pid].length === 0){ ms.chats[pid].push({id:uid(), from:'them', text:PM_OPENERS[pid]||'Hi there! 🐾', ts:Date.now()-5000}); }
+    ms.chats[pid].push({id:uid(), from:'me', text, ts:Date.now()});
+    savePawmates(ms);
+    ui.sheet = {type:'chat', pid, typing:true}; render({keepScroll:true});
+    setTimeout(()=>{
+      if (!ui.sheet || ui.sheet.type !== 'chat' || ui.sheet.pid !== pid) return;
+      const ms2 = loadPawmates();
+      const set = PM_REPLIES[PM_REPLY_SETS[pid]||'default'] || PM_REPLIES.default;
+      const sent = (ms2.chats[pid]||[]).filter(m=>m.from==='me').length;
+      const reply = set[(sent-1) % set.length];
+      ms2.chats[pid].push({id:uid(), from:'them', text:reply, ts:Date.now()});
+      savePawmates(ms2);
+      ui.sheet = {type:'chat', pid}; render({keepScroll:true});
+    }, 1400);
+    return;
+  }
   if (kind !== 'sheet' || !ui.sheet) return;
   const sh = ui.sheet; const isNew = !sh.id;
   if (sh.type === 'meal'){
