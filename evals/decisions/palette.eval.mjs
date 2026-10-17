@@ -1,6 +1,7 @@
 // Decision eval: how should the Froli-style palette be used in the Kudi app?
 // Each decision is asked with its options in two orders to catch position bias.
 // Run: npm run eval:jev   (needs TYPESAFE_API_KEY; writes evals/results/decision-palette.txt)
+import "./env.mjs";
 import { TypeSafeClient, choice, noul } from "@typesafe-ai/sdk";
 import { mkdirSync, writeFileSync } from "node:fs";
 
@@ -57,7 +58,7 @@ const DECISIONS = [
 ];
 
 if (!process.env.TYPESAFE_API_KEY) {
-  console.log("Skipped: set TYPESAFE_API_KEY to run the Jev decision evals.");
+  console.log("Skipped: put TYPESAFE_API_KEY=... in .env.local (or the environment) to run the Jev decision evals.");
   process.exit(0);
 }
 

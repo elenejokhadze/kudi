@@ -1,6 +1,7 @@
 // Decision eval: second accent (pink or orange), its tone, how much of it the green feature card
 // carries, and which single icon pack to use. Options are asked in two orders to catch position bias.
 // Run: npm run eval:jev   (needs TYPESAFE_API_KEY; writes evals/results/decision-accent-and-icons.txt)
+import "./env.mjs";
 import { TypeSafeClient, choice, noul } from "@typesafe-ai/sdk";
 import { mkdirSync, writeFileSync } from "node:fs";
 
@@ -60,7 +61,7 @@ const DECISIONS = [
 ];
 
 if (!process.env.TYPESAFE_API_KEY) {
-  console.log("Skipped: set TYPESAFE_API_KEY to run the Jev decision evals.");
+  console.log("Skipped: put TYPESAFE_API_KEY=... in .env.local (or the environment) to run the Jev decision evals.");
   process.exit(0);
 }
 
