@@ -1167,7 +1167,7 @@ function viewToday(){
     </section>
     ${insightsBlock()}
     ${weeklyBlock()}
-    ${(()=>{ const ms = loadPawmates(); const matched = ms.matched.length; const remaining = PAWMATES.length - ms.liked.length - ms.passed.length; return `<button class="card" data-a="sheet" data-type="pawmates" style="text-align:left;width:100%;background:linear-gradient(135deg,var(--blush) 0%,var(--lav) 100%);border-color:transparent"><span class="badge-ico" style="background:rgba(255,255,255,.6)">${ic('heart')}</span><div class="grow"><div class="t">Pawmates 🐾</div><div class="s">${matched?`${matched} match${matched>1?'es':''} · `:''} ${remaining>0?`${remaining} pets waiting`:'All seen — check back soon'}</div></div>${ic('right','ico-s')}</button>`; })()}
+    ${(()=>{ const ms = loadPawmates(); const matched = ms.matched.length; const remaining = PAWMATES.length - ms.liked.length - ms.passed.length; return `<button class="card" data-a="sheet" data-type="pawmates" style="text-align:left;width:100%;background:linear-gradient(135deg,var(--blush) 0%,var(--lav) 100%);border-color:transparent"><span class="badge-ico" style="background:rgba(255,255,255,.6)">${subscribed ? ic('heart') : ic('lock')}</span><div class="grow"><div class="t">Pawmates 🐾 ${subscribed?'':'<span style="font-size:11px;font-weight:700;color:var(--muted)">· Family Plan</span>'}</div><div class="s">${subscribed ? (matched?`${matched} match${matched>1?'es':''} · `:'')+(remaining>0?`${remaining} pets waiting`:'All seen — check back soon') : 'Find playmates &amp; mates for '+esc(S.pet.name)}</div></div>${ic('right','ico-s')}</button>`; })()}
     <section class="sec"><div class="sec-h"><h3>${T('today_family')}</h3></div>
       ${logs.length?`<div class="list">${logs.map(l=>`<div class="li"><span class="badge-ico" style="width:36px;height:36px;border-radius:12px">${ic(icon(l),'ico-s')}</span><div class="grow"><div class="t" style="font-size:14px">${esc(nameOf(l.by))} ${esc(verb(l))}</div><div class="s num">${esc(l.time)}</div></div><button class="iconbtn sm" data-a="unlog" data-id="${l.id}" aria-label="Delete this entry">${ic('x','ico-s')}</button></div>`).join('')}</div>`:`<div class="empty">${T('today_nothing')}</div>`}
     </section>`;
@@ -1358,6 +1358,28 @@ function chatSheet(){
 
 /* ---------- pawmates sheet ---------- */
 function pawmatesSheet(){
+  // Subscription gate
+  if (!subscribed) return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))">
+    <div class="grab"></div>
+    <div style="text-align:center;padding:10px 0 16px">
+      <div style="font-size:52px;margin-bottom:10px">🐾</div>
+      <h2 id="pmTitle">Pawmates</h2>
+      <p class="muted" style="margin:8px 0 0">Find playmates and mates for ${esc(S.pet.name)} nearby. Swipe, match, and chat — all in one place.</p>
+    </div>
+    <div style="background:var(--tint);border-radius:18px;padding:14px 16px;margin-bottom:14px">
+      <div style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Included in Family Plan</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        ${['Swipe profiles of dogs &amp; cats nearby','❤️ Match and start a conversation','Live family sync across all phones','Unlimited family members'].map(f=>`<div style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700">${ic('check','ico-s')}<span>${f}</span></div>`).join('')}
+      </div>
+    </div>
+    <div class="sub-hero" style="margin-bottom:12px">
+      <div style="font-size:13px;font-weight:800;color:var(--on-sun);margin-bottom:6px">KUDI FAMILY PLAN</div>
+      <div class="price"><sup>$</sup>3.99<sub>/mo</sub></div>
+    </div>
+    <button class="btn ink xl block" data-a="subscribePawmates">Unlock Pawmates · $3.99/mo</button>
+    <button class="btn ghost block" style="margin-top:6px" data-a="close">Maybe later</button>
+  </div>`;
+
   const ms = loadPawmates();
   const matched = ms.matched.length;
 
@@ -1733,6 +1755,7 @@ const A = {
     if (card){ card.classList.add('pm-swipe-l'); setTimeout(()=>{ ui.sheet = {type:'pawmates'}; render({keepScroll:true}); }, 320); }
     else { ui.sheet = {type:'pawmates'}; render({keepScroll:true}); }
   },
+  subscribePawmates(){ subscribed = true; lsSet(LSSUB, '1'); ui.sheet = {type:'pawmates'}; render({keepScroll:true}); toast(T('toast_sub_on')); if (!remote) startHttpSync(); },
   pawmatesContinue(){ ui.sheet = {type:'pawmates'}; render({keepScroll:true}); },
   pawmatesReset(){ savePawmates({liked:[],passed:[],matched:[],chats:{}}); ui.sheet = {type:'pawmates'}; render({keepScroll:true}); },
   chatOpen(d){ ui.sheet = {type:'chat', pid:d.pid}; render({keepScroll:true}); },
