@@ -1,0 +1,491 @@
+<title>Kudi Design Tokens</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/*TOKENS*/
+
+/* ---------- Page: a specimen sheet built only from the tokens above ---------- */
+*{box-sizing:border-box}
+html,body{background:var(--color-bg)}
+body{color:var(--color-ink);font:var(--type-body);-webkit-font-smoothing:antialiased;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:0 var(--space-16)}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+p{margin:0}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--color-focus);outline-offset:2px;border-radius:var(--radius-xs)}
+.wrap{max-width:1040px;margin:0 auto}
+.eyebrow{font:var(--type-label);color:var(--color-ink-2)}
+.muted{color:var(--color-ink-2)}
+svg.i{width:var(--icon-md);height:var(--icon-md);flex-shrink:0}
+
+/* masthead */
+.mast{background:var(--color-feature);color:var(--color-on-feature);border-radius:0 0 var(--radius-xl) var(--radius-xl);
+  margin-inline:calc(-1 * max(16px, env(safe-area-inset-left, 0px)));padding:var(--space-10) max(16px, env(safe-area-inset-left, 0px)) var(--space-8);position:relative;overflow:hidden}
+.mast .paw{position:absolute;right:-28px;bottom:-60px;color:var(--color-primary);transform:rotate(-14deg)}
+.mast .paw svg{width:180px;height:180px}
+.mast .eyebrow{color:var(--color-feature-ink-2)}
+.mast .seg{background:var(--color-feature);border:var(--stroke-hair) solid var(--color-feature-line)}
+.mast .seg button{color:var(--color-on-feature)}
+.mast .seg button[aria-pressed="true"]{background:var(--color-pink);color:var(--color-on-pink)}
+.mast .wrap{display:flex;flex-wrap:wrap;gap:var(--space-6);align-items:flex-end;justify-content:space-between}
+.wordmark{display:flex;align-items:center;gap:var(--space-3);font:var(--weight-bold) 72px/1 var(--font-sans);letter-spacing:var(--tracking-display);color:var(--color-feature-title)}
+.wordmark i{width:20px;height:20px;border-radius:var(--radius-round);background:var(--color-primary);display:block}
+.mast p{max-width:52ch;margin-top:var(--space-3);color:var(--color-feature-ink-2)}
+.mast .wrap{position:relative;z-index:1}
+.seg{display:inline-grid;grid-auto-flow:column;background:var(--color-surface-2);border-radius:var(--radius-pill);padding:var(--space-1);gap:var(--space-1)}
+.seg button{border:0;background:transparent;border-radius:var(--radius-pill);min-height:var(--tap-sm);padding:0 var(--space-4);font:var(--type-label);color:var(--color-ink-2)}
+.seg button[aria-pressed="true"]{background:var(--color-surface);color:var(--color-ink);box-shadow:var(--shadow-1)}
+
+/* sections */
+section{margin-top:var(--space-12);display:flex;flex-direction:column;gap:var(--space-4)}
+.sec-h{display:flex;flex-direction:column;gap:var(--space-1)}
+.sec-h h2{font:var(--type-h1);letter-spacing:var(--tracking-tight)}
+.sec-h p{max-width:65ch;color:var(--color-ink-2)}
+.panel{background:var(--color-surface);border:var(--stroke-hair) solid var(--color-line);border-radius:var(--radius-lg);padding:var(--space-5);min-width:0}
+.sub{font:var(--type-title);margin-bottom:var(--space-3)}
+
+/* usage ratio */
+.ratio{display:flex;height:56px;border-radius:var(--radius-md);overflow:hidden;border:var(--stroke-hair) solid var(--color-line)}
+.ratio span{display:flex;align-items:flex-end;padding:var(--space-2);font:var(--type-caption)}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--space-3);margin-top:var(--space-4)}
+.rule{display:flex;gap:var(--space-3);align-items:flex-start}
+.rule b{display:block;font:var(--type-body-strong)}
+.rule span{color:var(--color-ink-2);font:var(--type-label)}
+.rule i{width:12px;height:12px;border-radius:var(--radius-round);flex-shrink:0;margin-top:5px;border:var(--stroke-hair) solid var(--color-line-strong)}
+
+/* primitive scales */
+.scales{display:flex;flex-direction:column;gap:var(--space-4)}
+.scale{display:grid;grid-template-columns:72px 1fr;gap:var(--space-3);align-items:center}
+.scale .name{font:var(--type-label)}
+.chipsrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:var(--space-2)}
+.sw{border-radius:var(--radius-sm);overflow:hidden;border:var(--stroke-hair) solid var(--color-line)}
+.sw b{display:block;height:40px}
+.sw span{display:block;padding:var(--space-1) var(--space-2) var(--space-2);font:var(--type-caption)}
+.sw span small{display:block;color:var(--color-ink-3);font-family:ui-monospace,Menlo,monospace;font-size:10.5px}
+
+/* semantic pairs */
+.pairs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--space-3)}
+.pair{border-radius:var(--radius-md);padding:var(--space-4);min-height:100px;display:flex;flex-direction:column;justify-content:space-between;gap:var(--space-3);border:var(--stroke-hair) solid var(--color-line)}
+.pair .t{font:var(--type-title)}
+.pair .meta{display:flex;justify-content:space-between;align-items:center;gap:var(--space-2);font:var(--type-caption)}
+.cr{border-radius:var(--radius-pill);padding:2px var(--space-2);background:var(--color-surface);color:var(--color-ink);font:var(--type-micro);white-space:nowrap;border:var(--stroke-hair) solid var(--color-line)}
+
+/* categories */
+.cats{display:flex;flex-wrap:wrap;gap:var(--space-4)}
+.cat{display:flex;align-items:center;gap:var(--space-3);font:var(--type-body-strong)}
+.tile{width:44px;height:44px;border-radius:var(--radius-md);display:grid;place-items:center;flex-shrink:0}
+.cat small{display:block;font:var(--type-caption);color:var(--color-ink-3)}
+
+/* buttons */
+.btn{border:0;border-radius:var(--radius-pill);min-height:var(--tap-min);padding:0 var(--space-6);font:var(--type-title);display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);transition:background .15s,transform .1s;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn.lg{min-height:var(--tap-lg)}
+.btn.sm{min-height:var(--tap-sm);padding:0 var(--space-4);font:var(--type-label);font-weight:var(--weight-semibold)}
+.btn.primary{background:var(--color-primary);color:var(--color-on-primary)}
+.btn.primary:hover{background:var(--color-primary-hover)}
+.btn.secondary{background:var(--color-surface-2);color:var(--color-ink)}
+.btn.secondary:hover{background:var(--color-surface-3)}
+.btn.float{background:var(--color-surface);color:var(--color-ink);box-shadow:var(--shadow-2);padding-left:var(--space-2)}
+.btn.ghost{background:transparent;color:var(--color-ink);padding-inline:var(--space-3)}
+.btn.danger{background:var(--color-danger-bg);color:var(--color-danger)}
+.btn[disabled]{background:var(--color-surface-2);color:var(--color-ink-3);cursor:not-allowed;transform:none;box-shadow:none}
+.btn.is-pressed{background:var(--color-primary-pressed);transform:scale(.97)}
+.btn-grid{display:grid;grid-template-columns:150px repeat(3,minmax(0,1fr));gap:var(--space-4) var(--space-3);align-items:center}
+.btn-grid .h{font:var(--type-caption);color:var(--color-ink-3)}
+.btn-grid .n b{display:block;font:var(--type-body-strong)}
+.btn-grid .n span{font:var(--type-caption);color:var(--color-ink-2)}
+.btn-grid .c{min-width:0}
+.btn-grid .c .btn{max-width:100%}
+.iconbtn{width:40px;height:40px;border-radius:var(--radius-round);border:0;background:transparent;display:grid;place-items:center;color:var(--color-ink)}
+.iconbtn.fill{background:var(--color-surface-2)}
+.iconbtn{position:relative}
+.ndot{position:absolute;top:8px;right:8px;width:9px;height:9px;border-radius:var(--radius-round);background:var(--color-pink-strong);border:2px solid var(--color-bg)}
+.badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:var(--radius-pill);background:var(--color-pink);color:var(--color-on-pink);font:var(--type-micro);font-variant-numeric:tabular-nums}
+.av{width:32px;height:32px;border-radius:var(--radius-round);display:grid;place-items:center;font:var(--type-micro);background:var(--color-surface-2);color:var(--color-ink);box-shadow:0 0 0 2px var(--color-bg),0 0 0 4px var(--color-pink)}
+.avs{display:flex;gap:var(--space-3);justify-content:center;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:var(--space-1);min-height:var(--tap-sm);padding:0 var(--space-3);border-radius:var(--radius-pill);border:var(--stroke-hair) solid var(--color-line-strong);font:var(--type-label);background:var(--color-bg);color:var(--color-ink)}
+.chip[aria-pressed="true"]{background:var(--color-pink-soft);border-color:var(--color-pink);color:var(--color-ink)}
+.heart{color:var(--color-pink-strong)}
+.heart svg{fill:currentColor}
+.tabdemo{display:grid;grid-template-columns:repeat(4,64px);gap:var(--space-1);background:var(--color-surface);border:var(--stroke-hair) solid var(--color-line);border-radius:var(--radius-lg);padding:var(--space-2);box-shadow:var(--shadow-2)}
+.tabdemo span{display:flex;flex-direction:column;align-items:center;gap:2px;font:var(--type-micro);color:var(--color-ink-3);padding-block:var(--space-1)}
+.tabdemo span.on{color:var(--color-ink)}
+.tabdemo span.on::after{content:"";width:5px;height:5px;border-radius:var(--radius-round);background:var(--color-pink-strong)}
+.details{display:flex;flex-wrap:wrap;gap:var(--space-6);align-items:center}
+.details figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:var(--space-2)}
+.details figcaption{font:var(--type-caption);color:var(--color-ink-2)}
+.week div.today{color:var(--color-on-feature);font-weight:var(--weight-bold)}
+.week div.today::after{content:"";width:5px;height:5px;border-radius:var(--radius-round);background:var(--color-primary)}
+::selection{background:var(--color-pink-soft)}
+
+/* type */
+.icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:var(--space-2)}
+.icon-grid div{display:flex;flex-direction:column;align-items:center;gap:var(--space-2);padding:var(--space-4) var(--space-2);border-radius:var(--radius-md);background:var(--color-surface-2);text-align:center}
+.icon-grid svg{width:var(--icon-lg);height:var(--icon-lg)}
+.icon-grid b{font:var(--type-label);font-weight:var(--weight-semibold)}
+.icon-grid code{font-size:10.5px;color:var(--color-ink-2)}
+.type-row{display:grid;grid-template-columns:150px 1fr;gap:var(--space-4);align-items:baseline;padding-block:var(--space-4);border-bottom:var(--stroke-hair) solid var(--color-line)}
+.type-row:last-child{border-bottom:0}
+.type-row .spec{display:flex;flex-direction:column;gap:2px;font:var(--type-caption);color:var(--color-ink-2)}
+.type-row .spec b{font:var(--type-label);font-weight:var(--weight-semibold);color:var(--color-ink)}
+.type-row .sample{min-width:0;overflow-wrap:anywhere}
+.weights{display:flex;flex-wrap:wrap;gap:var(--space-6);font-size:var(--text-h3)}
+
+/* spacing */
+.space-row{display:grid;grid-template-columns:96px 52px 1fr;gap:var(--space-3);align-items:center;padding-block:var(--space-1)}
+.space-row b{display:block;height:16px;border-radius:var(--radius-xs);background:var(--color-primary)}
+.space-row code{color:var(--color-ink-2)}
+
+/* radius */
+.radii{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:var(--space-3)}
+.rad{display:flex;flex-direction:column;gap:var(--space-2)}
+.rad b{display:block;aspect-ratio:1.3;max-width:100%;background:var(--color-surface-2);border:var(--stroke-ui) solid var(--color-line-strong)}
+.rad span{font:var(--type-label)}
+.rad small{font:var(--type-caption);color:var(--color-ink-2)}
+
+/* elevation */
+.elev{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-5);padding:var(--space-2)}
+.elev div{background:var(--color-surface);border-radius:var(--radius-lg);padding:var(--space-5);min-height:96px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px}
+
+/* layout */
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--space-4)}
+.phone{width:min(280px,100%);margin:0 auto;aspect-ratio:280/560;border:6px solid var(--color-ink);border-radius:40px;background:var(--color-bg);position:relative;overflow:hidden}
+.phone .hd{position:absolute;inset:0 0 auto;height:56px;border-bottom:var(--stroke-hair) solid var(--color-line);display:flex;align-items:flex-end;padding:0 12px 8px;font:var(--type-caption);font-weight:600}
+.phone .g{position:absolute;top:0;bottom:0;width:12px;background:repeating-linear-gradient(45deg,var(--pink-100) 0 3px,transparent 3px 7px)}
+.phone .g.l{left:0}.phone .g.r{right:0}
+.phone .col{position:absolute;left:12px;right:12px;top:68px;display:flex;flex-direction:column;gap:8px}
+.phone .col i{display:block;height:38px;border-radius:12px;background:var(--color-surface-2)}
+.phone .col i.h{height:150px;background:var(--color-feature)}
+.phone .ab{position:absolute;left:0;right:0;bottom:0;height:64px;border-top:var(--stroke-hair) solid var(--color-line);display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 12px 14px}
+.phone .ab i{border-radius:999px;background:var(--color-surface-2)}
+.phone .ab i.p{background:var(--color-primary)}
+.phone .tag{position:absolute;background:var(--color-tooltip);color:var(--color-on-tooltip);border-radius:var(--radius-pill);padding:2px 8px;font:var(--type-micro);white-space:nowrap}
+.kv{display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-2) var(--space-3);align-items:baseline}
+.kv code{color:var(--color-ink);font-weight:600}
+.kv span{color:var(--color-ink-2);font:var(--type-caption)}
+.kv b{font:var(--type-label);font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+
+/* in use: a screen in the spirit of the reference */
+.screen{max-width:390px;width:100%;margin:0 auto;border:8px solid var(--color-ink);border-radius:48px;background:var(--color-bg);overflow:hidden;display:flex;flex-direction:column}
+.s-top{display:flex;align-items:center;justify-content:space-between;min-height:var(--header-h);padding:var(--space-6) var(--space-3) 0;border-bottom:var(--stroke-hair) solid var(--color-line)}
+.s-top .acts{display:flex}
+.s-body{padding:var(--space-5) var(--layout-gutter) var(--space-6);display:flex;flex-direction:column;gap:var(--space-5)}
+.stat{display:flex;flex-direction:column;align-items:center;gap:var(--space-1);text-align:center}
+.stat .cond{display:flex;align-items:center;gap:var(--space-2);font:var(--type-title);font-weight:var(--weight-medium)}
+.stat .big{font:var(--type-display);letter-spacing:var(--tracking-display);font-variant-numeric:tabular-nums}
+.stat .big small{font-size:var(--text-h2);letter-spacing:0;color:var(--color-ink-2);margin-left:var(--space-1)}
+.stat .meta{display:flex;gap:var(--space-4);flex-wrap:wrap;justify-content:center;font:var(--type-label);color:var(--color-ink-2);font-variant-numeric:tabular-nums}
+.hl{background:var(--color-feature);color:var(--color-on-feature);border-radius:var(--radius-lg);padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-4)}
+.hl .bars{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-2)}
+.hl .bars i{height:3px;border-radius:var(--radius-pill);background:var(--color-feature-line)}
+.hl .bars i.on{background:var(--color-primary)}
+.hl .hrow{display:flex;justify-content:space-between;align-items:center;font:var(--type-body-strong)}
+.hl .hrow > span:last-child{display:flex;align-items:center;gap:var(--space-1);font:var(--type-label);color:var(--color-primary);font-weight:var(--weight-semibold)}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--space-2);align-items:end;height:110px;position:relative;padding-top:var(--space-8)}
+.week div{display:flex;flex-direction:column;align-items:center;gap:var(--space-1);font:var(--type-micro);color:var(--color-feature-ink-2);height:100%;justify-content:flex-end}
+.week b{width:100%;max-width:26px;border-radius:var(--radius-xs);background:var(--color-feature-line);display:block}
+.week b.on{background:var(--color-primary)}
+.tip{position:absolute;top:0;right:8%;background:var(--color-on-feature);color:var(--color-feature);border-radius:var(--radius-pill);padding:var(--space-1) var(--space-3);font:var(--type-label);font-weight:var(--weight-semibold);display:flex;gap:var(--space-1);align-items:center;box-shadow:var(--shadow-3)}
+.hl h4{font:var(--type-h2);text-align:center;color:var(--color-feature-title)}
+.hl p{text-align:center;color:var(--color-feature-ink-2);font:var(--type-label)}
+.hl .av{box-shadow:0 0 0 2px var(--color-feature),0 0 0 4px var(--color-feature-line);background:var(--color-on-feature);color:var(--forest-900)}
+.hl .center{display:flex;justify-content:center}
+.s-list{display:flex;flex-direction:column}
+.li{display:flex;align-items:center;gap:var(--space-3);padding-block:var(--space-3);border-bottom:var(--stroke-hair) solid var(--color-line)}
+.li:last-child{border-bottom:0}
+.li .tx{flex:1;min-width:0}
+.li .tx b{display:block;font:var(--type-title)}
+.li .tx span{font:var(--type-caption);color:var(--color-ink-2)}
+.pill{border-radius:var(--radius-pill);padding:var(--space-1) var(--space-3);font:var(--type-label);font-weight:var(--weight-semibold);white-space:nowrap}
+.s-actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);padding:var(--space-3) var(--layout-gutter) var(--space-6);border-top:var(--stroke-hair) solid var(--color-line)}
+.s-actions .btn{width:100%}
+.home{width:120px;height:5px;border-radius:var(--radius-pill);background:var(--color-ink);margin:0 auto var(--space-2)}
+
+/* code */
+.codebar{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);border-radius:var(--radius-md);padding:var(--space-4);font-size:12px;line-height:18px;color:var(--color-ink)}
+
+@media (max-width:640px){
+  .type-row{grid-template-columns:1fr;gap:var(--space-2)}
+  .scale{grid-template-columns:1fr;gap:var(--space-2)}
+  .space-row{grid-template-columns:80px 44px 1fr}
+  .btn-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .btn-grid .n{grid-column:1/-1;margin-top:var(--space-2)}
+  .btn-grid .h0{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="mast">
+  <span class="paw" aria-hidden="true">${ICON.paw}</span>
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Design tokens · v0.4</div>
+      <div class="wordmark" style="margin-top:var(--space-2)">Kudi<i aria-hidden="true"></i></div>
+      <p>Healthy care for happy tails. Screens stay white and calm. Deep forest green, lime and cream carry the brand, and a warm blush pink picks out small details.</p>
+    </div>
+    <div class="seg" role="group" aria-label="Theme">
+      <button type="button" id="th-system" data-t="system">System</button>
+      <button type="button" id="th-light" data-t="light">Light</button>
+      <button type="button" id="th-dark" data-t="dark">Dark</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="usage">
+  <div class="sec-h"><h2>How much colour</h2>
+    <p>Most of a screen is white, grey and green-black text. Lime marks the action you most want people to take, pink picks out small details, and one deep-green card per screen carries the brand.</p></div>
+  <div class="panel">
+    <div class="ratio" aria-hidden="true">
+      <span style="flex:56;background:var(--color-bg);color:var(--color-ink-2)">Background 62%</span>
+      <span style="flex:20;background:var(--color-surface-2);color:var(--color-ink-2)">Grey 20%</span>
+      <span style="flex:10;background:var(--color-ink);color:var(--color-bg)">Ink 10%</span>
+      <span style="flex:5;background:var(--color-primary);color:var(--color-on-primary)">Lime</span>
+      <span style="flex:2;background:var(--color-pink)"></span>
+      <span style="flex:6;background:var(--color-feature);color:var(--color-on-feature)">Green card</span>
+    </div>
+    <div class="rules">
+      <div class="rule"><i style="background:var(--color-primary)"></i><div><b>Lime: one per screen</b><span>The primary button, the active progress bar, today's bar in a chart.</span></div></div>
+      <div class="rule"><i style="background:var(--color-pink)"></i><div><b>Pink: small details</b><span>Badges, notification dots, hearts, the active tab dot and selected chips. Never a button, a card or a headline.</span></div></div>
+      <div class="rule"><i style="background:var(--color-brand)"></i><div><b>Forest: text, brand and links</b><span>Text is a green-black; deep green for links, the selected tab icon and success.</span></div></div>
+      <div class="rule"><i style="background:var(--cat-meds-bg)"></i><div><b>Pastels: small tiles only</b><span>Category icon tiles and status pills. Never a full card or a page background.</span></div></div>
+      <div class="rule"><i style="background:var(--color-feature)"></i><div><b>One deep-green feature card</b><span>At most one per screen: cream text, lime for the data, and one pink detail at most.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="buttons">
+  <div class="sec-h"><h2>Buttons</h2>
+    <p>Four buttons, all pill-shaped and 48px tall (56px in the bottom action bar). Lime with dark forest text is the primary button and the most prominent colour in the app.</p></div>
+  <div class="panel">
+    <div class="btn-grid">
+      <span class="h h0"></span><span class="h">Default</span><span class="h">Pressed</span><span class="h">Disabled</span>
+
+      <div class="n"><b>Primary</b><span>primary / on-primary</span></div>
+      <div class="c"><button class="btn primary" type="button" id="b1">${ICON.down}Log meal</button></div>
+      <div class="c"><button class="btn primary is-pressed" type="button" id="b2">${ICON.down}Log meal</button></div>
+      <div class="c"><button class="btn primary" type="button" id="b3" disabled>${ICON.down}Log meal</button></div>
+
+      <div class="n"><b>Secondary</b><span>surface-2 / ink</span></div>
+      <div class="c"><button class="btn secondary" type="button" id="b4">History</button></div>
+      <div class="c"><button class="btn secondary" type="button" id="b5" style="background:var(--color-surface-3)">History</button></div>
+      <div class="c"><button class="btn secondary" type="button" id="b6" disabled>History</button></div>
+
+      <div class="n"><b>Ghost</b><span>transparent / ink</span></div>
+      <div class="c"><button class="btn ghost" type="button" id="b7">Skip</button></div>
+      <div class="c"><button class="btn ghost" type="button" id="b8" style="background:var(--color-surface-2)">Skip</button></div>
+      <div class="c"><button class="btn ghost" type="button" id="b9" disabled style="background:transparent">Skip</button></div>
+
+      <div class="n"><b>Danger</b><span>danger-bg / danger</span></div>
+      <div class="c"><button class="btn danger" type="button" id="b10">Delete</button></div>
+      <div class="c"><button class="btn danger" type="button" id="b11" style="filter:brightness(.96)">Delete</button></div>
+      <div class="c"><button class="btn danger" type="button" id="b12" disabled>Delete</button></div>
+    </div>
+  </div>
+  <div class="panel" style="display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center">
+    <span class="muted" style="font:var(--type-label)">Sizes and helpers</span>
+    <button class="btn primary lg" type="button" id="b13">Large 56</button>
+    <button class="btn primary" type="button" id="b14">Default 48</button>
+    <button class="btn primary sm" type="button" id="b15">Small 36</button>
+    <button class="btn float" type="button" id="b16"><span class="tile" style="width:32px;height:32px;border-radius:var(--radius-round);background:var(--cat-vax-bg);color:var(--cat-vax-ink)">${ICON.vax}</span>Vaccine plan</button>
+    <button class="iconbtn fill" type="button" aria-label="Reminders, 1 new" id="b17">${ICON.bell}<span class="ndot"></span></button>
+  </div>
+</section>
+
+<section id="colour">
+  <div class="sec-h"><h2>Colour tokens</h2>
+    <p>Primitives are raw scales. Screens use the semantic tokens, which change for dark mode. The contrast score is measured live.</p></div>
+  <div class="panel"><div class="sub">Semantic</div><div class="pairs" id="pairs"></div></div>
+  <div class="panel"><div class="sub">Pink details</div>
+    <p class="muted" style="margin-bottom:var(--space-4)">Small, warm touches. Each one is a dot, ring, badge or outline, never a fill bigger than a chip.</p>
+    <div class="details">
+      <figure><button class="iconbtn fill" type="button" aria-label="Reminders, 1 new" id="p1">${ICON.bell}<span class="ndot"></span></button><figcaption>New reminder dot</figcaption></figure>
+      <figure><span class="badge">3</span><figcaption>Count badge</figcaption></figure>
+      <figure><span class="av">NB</span><figcaption>Who fed today</figcaption></figure>
+      <figure><span class="heart">${ICON.heart}</span><figcaption>Favourite</figcaption></figure>
+      <figure><span style="display:flex;gap:var(--space-2)"><button class="chip" type="button" aria-pressed="true" id="p2">Dry food</button><button class="chip" type="button" aria-pressed="false" id="p3">Wet food</button></span><figcaption>Selected chip</figcaption></figure>
+      <figure><span class="tabdemo"><span class="on">${ICON.home}Today</span><span>${ICON.paw}Pets</span><span>${ICON.bell}Care</span><span>${ICON.user}Me</span></span><figcaption>Active tab</figcaption></figure>
+    </div></div>
+  <div class="panel"><div class="sub">Pet-care categories</div>
+    <p class="muted" style="margin-bottom:var(--space-4)">Pale tile, coloured icon. This is where most of the brand colour lives.</p>
+    <div class="cats" id="cats"></div></div>
+  <div class="panel scales"><div class="sub" style="margin:0">Primitives</div><div id="scales" class="scales"></div></div>
+</section>
+
+<section id="icons">
+  <div class="sec-h"><h2>Icons</h2>
+    <p>One pack: <a href="https://lucide.dev" style="color:var(--color-brand)">Lucide</a>, rounded outline icons on a 24px grid. Draw them at 20px (16px in chips, 24px in the tab bar) with the default 2px stroke, in <code>currentColor</code>. No hand-drawn icons and no second pack; if Lucide has no fitting icon, pick the closest one.</p></div>
+  <div class="panel icon-grid" id="icongrid"></div>
+</section>
+
+<section id="type">
+  <div class="sec-h"><h2>Typography</h2>
+    <p>Figtree, a clean geometric sans used by many current apps. Weights stay at 400 to 700. Big numbers use medium weight with tight tracking, the way the temperature does in the reference.</p></div>
+  <div class="panel" id="typerows"></div>
+  <div class="panel"><div class="sub">Weights</div>
+    <div class="weights"><span style="font-weight:400">Regular 400</span><span style="font-weight:500">Medium 500</span><span style="font-weight:600">Semibold 600</span><span style="font-weight:700">Bold 700</span></div></div>
+</section>
+
+<section id="spacing">
+  <div class="sec-h"><h2>Spacing</h2>
+    <p>A 4px scale. 16 is the screen gutter and card padding, 12 the gap between cards, 24 the gap between sections.</p></div>
+  <div class="panel" id="spaces"></div>
+</section>
+
+<section id="radius">
+  <div class="sec-h"><h2>Radius</h2></div>
+  <div class="panel radii" id="radii"></div>
+</section>
+
+<section id="elevation">
+  <div class="sec-h"><h2>Elevation</h2>
+    <p>Mostly flat. Hairline dividers separate content; shadows are only for things that float.</p></div>
+  <div class="elev">
+    <div style="border:var(--stroke-hair) solid var(--color-line)"><b>Hairline</b><span class="muted">Cards, list rows, dividers</span></div>
+    <div style="box-shadow:var(--shadow-1)"><b>shadow-1</b><span class="muted">Chips, segmented thumb</span></div>
+    <div style="box-shadow:var(--shadow-2)"><b>shadow-2</b><span class="muted">Floating pill button</span></div>
+    <div style="box-shadow:var(--shadow-3)"><b>shadow-3</b><span class="muted">Sheets, tooltips</span></div>
+  </div>
+</section>
+
+<section id="layout">
+  <div class="sec-h"><h2>Layout</h2>
+    <p>One phone-width column centred on wide screens. The top bar holds back and actions; detail screens end with a fixed action bar of primary + secondary button; main screens use the tab bar instead.</p></div>
+  <div class="two">
+    <div class="panel">
+      <div class="phone" aria-hidden="true">
+        <div class="hd">header 56</div>
+        <div class="g l"></div><div class="g r"></div>
+        <div class="col"><i style="height:70px;background:transparent"></i><i class="h"></i><i></i><i></i></div>
+        <div class="ab"><i class="p"></i><i></i></div>
+        <span class="tag" style="right:18px;top:96px">gutter 16</span>
+        <span class="tag" style="left:50%;top:330px;transform:translateX(-50%)">gap 12</span>
+        <span class="tag" style="left:50%;bottom:72px;transform:translateX(-50%)">action bar 80</span>
+      </div>
+    </div>
+    <div class="panel"><div class="kv" id="layoutkv"></div></div>
+  </div>
+</section>
+
+<section id="inuse">
+  <div class="sec-h"><h2>In use</h2>
+    <p>A pet's feeding screen built only from these tokens, to check the balance. Example data.</p></div>
+  <div class="screen">
+    <div class="s-top">
+      <button class="iconbtn" type="button" aria-label="Back" id="s1">${ICON.back}</button>
+      <div class="acts">
+        <button class="iconbtn" type="button" aria-label="Share" id="s2">${ICON.share}</button>
+        <button class="iconbtn heart" type="button" aria-label="Favourite" id="s3">${ICON.heart}</button>
+        <button class="iconbtn" type="button" aria-label="Reminders, 1 new" id="s4">${ICON.bell}<span class="ndot"></span></button>
+      </div>
+    </div>
+    <div class="s-body">
+      <div class="stat">
+        <div class="cond"><span class="tile" style="width:28px;height:28px;border-radius:var(--radius-sm);background:var(--cat-feed-bg);color:var(--cat-feed-ink)">${ICON.feed}</span>Kudi ate today</div>
+        <div class="big">320<small>g</small></div>
+        <div class="meta"><span>Goal 480 g</span><span>Breakfast 08:10</span><span>Lunch 13:25</span></div>
+      </div>
+      <div class="hl">
+        <div class="bars"><i class="on"></i><i class="on"></i><i></i><i></i></div>
+        <div class="hrow"><span style="color:var(--color-on-feature);font:var(--type-body-strong);gap:var(--space-2)">This week <span class="badge">3</span></span><span>${ICON.up}On track</span></div>
+        <div class="week">
+          <span class="tip">${ICON.feed}470 g · Thu</span>
+          <div><b style="height:70%"></b>M</div><div><b style="height:82%"></b>T</div><div><b style="height:64%"></b>W</div><div><b class="on" style="height:92%"></b>T</div><div><b style="height:58%"></b>F</div><div><b style="height:76%"></b>S</div><div class="today"><b style="height:40%"></b>S</div>
+        </div>
+        <h4>Who fed Kudi this week?</h4>
+        <div class="avs"><span class="av">N</span><span class="av">D</span><span class="av">M</span></div>
+        <p>Nino 9 meals · Dato 6 meals · Mum 4 meals</p>
+        <div class="center"><button class="btn float" type="button" id="s5"><span class="tile" style="width:32px;height:32px;border-radius:var(--radius-round);background:var(--cat-trip-bg);color:var(--cat-trip-ink)">${ICON.users}</span>Family log</button></div>
+      </div>
+      <div class="s-list" id="demolist"></div>
+    </div>
+    <div class="s-actions">
+      <button class="btn primary lg" type="button" id="s6">${ICON.down}Log dinner</button>
+      <button class="btn secondary lg" type="button" id="s7">${ICON.clock}History</button>
+    </div>
+    <div class="home" aria-hidden="true"></div>
+  </div>
+</section>
+
+<section id="code">
+  <div class="sec-h"><h2>tokens.css</h2>
+    <p>The same file is saved in the repo at <code>design/tokens.css</code>.</p></div>
+  <div class="panel" style="display:flex;flex-direction:column;gap:var(--space-3)">
+    <div class="codebar"><span class="muted">Paste into the app's <code>&lt;style&gt;</code> or link it.</span><button class="btn secondary sm" type="button" id="copy">Copy CSS</button></div>
+    <pre id="src">/*SRC*/</pre>
+  </div>
+</section>
+</main>
+
+<script>
+const root=document.documentElement;
+const cssv=n=>getComputedStyle(root).getPropertyValue(n).trim();
+const LUCIDE=/*LUCIDE*/;
+// Short names used in this page -> Lucide icon names. Every icon comes from lucide-static.
+const ALIAS={feed:'soup',meds:'pill',vax:'syringe',heat:'calendar-heart',weight:'weight',trip:'luggage',down:'circle-arrow-down',back:'arrow-left',share:'forward',up:'trending-up',clock:'history',users:'users',bell:'bell',heart:'heart',home:'house',paw:'paw-print',user:'user',check:'check'};
+const ic=k=>{const n=ALIAS[k]||k;return `<svg class="i" data-icon="${n}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${LUCIDE[n]}</svg>`};
+const ICON=new Proxy({}, {get:(_,k)=>ic(k)});
+document.querySelectorAll('header, main').forEach(m=>{m.innerHTML=m.innerHTML.replace(/\$\{ICON\.(\w+)\}/g,(_,k)=>ic(k))});
+
+const SCALES={forest:[50,100,200,300,500,700,800,900,950],pink:[50,100,200,300,400,600,800],lime:[50,100,200,300,400,600],cream:[50,100,200],yellow:[50,100,300,700],red:[50,100,300,700],grey:[0,25,50,100,200,300,400,500,600,700]};
+const PAIRS=[
+  ['Background','--color-bg','--color-ink'],['Surface 2','--color-surface-2','--color-ink'],['Secondary text','--color-bg','--color-ink-2'],
+  ['Primary action','--color-primary','--color-on-primary'],['Tooltip','--color-tooltip','--color-on-tooltip'],['Brand link','--color-bg','--color-brand'],['Pink detail','--color-pink','--color-on-pink'],['Feature card','--color-feature','--color-feature-title'],
+  ['Success','--color-success-bg','--color-success'],['Warning','--color-warning-bg','--color-warning'],['Danger','--color-danger-bg','--color-danger'],['Info','--color-info-bg','--color-info']
+];
+const CATS=[['feed','Feeding'],['meds','Medicine'],['vax','Vaccines'],['heat','Heat cycle'],['weight','Weight'],['trip','Travel']];
+const TYPE=[
+  ['display','56 / 60 · 500','320 g','display'],['h1','28 / 34 · 700','Today','tight'],['h2','22 / 28 · 600','Who fed Kudi this week?',''],
+  ['h3','18 / 24 · 600','Upcoming vaccines',''],['title','16 / 22 · 600','Rabies booster',''],
+  ['body','15 / 22 · 400','Due in 12 days. Bring the vaccine passport and last year’s certificate to Dr. Beridze.',''],
+  ['label','13 / 18 · 500','Fed by Nino · 08:10',''],['caption','12 / 16 · 400','Updated 2 min ago',''],['micro','11 / 14 · 600','Today · Pets · Care · Me','']
+];
+const SPACE=['px','1','2','3','4','5','6','8','10','12','16'];
+const RADII=[['xs','Tags, checkbox'],['sm','Inputs'],['md','Icon tiles, list groups'],['lg','Cards, highlight card'],['xl','Bottom sheets'],['pill','Buttons, chips, tooltips']];
+const LAYOUT=[['--layout-max','App column'],['--layout-gutter','Side padding'],['--layout-gap','Between cards'],['--layout-section','Between sections'],['--layout-cols','Quick-action grid'],['--header-h','Top bar'],['--tabbar-h','Tab bar (+ safe area)'],['--actionbar-h','Bottom action bar'],['--tap-min','Button / touch target'],['--tap-lg','Action-bar button'],['--tap-sm','Small button'],['--icon-md','Default icon'],['--bp-sm','Small phone'],['--bp-md','Content width'],['--bp-lg','Tablet']];
+
+function lum(rgb){const c=rgb.map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]}
+function rgbOf(el,prop){const m=getComputedStyle(el)[prop].match(/[\d.]+/g);return m?m.slice(0,3).map(Number):[0,0,0]}
+
+const ICON_USES=[['feed','Feeding'],['meds','Medicine'],['vax','Vaccines'],['heat','Heat cycle'],['weight','Weight'],['trip','Travel'],['paw','Pets tab'],['home','Today tab'],['bell','Reminders'],['user','Me tab'],['users','Family'],['heart','Favourite'],['down','Log'],['clock','History'],['back','Back'],['share','Share'],['up','Trend'],['check','Done']];
+function render(){
+  document.getElementById('icongrid').innerHTML=ICON_USES.map(([k,l])=>`<div>${ic(k)}<b>${l}</b><code>${ALIAS[k]}</code></div>`).join('');
+  document.getElementById('scales').innerHTML=Object.entries(SCALES).map(([n,steps])=>`<div class="scale"><div class="name">${n}</div><div class="chipsrow">${steps.map(s=>`<div class="sw"><b style="background:var(--${n}-${s})"></b><span>${s}<small>${cssv(`--${n}-${s}`).toUpperCase()}</small></span></div>`).join('')}</div></div>`).join('');
+  const pairs=document.getElementById('pairs');
+  pairs.innerHTML=PAIRS.map(([l,bg,fg])=>`<div class="pair" style="background:var(${bg});color:var(${fg})"><div class="t">${l}</div><div class="meta"><span><code>${bg.replace('--color-','')}</code> / <code>${fg.replace('--color-','')}</code></span><span class="cr"></span></div></div>`).join('');
+  pairs.querySelectorAll('.pair').forEach(p=>{
+    const a=lum(rgbOf(p,'backgroundColor')),b=lum(rgbOf(p,'color'));
+    const r=(Math.max(a,b)+.05)/(Math.min(a,b)+.05);
+    p.querySelector('.cr').textContent=r.toFixed(1)+':1 '+(r>=7?'AAA':r>=4.5?'AA':r>=3?'AA large':'Low');
+  });
+  document.getElementById('cats').innerHTML=CATS.map(([k,l])=>`<div class="cat"><span class="tile" style="background:var(--cat-${k}-bg);color:var(--cat-${k}-ink)">${ic(k)}</span><div>${l}<small>cat-${k}</small></div></div>`).join('');
+  document.getElementById('typerows').innerHTML=TYPE.map(([t,spec,txt,tr])=>`<div class="type-row"><div class="spec"><b>${t}</b><span>${spec}</span><code>--type-${t}</code></div><div class="sample" style="font:var(--type-${t});${tr==='tight'?'letter-spacing:var(--tracking-tight);':''}${tr==='display'?'letter-spacing:var(--tracking-display);':''}">${txt}</div></div>`).join('');
+  document.getElementById('spaces').innerHTML=SPACE.map(s=>`<div class="space-row"><code>--space-${s}</code><span class="mono">${cssv('--space-'+s)}</span><span><b style="width:var(--space-${s})"></b></span></div>`).join('');
+  document.getElementById('radii').innerHTML=RADII.map(([r,use])=>`<div class="rad"><b style="border-radius:var(--radius-${r})"></b><span>radius-${r} · ${cssv('--radius-'+r)}</span><small>${use}</small></div>`).join('');
+  document.getElementById('layoutkv').innerHTML=LAYOUT.map(([t,u])=>`<code>${t}</code><span>${u}</span><b>${cssv(t)}</b>`).join('');
+  document.getElementById('demolist').innerHTML=[['meds','Apoquel 16 mg','Vet prescribed · 20:00','Due','warning'],['vax','Rabies booster','In 12 days','Book','info'],['weight','Weight','31.4 kg · stable','Logged','success']].map(([k,t,s,p,tone])=>`<div class="li"><span class="tile" style="background:var(--cat-${k}-bg);color:var(--cat-${k}-ink)">${ic(k)}</span><div class="tx"><b>${t}</b><span>${s}</span></div><span class="pill" style="background:var(--color-${tone}-bg);color:var(--color-${tone})">${p}</span></div>`).join('');
+}
+
+function setTheme(t){
+  if(t==='system')delete root.dataset.theme;else root.dataset.theme=t;
+  document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.t===t)));
+  try{localStorage.setItem('kudi-ds-theme',t)}catch(e){}
+  requestAnimationFrame(render);
+}
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.t)));
+let saved='system';try{saved=localStorage.getItem('kudi-ds-theme')||'system'}catch(e){}
+setTheme(saved);render();
+matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',render);
+
+document.getElementById('copy').addEventListener('click',e=>{
+  const btn=e.currentTarget,pre=document.getElementById('src');
+  const done=()=>{btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy CSS',1600)};
+  const sel=()=>{const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Selected, press copy'};
+  try{navigator.clipboard.writeText(pre.textContent).then(done,sel)}catch(err){sel()}
+});
+</script>

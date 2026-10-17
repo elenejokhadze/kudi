@@ -10,12 +10,14 @@
     "deploy": "vercel deploy",
     "deploy:prod": "vercel deploy --prod",
     "test": "node --test evals/design/*.test.mjs",
-    "eval:jev": "node evals/decisions/palette.eval.mjs"
+    "eval:jev": "node evals/decisions/palette.eval.mjs && node evals/decisions/accent-and-icons.eval.mjs",
+    "design": "node scripts/build-design-page.mjs"
   },
   "engines": {
     "node": ">=18"
   },
   "devDependencies": {
-    "@typesafe-ai/sdk": "^0.6.0"
+    "@typesafe-ai/sdk": "^0.6.0",
+    "lucide-static": "^0.460.0"
   }
 }

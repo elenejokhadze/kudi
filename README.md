@@ -113,6 +113,7 @@ Then in Vercel: **Add New → Project → Import** that repository.
 
 ## Design system and evals
 
-- `design/tokens.css`: every colour, type size, spacing, radius and layout value. `design/index.html` shows them visually.
-- `npm test`: design evals (`evals/design/`). They check WCAG contrast for every text and UI colour pair in light and dark, that both dark blocks match, one lime primary colour, Figtree only, the type scale, the 4px spacing grid and the radius set. No install needed.
+- `design/tokens.css`: every colour, type size, spacing, radius and layout value. `design/index.html` shows them visually; it is built from `design/page.template.html` with `npm run design`.
+- Icons: Lucide only (`lucide-static`), 2px stroke, `currentColor`. No hand-drawn icons.
+- `npm test`: design evals (`evals/design/`). They check WCAG contrast for every text and UI colour pair in light and dark, that both dark blocks match, one lime primary colour, no orange, a feature card with at most one pink detail, Figtree only, the type scale, the 4px spacing grid, the radius set, and that every icon is an exact Lucide icon. Icon checks need `npm install`.
 - `npm run eval:jev`: Jev decision evals (`evals/decisions/`). Each palette decision is asked with its options in two orders to catch position bias; results go to `evals/results/`. Needs `npm install` and `TYPESAFE_API_KEY`.

@@ -38,7 +38,7 @@ const TEXT_PAIRS = [
   ["color-on-primary", "color-primary"], ["color-on-primary", "color-primary-pressed"], ["color-on-tooltip", "color-tooltip"],
   ["color-brand", "color-bg"], ["color-on-pink", "color-pink"], ["color-ink", "color-pink-soft"],
   ["color-on-feature", "color-feature"], ["color-feature-title", "color-feature"], ["color-feature-ink-2", "color-feature"],
-  ["color-on-spark", "color-spark"],
+  
   ["color-success", "color-success-bg"], ["color-warning", "color-warning-bg"], ["color-danger", "color-danger-bg"], ["color-info", "color-info-bg"],
   ...CATS.map((c) => [`cat-${c}-ink`, `cat-${c}-bg`]),
 ];
@@ -76,9 +76,9 @@ describe("colour rules", () => {
     assert.equal(Object.keys(light).filter((k) => /^color-(primary|cta|accent)$/.test(k)).length, 1);
   });
   it("app background stays neutral white", () => assert.equal(val(light, "color-bg").toUpperCase(), "#FFFFFF"));
-  it("the brand palette is forest, pink, lime, cream with orange and yellow sparks", () => {
+  it("the brand palette is forest, lime, cream, pink, with yellow and red for tiles and status only", () => {
     const families = new Set(Object.keys(light).filter((k) => /^[a-z]+-\d+$/.test(k) && !/^(space|shadow)-/.test(k)).map((k) => k.split("-")[0]));
-    assert.deepEqual([...families].sort(), ["cream", "forest", "grey", "lime", "orange", "pink", "red", "yellow"]);
+    assert.deepEqual([...families].sort(), ["cream", "forest", "grey", "lime", "pink", "red", "yellow"]);
   });
 });
 

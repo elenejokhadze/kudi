@@ -1,8 +1,10 @@
-/* Kudi design tokens · v0.3
-   Palette after the Froli identity: deep forest green, bubblegum pink, lime, cream, with orange
-   and yellow sparks. Screens stay clean: white and soft-grey surfaces with green-black ink.
-   Colour lives in a few places only: the lime primary button, pink details (badges, dots,
-   avatar rings, hearts), pastel category tiles, and at most one deep-green feature card per screen.
+/* Kudi design tokens · v0.4
+   Palette after the Froli identity, calmed for the app: deep forest green, lime, cream and a warm
+   blush pink. One second accent only (pink; orange was dropped). Screens stay clean: white and
+   soft-grey surfaces with green-black ink. Colour lives in a few places: the lime primary button,
+   small pink details (badges, dots, hearts, selected chips), pastel category tiles, and at most one
+   deep-green feature card per screen, which carries cream text, lime data and one pink detail at most.
+   Icons: Lucide only (lucide-static), 2px stroke on a 24px grid.
    Primitives (raw scales) come first; components use only the semantic tokens below them.
    Font: Figtree (Google Fonts), weights 400-700. */
 
@@ -14,14 +16,13 @@
   --grey-0:#FFFFFF;   --grey-25:#FAFBFA;  --grey-50:#F4F5F3;  --grey-100:#ECEEEB; --grey-200:#DEE1DD;
   --grey-300:#C5CAC5; --grey-400:#9AA19C; --grey-500:#6A726D; --grey-600:#555D58; --grey-700:#3B423E;
 
-  /* brand: deep forest green, bubblegum pink, lime, cream, with orange and yellow as sparks */
+  /* brand: deep forest green, lime, cream, warm blush pink; yellow and red only for tiles and status */
   --forest-50:#EAF3EE;  --forest-100:#CFE3D7; --forest-200:#9FC7B0; --forest-300:#5FA07D; --forest-500:#1D7A4C;
   --forest-700:#0F5E38; --forest-800:#0B4A2C; --forest-900:#08361F; --forest-950:#06241A;
-  --pink-50:#FEF2FB;   --pink-100:#FCE1F6;  --pink-200:#F9C6EE;  --pink-300:#F5A3E3;  --pink-400:#EE7FD6;
-  --pink-600:#C04BA6;  --pink-800:#6E1F5C;
+  --pink-50:#FEF3F5;   --pink-100:#FCE4E9;  --pink-200:#F9CDD6;  --pink-300:#F4B3C2;  --pink-400:#EC93A8;
+  --pink-600:#C2577A;  --pink-800:#6E2340;
   --lime-50:#F8FCE8;   --lime-100:#F1F9D2;  --lime-200:#E1F2A0;  --lime-300:#C9EA62;  --lime-400:#B5DA3E;  --lime-600:#6F8A16;
   --cream-50:#FBF8F0;  --cream-100:#F6EFDF; --cream-200:#EDE2C9;
-  --orange-50:#FEF3EA; --orange-100:#FDE6D6; --orange-300:#F79A5C; --orange-500:#F2731F; --orange-700:#A8460A;
   --yellow-50:#FFFBE8; --yellow-100:#FDF4C9; --yellow-300:#F4CF34; --yellow-700:#7A6200;
   --red-50:#FEF1EE;    --red-300:#F59C8E;   --red-700:#B3261E;
 
@@ -53,16 +54,13 @@
   --color-pink-soft:var(--pink-50);        /* selected chip, text selection */
   --color-on-pink:var(--forest-900);
 
-  /* feature card: the Froli look, deep green with pink and lime. One per screen at most */
+  /* feature card: deep green with cream text and lime data; one pink detail at most. One per screen */
   --color-feature:var(--forest-800);
   --color-on-feature:var(--cream-50);
-  --color-feature-title:var(--pink-300);
+  --color-feature-title:var(--cream-50);
   --color-feature-ink-2:rgba(251,248,240,.72);
   --color-feature-line:rgba(251,248,240,.18);
 
-  /* sparks: tiny moments only (streak, "new" sticker, celebration) */
-  --color-spark:var(--orange-500);  --color-on-spark:var(--forest-900);
-  --color-sun:var(--yellow-300);
 
   --color-success:var(--forest-700);  --color-success-bg:var(--forest-50);
   --color-warning:var(--yellow-700);  --color-warning-bg:var(--yellow-50);
@@ -73,7 +71,7 @@
   --cat-feed-bg:var(--yellow-100);  --cat-feed-ink:var(--yellow-700);
   --cat-meds-bg:var(--pink-100);    --cat-meds-ink:var(--pink-800);
   --cat-vax-bg:var(--forest-50);    --cat-vax-ink:var(--forest-700);
-  --cat-heat-bg:var(--orange-100);  --cat-heat-ink:var(--orange-700);
+  --cat-heat-bg:var(--red-50);      --cat-heat-ink:var(--red-700);
   --cat-weight-bg:var(--cream-100); --cat-weight-ink:var(--forest-800);
   --cat-trip-bg:var(--lime-100);    --cat-trip-ink:var(--forest-700);
 
@@ -135,7 +133,7 @@
   --actionbar-h:80px;          /* bottom action bar with primary + secondary button */
   --sheet-max-h:88%;
   --tap-min:48px;  --tap-lg:56px;  --tap-sm:36px;
-  --icon-sm:16px;  --icon-md:20px;  --icon-lg:24px;
+  --icon-sm:16px;  --icon-md:20px;  --icon-lg:24px;  --icon-stroke:2; /* Lucide default */
   --bp-sm:360px; --bp-md:480px; --bp-lg:768px; /* reference only: CSS can't read vars in @media */
 
   --z-header:5; --z-tabbar:10; --z-scrim:20; --z-sheet:21; --z-toast:40;
@@ -151,18 +149,17 @@
     --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
     --color-brand:var(--pink-300); --color-focus:var(--lime-300);
     --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
-    --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1A33; --color-on-pink:var(--forest-900);
-    --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--pink-300);
+    --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1C24; --color-on-pink:var(--forest-900);
+    --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--cream-50);
     --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
-    --color-spark:var(--orange-500); --color-on-spark:var(--forest-900); --color-sun:var(--yellow-300);
     --color-success:var(--lime-300);   --color-success-bg:#1A2C12;
     --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
     --color-danger:var(--red-300);     --color-danger-bg:#331A16;
-    --color-info:var(--pink-300);      --color-info-bg:#3A1A33;
+    --color-info:var(--pink-300);      --color-info-bg:#3A1C24;
     --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
-    --cat-meds-bg:#3A1A33;   --cat-meds-ink:var(--pink-300);
+    --cat-meds-bg:#3A1C24;   --cat-meds-ink:var(--pink-300);
     --cat-vax-bg:#123A27;    --cat-vax-ink:var(--forest-200);
-    --cat-heat-bg:#3A200F;   --cat-heat-ink:var(--orange-300);
+    --cat-heat-bg:#331A16;   --cat-heat-ink:var(--red-300);
     --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
     --cat-trip-bg:#1F2E10;   --cat-trip-ink:var(--lime-300);
     --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
@@ -176,18 +173,17 @@
   --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
   --color-brand:var(--pink-300); --color-focus:var(--lime-300);
   --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
-  --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1A33; --color-on-pink:var(--forest-900);
-  --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--pink-300);
+  --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1C24; --color-on-pink:var(--forest-900);
+  --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--cream-50);
   --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
-  --color-spark:var(--orange-500); --color-on-spark:var(--forest-900); --color-sun:var(--yellow-300);
   --color-success:var(--lime-300);   --color-success-bg:#1A2C12;
   --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
   --color-danger:var(--red-300);     --color-danger-bg:#331A16;
-  --color-info:var(--pink-300);      --color-info-bg:#3A1A33;
+  --color-info:var(--pink-300);      --color-info-bg:#3A1C24;
   --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
-  --cat-meds-bg:#3A1A33;   --cat-meds-ink:var(--pink-300);
+  --cat-meds-bg:#3A1C24;   --cat-meds-ink:var(--pink-300);
   --cat-vax-bg:#123A27;    --cat-vax-ink:var(--forest-200);
-  --cat-heat-bg:#3A200F;   --cat-heat-ink:var(--orange-300);
+  --cat-heat-bg:#331A16;   --cat-heat-ink:var(--red-300);
   --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
   --cat-trip-bg:#1F2E10;   --cat-trip-ink:var(--lime-300);
   --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
