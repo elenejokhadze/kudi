@@ -10,8 +10,9 @@
 <style>
 /* Kudi design tokens · v0.2
    Clean first: white and soft-grey surfaces, near-black ink, neutral greys with a faint green bias.
-   Brand colour appears only as a highlight: the primary button, the active tab, progress,
-   category icon tiles, status pills and one soft gradient card per screen.
+   Brand colour appears only as a highlight: lime for the primary button and progress, pink for small
+   details (badges, the active tab dot, avatar rings, hearts, today marker), pastel category tiles,
+   status pills and one soft gradient card per screen.
    Primitives (raw scales) come first; components use only the semantic tokens below them.
    Font: Figtree (Google Fonts), weights 400-700. */
 
@@ -29,7 +30,8 @@
   --forest-50:#EDF6EF; --forest-100:#D3E9D9; --forest-300:#6FB383; --forest-500:#1E7B3F; --forest-700:#115328; --forest-900:#0A2E17;
   --mint-50:#F1F8F7;  --mint-100:#DFEFED;  --mint-300:#A5D0CC;  --mint-700:#33605C;
   --sun-50:#FFFBE6;   --sun-100:#FEF6C8;   --sun-300:#F9DD4A;   --sun-700:#7E6300;
-  --blush-50:#FEF6F8; --blush-100:#FDEEF1; --blush-300:#F2BAC6; --blush-700:#963B51;
+  --blush-50:#FEF6F8; --blush-100:#FDEEF1; --blush-200:#F8D5DC; --blush-300:#F2BAC6; --blush-400:#EA9DB0; --blush-700:#963B51;
+  --cocoa-700:#4A1C24;
   --coral-50:#FEF3EF; --coral-100:#FCE4DC; --coral-300:#F09B81; --coral-500:#E0614A; --coral-700:#A23824;
   --olive-100:#F0F1CF; --olive-300:#C8CA52; --olive-700:#5C5E19;
   --cream-50:#FCF8EF; --cream-100:#F6EFDE;
@@ -52,6 +54,12 @@
   --color-on-primary:var(--forest-900);
 
   --color-brand:var(--forest-500);         /* wordmark, links, selected tab icon */
+
+  /* the small detail colour: pink, never on large areas */
+  --color-pink:var(--blush-300);           /* badges, active tab dot, avatar rings, today marker */
+  --color-pink-strong:var(--blush-400);    /* hearts, favourite, notification dot */
+  --color-pink-soft:var(--blush-50);       /* selected chip, text selection */
+  --color-on-pink:var(--cocoa-700);
   --color-focus:var(--forest-500);
   --color-tooltip:var(--grey-900);         /* dark callouts, toasts */
   --color-on-tooltip:var(--grey-0);
@@ -145,6 +153,7 @@
     --color-line:rgba(242,244,241,.08); --color-line-strong:rgba(242,244,241,.16);
     --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
     --color-brand:var(--forest-300); --color-focus:var(--lime-300);
+    --color-pink:var(--blush-300); --color-pink-strong:var(--blush-400); --color-pink-soft:#2D1A1F; --color-on-pink:var(--cocoa-700);
     --color-tooltip:#F2F4F1; --color-on-tooltip:var(--grey-950);
     --gradient-highlight:linear-gradient(160deg,#14211F 0%,#141816 45%,#1C1A14 75%,#221719 100%);
     --color-success:var(--forest-300); --color-success-bg:#15261A;
@@ -167,6 +176,7 @@
   --color-line:rgba(242,244,241,.08); --color-line-strong:rgba(242,244,241,.16);
   --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
   --color-brand:var(--forest-300); --color-focus:var(--lime-300);
+    --color-pink:var(--blush-300); --color-pink-strong:var(--blush-400); --color-pink-soft:#2D1A1F; --color-on-pink:var(--cocoa-700);
   --color-tooltip:#F2F4F1; --color-on-tooltip:var(--grey-950);
   --gradient-highlight:linear-gradient(160deg,#14211F 0%,#141816 45%,#1C1A14 75%,#221719 100%);
   --color-success:var(--forest-300); --color-success-bg:#15261A;
@@ -270,6 +280,25 @@ section{margin-top:var(--space-12);display:flex;flex-direction:column;gap:var(--
 .btn-grid .c .btn{max-width:100%}
 .iconbtn{width:40px;height:40px;border-radius:var(--radius-round);border:0;background:transparent;display:grid;place-items:center;color:var(--color-ink)}
 .iconbtn.fill{background:var(--color-surface-2)}
+.iconbtn{position:relative}
+.ndot{position:absolute;top:8px;right:8px;width:9px;height:9px;border-radius:var(--radius-round);background:var(--color-pink-strong);border:2px solid var(--color-bg)}
+.badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:var(--radius-pill);background:var(--color-pink);color:var(--color-on-pink);font:var(--type-micro);font-variant-numeric:tabular-nums}
+.av{width:32px;height:32px;border-radius:var(--radius-round);display:grid;place-items:center;font:var(--type-micro);background:var(--color-surface-2);color:var(--color-ink);box-shadow:0 0 0 2px var(--color-bg),0 0 0 4px var(--color-pink)}
+.avs{display:flex;gap:var(--space-3);justify-content:center;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:var(--space-1);min-height:var(--tap-sm);padding:0 var(--space-3);border-radius:var(--radius-pill);border:var(--stroke-hair) solid var(--color-line-strong);font:var(--type-label);background:var(--color-bg);color:var(--color-ink)}
+.chip[aria-pressed="true"]{background:var(--color-pink-soft);border-color:var(--color-pink);color:var(--color-ink)}
+.heart{color:var(--color-pink-strong)}
+.heart svg{fill:currentColor}
+.tabdemo{display:grid;grid-template-columns:repeat(4,64px);gap:var(--space-1);background:var(--color-surface);border:var(--stroke-hair) solid var(--color-line);border-radius:var(--radius-lg);padding:var(--space-2);box-shadow:var(--shadow-2)}
+.tabdemo span{display:flex;flex-direction:column;align-items:center;gap:2px;font:var(--type-micro);color:var(--color-ink-3);padding-block:var(--space-1)}
+.tabdemo span.on{color:var(--color-ink)}
+.tabdemo span.on::after{content:"";width:5px;height:5px;border-radius:var(--radius-round);background:var(--color-pink-strong)}
+.details{display:flex;flex-wrap:wrap;gap:var(--space-6);align-items:center}
+.details figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:var(--space-2)}
+.details figcaption{font:var(--type-caption);color:var(--color-ink-2)}
+.week div.today{color:var(--color-ink);font-weight:var(--weight-bold)}
+.week div.today::after{content:"";width:5px;height:5px;border-radius:var(--radius-round);background:var(--color-pink-strong)}
+::selection{background:var(--color-pink-soft)}
 
 /* type */
 .type-row{display:grid;grid-template-columns:150px 1fr;gap:var(--space-4);align-items:baseline;padding-block:var(--space-4);border-bottom:var(--stroke-hair) solid var(--color-line)}
@@ -328,7 +357,7 @@ section{margin-top:var(--space-12);display:flex;flex-direction:column;gap:var(--
 .hl .bars i{height:3px;border-radius:var(--radius-pill);background:var(--color-line-strong)}
 .hl .bars i.on{background:var(--color-ink)}
 .hl .hrow{display:flex;justify-content:space-between;align-items:center;font:var(--type-body-strong)}
-.hl .hrow span{display:flex;align-items:center;gap:var(--space-1);font:var(--type-label);color:var(--color-brand);font-weight:var(--weight-semibold)}
+.hl .hrow > span:last-child{display:flex;align-items:center;gap:var(--space-1);font:var(--type-label);color:var(--color-brand);font-weight:var(--weight-semibold)}
 .week{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--space-2);align-items:end;height:110px;position:relative;padding-top:var(--space-8)}
 .week div{display:flex;flex-direction:column;align-items:center;gap:var(--space-1);font:var(--type-micro);color:var(--color-ink-3);height:100%;justify-content:flex-end}
 .week b{width:100%;max-width:26px;border-radius:var(--radius-xs);background:var(--color-surface-3);display:block}
@@ -368,7 +397,7 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
     <div>
       <div class="eyebrow">Design tokens · v0.2</div>
       <div class="wordmark" style="margin-top:var(--space-2)">Kudi<i aria-hidden="true"></i></div>
-      <p>Clean and mostly neutral, so the pet stays the focus. Lime marks the main action on every screen. Mint, sunshine, blush and coral come from the dog illustrations and only show up as small highlights.</p>
+      <p>Clean and mostly neutral, so the pet stays the focus. Lime marks the main action on every screen. Pink picks out small details. Mint, sunshine and coral come from the dog illustrations and only show up as small tiles.</p>
     </div>
     <div class="seg" role="group" aria-label="Theme">
       <button type="button" id="th-system" data-t="system">System</button>
@@ -389,10 +418,12 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
       <span style="flex:20;background:var(--color-surface-2);color:var(--color-ink-2)">Grey 20%</span>
       <span style="flex:10;background:var(--color-ink);color:var(--color-bg)">Ink 10%</span>
       <span style="flex:5;background:var(--color-primary);color:var(--color-on-primary)">Lime</span>
-      <span style="flex:3;background:linear-gradient(90deg,var(--cat-feed-bg),var(--cat-meds-bg),var(--cat-vax-bg),var(--cat-heat-bg))"></span>
+      <span style="flex:2;background:var(--color-pink)"></span>
+      <span style="flex:2;background:linear-gradient(90deg,var(--cat-feed-bg),var(--cat-meds-bg),var(--cat-vax-bg),var(--cat-heat-bg))"></span>
     </div>
     <div class="rules">
       <div class="rule"><i style="background:var(--color-primary)"></i><div><b>Lime: one per screen</b><span>The primary button, the active progress bar, today's bar in a chart.</span></div></div>
+      <div class="rule"><i style="background:var(--color-pink)"></i><div><b>Pink: small details</b><span>Badges, the active tab dot, avatar rings, hearts, today's marker and selected chips. Never a button or a card.</span></div></div>
       <div class="rule"><i style="background:var(--color-brand)"></i><div><b>Forest: brand and links</b><span>Wordmark, text links, the selected tab icon, success states.</span></div></div>
       <div class="rule"><i style="background:var(--cat-meds-bg)"></i><div><b>Pastels: small tiles only</b><span>Category icon tiles and status pills. Never a full card or a page background.</span></div></div>
       <div class="rule"><i style="background:var(--gradient-highlight)"></i><div><b>One soft gradient card</b><span>At most one per screen, for the feature you want noticed.</span></div></div>
@@ -434,7 +465,7 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
     <button class="btn primary" type="button" id="b14">Default 48</button>
     <button class="btn primary sm" type="button" id="b15">Small 36</button>
     <button class="btn float" type="button" id="b16"><span class="tile" style="width:32px;height:32px;border-radius:var(--radius-round);background:var(--cat-vax-bg);color:var(--cat-vax-ink)">${ICON.vax}</span>Vaccine plan</button>
-    <button class="iconbtn fill" type="button" aria-label="Share" id="b17">${ICON.share}</button>
+    <button class="iconbtn fill" type="button" aria-label="Reminders, 1 new" id="b17">${ICON.bell}<span class="ndot"></span></button>
   </div>
 </section>
 
@@ -442,6 +473,16 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
   <div class="sec-h"><h2>Colour tokens</h2>
     <p>Primitives are raw scales. Screens use the semantic tokens, which change for dark mode. The contrast score is measured live.</p></div>
   <div class="panel"><div class="sub">Semantic</div><div class="pairs" id="pairs"></div></div>
+  <div class="panel"><div class="sub">Pink details</div>
+    <p class="muted" style="margin-bottom:var(--space-4)">Small, warm touches. Each one is a dot, ring, badge or outline, never a fill bigger than a chip.</p>
+    <div class="details">
+      <figure><button class="iconbtn fill" type="button" aria-label="Reminders, 1 new" id="p1">${ICON.bell}<span class="ndot"></span></button><figcaption>New reminder dot</figcaption></figure>
+      <figure><span class="badge">3</span><figcaption>Count badge</figcaption></figure>
+      <figure><span class="av">NB</span><figcaption>Who fed today</figcaption></figure>
+      <figure><span class="heart">${ICON.heart}</span><figcaption>Favourite</figcaption></figure>
+      <figure><span style="display:flex;gap:var(--space-2)"><button class="chip" type="button" aria-pressed="true" id="p2">Dry food</button><button class="chip" type="button" aria-pressed="false" id="p3">Wet food</button></span><figcaption>Selected chip</figcaption></figure>
+      <figure><span class="tabdemo"><span class="on">${ICON.home}Today</span><span>${ICON.paw}Pets</span><span>${ICON.bell}Care</span><span>${ICON.user}Me</span></span><figcaption>Active tab</figcaption></figure>
+    </div></div>
   <div class="panel"><div class="sub">Pet-care categories</div>
     <p class="muted" style="margin-bottom:var(--space-4)">Pale tile, coloured icon. This is where most of the brand colour lives.</p>
     <div class="cats" id="cats"></div></div>
@@ -505,8 +546,8 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
       <button class="iconbtn" type="button" aria-label="Back" id="s1">${ICON.back}</button>
       <div class="acts">
         <button class="iconbtn" type="button" aria-label="Share" id="s2">${ICON.share}</button>
-        <button class="iconbtn" type="button" aria-label="Done" id="s3">${ICON.check}</button>
-        <button class="iconbtn" type="button" aria-label="Save" id="s4">${ICON.mark}</button>
+        <button class="iconbtn heart" type="button" aria-label="Favourite" id="s3">${ICON.heart}</button>
+        <button class="iconbtn" type="button" aria-label="Reminders, 1 new" id="s4">${ICON.bell}<span class="ndot"></span></button>
       </div>
     </div>
     <div class="s-body">
@@ -517,12 +558,13 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
       </div>
       <div class="hl">
         <div class="bars"><i class="on"></i><i class="on"></i><i></i><i></i></div>
-        <div class="hrow">This week<span>${ICON.up}On track</span></div>
+        <div class="hrow"><span style="color:var(--color-ink);font:var(--type-body-strong);gap:var(--space-2)">This week <span class="badge">3</span></span><span>${ICON.up}On track</span></div>
         <div class="week">
           <span class="tip">${ICON.feed}470 g · Thu</span>
-          <div><b style="height:70%"></b>M</div><div><b style="height:82%"></b>T</div><div><b style="height:64%"></b>W</div><div><b class="on" style="height:92%"></b>T</div><div><b style="height:58%"></b>F</div><div><b style="height:76%"></b>S</div><div><b style="height:40%"></b>S</div>
+          <div><b style="height:70%"></b>M</div><div><b style="height:82%"></b>T</div><div><b style="height:64%"></b>W</div><div><b class="on" style="height:92%"></b>T</div><div><b style="height:58%"></b>F</div><div><b style="height:76%"></b>S</div><div class="today"><b style="height:40%"></b>S</div>
         </div>
         <h4>Who fed Kudi this week?</h4>
+        <div class="avs"><span class="av">N</span><span class="av">D</span><span class="av">M</span></div>
         <p>Nino 9 meals · Dato 6 meals · Mum 4 meals</p>
         <div class="center"><button class="btn float" type="button" id="s5"><span class="tile" style="width:32px;height:32px;border-radius:var(--radius-round);background:var(--cat-trip-bg);color:var(--cat-trip-ink)">${ICON.users}</span>Family log</button></div>
       </div>
@@ -543,8 +585,9 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
     <div class="codebar"><span class="muted">Paste into the app's <code>&lt;style&gt;</code> or link it.</span><button class="btn secondary sm" type="button" id="copy">Copy CSS</button></div>
     <pre id="src">/* Kudi design tokens · v0.2
    Clean first: white and soft-grey surfaces, near-black ink, neutral greys with a faint green bias.
-   Brand colour appears only as a highlight: the primary button, the active tab, progress,
-   category icon tiles, status pills and one soft gradient card per screen.
+   Brand colour appears only as a highlight: lime for the primary button and progress, pink for small
+   details (badges, the active tab dot, avatar rings, hearts, today marker), pastel category tiles,
+   status pills and one soft gradient card per screen.
    Primitives (raw scales) come first; components use only the semantic tokens below them.
    Font: Figtree (Google Fonts), weights 400-700. */
 
@@ -562,7 +605,8 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
   --forest-50:#EDF6EF; --forest-100:#D3E9D9; --forest-300:#6FB383; --forest-500:#1E7B3F; --forest-700:#115328; --forest-900:#0A2E17;
   --mint-50:#F1F8F7;  --mint-100:#DFEFED;  --mint-300:#A5D0CC;  --mint-700:#33605C;
   --sun-50:#FFFBE6;   --sun-100:#FEF6C8;   --sun-300:#F9DD4A;   --sun-700:#7E6300;
-  --blush-50:#FEF6F8; --blush-100:#FDEEF1; --blush-300:#F2BAC6; --blush-700:#963B51;
+  --blush-50:#FEF6F8; --blush-100:#FDEEF1; --blush-200:#F8D5DC; --blush-300:#F2BAC6; --blush-400:#EA9DB0; --blush-700:#963B51;
+  --cocoa-700:#4A1C24;
   --coral-50:#FEF3EF; --coral-100:#FCE4DC; --coral-300:#F09B81; --coral-500:#E0614A; --coral-700:#A23824;
   --olive-100:#F0F1CF; --olive-300:#C8CA52; --olive-700:#5C5E19;
   --cream-50:#FCF8EF; --cream-100:#F6EFDE;
@@ -585,6 +629,12 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
   --color-on-primary:var(--forest-900);
 
   --color-brand:var(--forest-500);         /* wordmark, links, selected tab icon */
+
+  /* the small detail colour: pink, never on large areas */
+  --color-pink:var(--blush-300);           /* badges, active tab dot, avatar rings, today marker */
+  --color-pink-strong:var(--blush-400);    /* hearts, favourite, notification dot */
+  --color-pink-soft:var(--blush-50);       /* selected chip, text selection */
+  --color-on-pink:var(--cocoa-700);
   --color-focus:var(--forest-500);
   --color-tooltip:var(--grey-900);         /* dark callouts, toasts */
   --color-on-tooltip:var(--grey-0);
@@ -678,6 +728,7 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
     --color-line:rgba(242,244,241,.08); --color-line-strong:rgba(242,244,241,.16);
     --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
     --color-brand:var(--forest-300); --color-focus:var(--lime-300);
+    --color-pink:var(--blush-300); --color-pink-strong:var(--blush-400); --color-pink-soft:#2D1A1F; --color-on-pink:var(--cocoa-700);
     --color-tooltip:#F2F4F1; --color-on-tooltip:var(--grey-950);
     --gradient-highlight:linear-gradient(160deg,#14211F 0%,#141816 45%,#1C1A14 75%,#221719 100%);
     --color-success:var(--forest-300); --color-success-bg:#15261A;
@@ -700,6 +751,7 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
   --color-line:rgba(242,244,241,.08); --color-line-strong:rgba(242,244,241,.16);
   --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
   --color-brand:var(--forest-300); --color-focus:var(--lime-300);
+    --color-pink:var(--blush-300); --color-pink-strong:var(--blush-400); --color-pink-soft:#2D1A1F; --color-on-pink:var(--cocoa-700);
   --color-tooltip:#F2F4F1; --color-on-tooltip:var(--grey-950);
   --gradient-highlight:linear-gradient(160deg,#14211F 0%,#141816 45%,#1C1A14 75%,#221719 100%);
   --color-success:var(--forest-300); --color-success-bg:#15261A;
@@ -736,16 +788,21 @@ const P={
   mark:'<path d="M7 4h10v16l-5-4-5 4Z"/>',
   up:'<path d="m5 15 7-7 7 7"/>',
   clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15Z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+  heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/>',
+  home:'<path d="M4 11 12 4l8 7v9H4Z"/><path d="M10 20v-5h4v5"/>',
+  paw:'<circle cx="8" cy="8" r="1.8"/><circle cx="16" cy="8" r="1.8"/><circle cx="5" cy="13" r="1.6"/><circle cx="19" cy="13" r="1.6"/><path d="M12 12c-3 0-5 3.5-5 5.5S9 20 12 20s5-.5 5-2.5S15 12 12 12Z"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/>',
   users:'<circle cx="9" cy="8" r="3"/><path d="M3 19a6 6 0 0 1 12 0M16 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 5"/>'
 };
 const ic=k=>`<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[k]}</svg>`;
 const ICON=new Proxy({}, {get:(_,k)=>ic(k)});
 document.querySelectorAll('main').forEach(m=>{m.innerHTML=m.innerHTML.replace(/\$\{ICON\.(\w+)\}/g,(_,k)=>ic(k))});
 
-const SCALES={grey:[0,25,50,100,200,300,400,500,600,700,800,900,950],lime:[50,100,200,300,400,600],forest:[50,100,300,500,700,900],mint:[50,100,300,700],sun:[50,100,300,700],blush:[50,100,300,700],coral:[50,100,300,500,700],olive:[100,300,700],cream:[50,100]};
+const SCALES={grey:[0,25,50,100,200,300,400,500,600,700,800,900,950],lime:[50,100,200,300,400,600],forest:[50,100,300,500,700,900],mint:[50,100,300,700],sun:[50,100,300,700],blush:[50,100,200,300,400,700],cocoa:[700],coral:[50,100,300,500,700],olive:[100,300,700],cream:[50,100]};
 const PAIRS=[
   ['Background','--color-bg','--color-ink'],['Surface 2','--color-surface-2','--color-ink'],['Secondary text','--color-bg','--color-ink-2'],
-  ['Primary action','--color-primary','--color-on-primary'],['Tooltip','--color-tooltip','--color-on-tooltip'],['Brand link','--color-bg','--color-brand'],
+  ['Primary action','--color-primary','--color-on-primary'],['Tooltip','--color-tooltip','--color-on-tooltip'],['Brand link','--color-bg','--color-brand'],['Pink detail','--color-pink','--color-on-pink'],['Selected chip','--color-pink-soft','--color-ink'],
   ['Success','--color-success-bg','--color-success'],['Warning','--color-warning-bg','--color-warning'],['Danger','--color-danger-bg','--color-danger'],['Info','--color-info-bg','--color-info']
 ];
 const CATS=[['feed','Feeding'],['meds','Medicine'],['vax','Vaccines'],['heat','Heat cycle'],['weight','Weight'],['trip','Travel']];

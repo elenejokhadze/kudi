@@ -1,7 +1,8 @@
 /* Kudi design tokens · v0.2
    Clean first: white and soft-grey surfaces, near-black ink, neutral greys with a faint green bias.
-   Brand colour appears only as a highlight: the primary button, the active tab, progress,
-   category icon tiles, status pills and one soft gradient card per screen.
+   Brand colour appears only as a highlight: lime for the primary button and progress, pink for small
+   details (badges, the active tab dot, avatar rings, hearts, today marker), pastel category tiles,
+   status pills and one soft gradient card per screen.
    Primitives (raw scales) come first; components use only the semantic tokens below them.
    Font: Figtree (Google Fonts), weights 400-700. */
 
@@ -19,7 +20,8 @@
   --forest-50:#EDF6EF; --forest-100:#D3E9D9; --forest-300:#6FB383; --forest-500:#1E7B3F; --forest-700:#115328; --forest-900:#0A2E17;
   --mint-50:#F1F8F7;  --mint-100:#DFEFED;  --mint-300:#A5D0CC;  --mint-700:#33605C;
   --sun-50:#FFFBE6;   --sun-100:#FEF6C8;   --sun-300:#F9DD4A;   --sun-700:#7E6300;
-  --blush-50:#FEF6F8; --blush-100:#FDEEF1; --blush-300:#F2BAC6; --blush-700:#963B51;
+  --blush-50:#FEF6F8; --blush-100:#FDEEF1; --blush-200:#F8D5DC; --blush-300:#F2BAC6; --blush-400:#EA9DB0; --blush-700:#963B51;
+  --cocoa-700:#4A1C24;
   --coral-50:#FEF3EF; --coral-100:#FCE4DC; --coral-300:#F09B81; --coral-500:#E0614A; --coral-700:#A23824;
   --olive-100:#F0F1CF; --olive-300:#C8CA52; --olive-700:#5C5E19;
   --cream-50:#FCF8EF; --cream-100:#F6EFDE;
@@ -42,6 +44,12 @@
   --color-on-primary:var(--forest-900);
 
   --color-brand:var(--forest-500);         /* wordmark, links, selected tab icon */
+
+  /* the small detail colour: pink, never on large areas */
+  --color-pink:var(--blush-300);           /* badges, active tab dot, avatar rings, today marker */
+  --color-pink-strong:var(--blush-400);    /* hearts, favourite, notification dot */
+  --color-pink-soft:var(--blush-50);       /* selected chip, text selection */
+  --color-on-pink:var(--cocoa-700);
   --color-focus:var(--forest-500);
   --color-tooltip:var(--grey-900);         /* dark callouts, toasts */
   --color-on-tooltip:var(--grey-0);
@@ -135,6 +143,7 @@
     --color-line:rgba(242,244,241,.08); --color-line-strong:rgba(242,244,241,.16);
     --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
     --color-brand:var(--forest-300); --color-focus:var(--lime-300);
+    --color-pink:var(--blush-300); --color-pink-strong:var(--blush-400); --color-pink-soft:#2D1A1F; --color-on-pink:var(--cocoa-700);
     --color-tooltip:#F2F4F1; --color-on-tooltip:var(--grey-950);
     --gradient-highlight:linear-gradient(160deg,#14211F 0%,#141816 45%,#1C1A14 75%,#221719 100%);
     --color-success:var(--forest-300); --color-success-bg:#15261A;
@@ -157,6 +166,7 @@
   --color-line:rgba(242,244,241,.08); --color-line-strong:rgba(242,244,241,.16);
   --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
   --color-brand:var(--forest-300); --color-focus:var(--lime-300);
+    --color-pink:var(--blush-300); --color-pink-strong:var(--blush-400); --color-pink-soft:#2D1A1F; --color-on-pink:var(--cocoa-700);
   --color-tooltip:#F2F4F1; --color-on-tooltip:var(--grey-950);
   --gradient-highlight:linear-gradient(160deg,#14211F 0%,#141816 45%,#1C1A14 75%,#221719 100%);
   --color-success:var(--forest-300); --color-success-bg:#15261A;
