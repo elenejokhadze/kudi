@@ -2229,6 +2229,7 @@ async function startHttpSync(){
 
 /* ---------- boot ---------- */
 (async function boot(){
+  try {
   const raw = lsGet(LS);
   if (raw){ try { S = normalize(JSON.parse(raw)); } catch(e){ S = null; } }
   me = lsGet(LSME);
@@ -2239,9 +2240,16 @@ async function startHttpSync(){
   if (S && !S.members.find(m=>m.id===me)) me = S.members[0] && S.members[0].id;
 
   // Auth check — if Supabase is configured and user is not logged in/skipped, show auth screen
-  if (AUTH_CONFIGURED){
-    const authed = await initAuth();
-    if (!authed && lsGet('kudi.authskip') !== '1'){ renderAuthScreen(); return; }
+  if (AUTH_CONFIGURED && lsGet('kudi.authskip') !== '1'){
+    try {
+      const authed = await Promise.race([
+        initAuth(),
+        new Promise(res => setTimeout(() => res(false), 4000)) // 4s timeout fallback
+      ]);
+      if (!authed){ renderAuthScreen(); return; }
+    } catch(e){ /* auth failed — fall through to app */ }
+  } else if (AUTH_CONFIGURED){
+    initAuth().catch(()=>{}); // init silently for session tracking
   }
 
   render();
@@ -2282,6 +2290,7 @@ async function startHttpSync(){
     o[a.dataset.cal] = Date.now(); lsSet('kudi.cal', JSON.stringify(o));
     setTimeout(() => { a.classList.remove('soft'); a.classList.add('ghost'); a.innerHTML = ic('check','ico-s') + 'Opened'; }, 300);
   });
+  } catch(bootErr){ console.error('Boot error:', bootErr); render(); } // safety net — always render
 })();
 
 })();
