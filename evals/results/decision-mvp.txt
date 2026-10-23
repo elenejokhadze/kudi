@@ -1,0 +1,13 @@
+Decision eval: MVP structure
+tabs order 0: pick=five (conf 0.95), clear=0.62, scope=0.48
+tabs order 1: pick=five (conf 0.94), clear=0.64, scope=0.50
+tabs: agreed on five
+calendar order 0: pick=week_agenda (conf 0.82), daily=0.63, oneoff=0.72
+calendar order 1: pick=week_agenda (conf 0.92), daily=0.63, oneoff=0.74
+calendar: agreed on week_agenda
+free_scope order 0: pick=pawmates_free_family_local (conf 0.94), honest=0.50, brief=0.76
+free_scope order 1: pick=pawmates_free_family_local (conf 0.94), honest=0.48, brief=0.83
+free_scope: agreed on pawmates_free_family_local
+age_line order 0: pick=link_row (conf 0.98), quiet=0.32, discoverable=0.59
+age_line order 1: pick=link_row (conf 0.98), quiet=0.29, discoverable=0.58
+age_line: agreed on link_row

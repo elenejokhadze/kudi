@@ -6,13 +6,18 @@
 <meta name="apple-mobile-web-app-title" content="Kudi">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="/manifest.webmanifest">
+<script src="vendor/supabase.min.js"></script>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>html,body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
-<script>try{localStorage.setItem("kudi.authskip","1")}catch(e){}</script>
+<script>
+// Two editions share this file. MVP (default): English, dark mode, free, Google sign-in, calendar.
+// Full (?edition=full): every feature, including Family Plan, pantry, travel tab and themes. Local only, never on the live site.
+try{ if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && new URLSearchParams(location.search).get('edition')==='full') localStorage.setItem("kudi.authskip","1"); else document.documentElement.dataset.theme='dark'; }catch(e){}
+</script>
 <style>
 /* tokens:start (generated from design/tokens.css by npm run sync) */
 /* Kudi design tokens · v0.4
@@ -125,6 +130,9 @@
   --art-fawn-dark:#B98B55; --art-cream:#F6EDDC;     --art-cream-shade:#E6D5B8; --art-line:#C8705A;
   --art-charcoal:#222623; --art-charcoal-2:#3B403C; --art-grey:#8D8B84;  --art-white:#FFFDF7;
   --art-brown:#8A6550;   --art-paper:#EFE6DA;
+  --art-cat-fur:#C9CCD6; --art-cat-fur-2:#9EA3B3; --art-cat-dark:#7E8496; --art-cat-muzzle:#F1F2F6;   /* drawn cat */
+  --art-pup-fur:#E8B48A; --art-pup-fur-2:#C78A5E; --art-pup-dark:#A96F48; --art-pup-muzzle:#F6DCC4;   /* drawn dog (fallback) */
+  --art-face-line:#3A2A22; --art-ear-pink:#F2B4B4; --art-tongue:#E36A64; --art-blush:#F2A79A; --art-shadow:rgba(30,50,90,.10);
   --art-blue:#1F78C8;    --art-blue-dark:#165C9E; --art-mustard:#E2B23A; --art-mustard-dark:#B98A1F;
   --art-ink:#1C1E1C;
   --art-welcome-ground:#065634; /* the solid green of the welcome illustration (art/welcome-pack.jpg) */
@@ -264,18 +272,7 @@
    small pink details, at most one deep-green feature card per screen. */
 
 /* Older variable names still used by inline styles in the app's JavaScript, mapped to tokens */
-:root{
-  --paper:var(--color-bg); --card:var(--color-surface); --solid:var(--color-surface);
-  --ink:var(--color-ink); --muted:var(--color-ink-2); --on-ink:var(--color-bg);
-  --sun:var(--color-primary); --on-sun:var(--color-on-primary);
-  --line:var(--color-line); --tint:var(--color-surface-2); --tint2:var(--color-surface-2);
-  --shadow:var(--shadow-2); --blue:var(--color-primary); --sky-bg:var(--cat-vax-bg);
-  --mint:var(--color-success-bg); --mint-ink:var(--color-success);
-  --blush:var(--color-danger-bg); --blush-ink:var(--color-danger); --lav:var(--color-info-bg);
-  --bar-good:var(--color-primary); --bar-part:var(--pink-200);
-  --gold:var(--yellow-300); --gold-deep:var(--yellow-700); --gold-bg:var(--yellow-50);
-  --f-display:var(--font-sans); --f-body:var(--font-sans);
-  --r-lg:var(--radius-lg); --r-md:var(--radius-md); --r-sm:var(--radius-sm);
+:root{--paper:var(--color-bg);--card:var(--color-surface);--solid:var(--color-surface);--ink:var(--color-ink);--muted:var(--color-ink-2);--on-ink:var(--color-bg);--sun:var(--color-primary);--on-sun:var(--color-on-primary);--line:var(--color-line);--tint:var(--color-surface-2); --tint2:var(--color-surface-2);--shadow:var(--shadow-2);--blue:var(--color-primary);--sky-bg:var(--cat-vax-bg);--mint:var(--color-success-bg);--mint-ink:var(--color-success);--blush:var(--color-danger-bg);--blush-ink:var(--color-danger);--lav:var(--color-info-bg);--bar-good:var(--color-primary);--bar-part:var(--pink-200);--gold:var(--yellow-300);--gold-deep:var(--yellow-700);--gold-bg:var(--yellow-50);--f-display:var(--font-sans);--f-body:var(--font-sans);--r-lg:var(--radius-lg);--r-md:var(--radius-md);--r-sm:var(--radius-sm);
 }
 
 html,body{height:100%}
@@ -415,7 +412,7 @@ a.btn{text-decoration:none}
 /* bottom tab bar */
 .nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:min(var(--layout-max),100%);padding:var(--space-2) var(--space-3) calc(var(--space-3) + env(safe-area-inset-bottom,0px));z-index:var(--z-tabbar);pointer-events:none}
 .nav-in{pointer-events:auto;background:color-mix(in srgb,var(--color-surface) 92%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:var(--stroke-hair) solid var(--color-line);border-radius:var(--radius-lg);box-shadow:var(--shadow-3);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:var(--space-1)}
-.nav button{border:0;background:transparent;border-radius:var(--radius-md);min-height:var(--tabbar-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:var(--type-micro);color:var(--color-ink-3);position:relative}
+.nav button{border:0;background:transparent;border-radius:var(--radius-md);min-height:var(--tabbar-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-px);font:var(--type-micro);color:var(--color-ink-3);position:relative}
 .nav button .ico{width:var(--icon-lg);height:var(--icon-lg)}
 .nav button[aria-current="page"]{color:var(--color-ink)}
 .nav .dot{position:absolute;top:var(--space-2);right:calc(50% - 18px);width:9px;height:9px;border-radius:var(--radius-round);background:var(--color-pink-strong);border:2px solid var(--color-surface)}
@@ -438,7 +435,7 @@ body:has(.sheet.takeover) .toast{bottom:auto;top:calc(var(--space-16) + env(safe
 body[data-screen="today"] .top .iconbtn.has-dot{border:0}
 body[data-screen="today"] .top .iconbtn.has-dot .unread-dot{border-color:var(--art-home-ground)}
 .iconbtn.has-dot .unread-dot{position:absolute;top:0;right:0;width:14px;height:14px;box-sizing:border-box;border:2px solid var(--color-bg)}
-.new-pill{flex:none;background:var(--color-pink);color:var(--color-on-pink);border-radius:var(--radius-pill);padding:2px var(--space-2);font:var(--type-caption);font-weight:var(--weight-semibold)}
+.new-pill{flex:none;background:var(--color-pink);color:var(--color-on-pink);border-radius:var(--radius-pill);padding:var(--space-px) var(--space-2);font:var(--type-caption);font-weight:var(--weight-semibold)}
 .pm-stack{display:flex;flex:none}
 .pm-stack .av{width:36px;height:36px;border-radius:var(--radius-round);overflow:hidden;box-shadow:0 0 0 2px var(--color-surface)}
 .pm-stack .av + .av{margin-left:-12px}
@@ -450,6 +447,30 @@ body[data-screen="today"] .top .iconbtn.has-dot .unread-dot{border-color:var(--a
 .sheet.takeover > .pm-card ~ .pm-btns{margin-top:0 !important}
 .sheet.takeover.stay{animation:none}
 @keyframes pgin{from{opacity:0;transform:translate(-26%,0)}to{opacity:1;transform:translate(-50%,0)}}
+.pm-page{display:flex;flex-direction:column;gap:var(--space-2);min-height:calc(100dvh - var(--tabbar-h) - var(--space-16));padding-top:calc(var(--space-3) + env(safe-area-inset-top,0px))}
+.pm-page > *{flex-shrink:0}
+.pm-page > .btn:first-of-type,.pm-page > .pm-btns{margin-top:auto !important}
+.pm-page > .pm-card{margin-block:auto}
+.pm-page > .pm-card ~ .pm-btns{margin-top:0 !important}
+.pm-page .chat-wrap{flex:1;height:auto;min-height:0}
+body:has(.pm-page) .toast{bottom:auto;top:calc(var(--space-16) + env(safe-area-inset-top,0px))}
+/* Calendar: week strip, then the day's agenda */
+.cal-week{display:flex;flex-direction:column;gap:var(--space-3);margin-top:var(--space-2)}
+.cal-month{font:var(--type-h3);margin:0}
+.cal-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--space-1)}
+.cal-day{border:var(--stroke-ui) solid transparent;background:transparent;border-radius:var(--radius-md);min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-px);color:var(--color-ink);padding:var(--space-1) 0}
+.cal-day .cal-dow{font:var(--type-caption);color:var(--color-ink-2)}
+.cal-day .cal-num{font:var(--type-title)}
+.cal-day.now{border-color:var(--color-line-strong)}
+.cal-day[aria-pressed="true"]{background:var(--color-ink);border-color:var(--color-ink);color:var(--color-bg)}
+.cal-day[aria-pressed="true"] .cal-dow{color:var(--color-bg)}
+.cal-dot{width:5px;height:5px;border-radius:var(--radius-round);background:transparent}
+.cal-dot.on{background:var(--color-ink-2)}
+.cal-day[aria-pressed="true"] .cal-dot.on{background:var(--color-bg)}
+.cal-today:disabled{opacity:.4}
+.navpill .cal-today{width:auto;padding:0 var(--space-3);border-radius:var(--radius-pill);font:var(--type-label);font-weight:var(--weight-semibold)}
+.cal-open{border:0;background:transparent;padding:0;text-align:left;color:inherit;display:flex;flex-direction:column;gap:var(--space-px);min-width:0;min-height:var(--tap-min);justify-content:center}
+.cal-open .t,.cal-open .s{display:block}
 .pm-top{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-2)}
 .pm-top h1{font:var(--type-h2);margin:0}
 .pm-hero{height:180px;margin:0 0 var(--space-4);border-radius:var(--radius-lg);background:var(--art-welcome-ground) url('art/pawmates-banner.jpg') center 30% / cover no-repeat}
@@ -457,7 +478,7 @@ body[data-screen="today"] .top .iconbtn.has-dot .unread-dot{border-color:var(--a
 .sheet h2{font:var(--type-h2);margin-bottom:var(--space-3)}
 .field{display:flex;flex-direction:column;gap:var(--space-1)}
 .field label,.lbl{font:var(--type-label);font-weight:var(--weight-semibold);color:var(--color-ink-2)}
-.in{min-height:var(--tap-min);border-radius:var(--radius-sm);border:var(--stroke-ui) solid var(--color-line);background:var(--color-surface-2);padding:0 var(--space-3);font:var(--type-body);font-size:16px;width:100%}
+.in{min-height:var(--tap-min);border-radius:var(--radius-sm);border:var(--stroke-ui) solid var(--color-line);background:var(--color-surface-2);padding:0 var(--space-3);font:var(--type-body);font-size:var(--text-title);width:100%}
 textarea.in{padding:var(--space-3);min-height:80px}
 .in:focus{border-color:var(--color-ink);outline:none}
 /* selects: our own chevron (Iconoir nav-arrow-down) with room on the right, instead of the browser's, which sits on the edge */
@@ -467,6 +488,12 @@ select.in{appearance:none;-webkit-appearance:none;padding-right:var(--space-10);
 .choice{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-3)}
 .choice button{border:var(--stroke-ui) solid var(--color-line);background:var(--color-surface);border-radius:var(--radius-md);min-height:84px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-2);font:var(--type-label);font-weight:var(--weight-semibold)}
 .choice button[aria-pressed="true"]{border-color:var(--color-ink);box-shadow:0 0 0 .5px var(--color-ink);color:var(--color-ink)}
+/* the same option card as a radio, for choices inside forms */
+.choice label.opt{position:relative;display:block;cursor:pointer}
+.choice label.opt input{position:absolute;opacity:0;width:1px;height:1px}
+.choice label.opt span{border:var(--stroke-ui) solid var(--color-line);background:var(--color-surface);border-radius:var(--radius-md);min-height:84px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-2);font:var(--type-label);font-weight:var(--weight-semibold);color:var(--color-ink-2)}
+.choice label.opt input:checked + span{border-color:var(--color-ink);box-shadow:0 0 0 .5px var(--color-ink);color:var(--color-ink)}
+.choice label.opt input:focus-visible + span{outline:2px solid var(--color-ink);outline-offset:2px}
 .chips{display:flex;flex-wrap:wrap;gap:var(--space-2)}
 .chip{display:inline-flex;align-items:center;gap:var(--space-2);border-radius:var(--radius-pill);background:var(--color-surface);border:var(--stroke-hair) solid var(--color-line-strong);padding:var(--space-1) var(--space-1) var(--space-1) var(--space-3);font:var(--type-label);font-weight:var(--weight-semibold)}
 .chip button{width:28px;height:28px;border-radius:var(--radius-round);border:0;background:var(--color-surface-2);display:grid;place-items:center}
@@ -521,7 +548,7 @@ select.in{appearance:none;-webkit-appearance:none;padding-right:var(--space-10);
 .pm-match-avs{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:var(--space-4)}
 .pm-match-av{width:80px;height:80px;border-radius:var(--radius-round);overflow:hidden;border:3px solid var(--color-surface);background:var(--art-ground)}
 .pm-match-av+.pm-match-av{margin-left:-16px}
-.pm-match-heart{width:36px;height:36px;border-radius:var(--radius-round);background:var(--color-pink-soft);display:grid;place-items:center;z-index:1;border:3px solid var(--color-surface);font-size:16px;margin:0 -4px}
+.pm-match-heart{width:36px;height:36px;border-radius:var(--radius-round);background:var(--color-pink-soft);display:grid;place-items:center;z-index:1;border:3px solid var(--color-surface);font-size:var(--text-title);margin:0 -4px}
 .pm-tag{display:inline-flex;background:color-mix(in srgb,var(--color-surface) 85%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-radius:var(--radius-pill);padding:var(--space-1) var(--space-3);font:var(--type-micro);color:var(--color-ink)}
 .pm-mascot{width:190px;height:190px;animation:bob 3.4s ease-in-out infinite}
 
@@ -565,7 +592,7 @@ select.in{appearance:none;-webkit-appearance:none;padding-right:var(--space-10);
 
 /* affiliate cards */
 .aff-card{background:transparent;border:var(--stroke-hair) solid var(--color-line);border-radius:var(--radius-lg);padding:var(--space-4);display:flex;align-items:flex-start;gap:var(--space-3)}
-.aff-card .aff-tag{font:var(--type-micro);letter-spacing:var(--tracking-wide);text-transform:uppercase;color:var(--color-ink-2);margin-bottom:2px}
+.aff-card .aff-tag{font:var(--type-micro);letter-spacing:var(--tracking-wide);text-transform:uppercase;color:var(--color-ink-2);margin-bottom:var(--space-px)}
 .aff-links{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-top:var(--space-2)}
 .aff-links a{display:inline-flex;align-items:center;gap:var(--space-1);border-radius:var(--radius-pill);padding:var(--space-2) var(--space-4);font:var(--type-label);font-weight:var(--weight-semibold);text-decoration:none;background:var(--color-surface);color:var(--color-ink)}
 .aff-links a:hover{background:var(--color-surface-3)}
@@ -573,7 +600,7 @@ select.in{appearance:none;-webkit-appearance:none;padding-right:var(--space-10);
 /* overlays: toast, xp float, confetti, badge modal */
 .toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--color-tooltip);color:var(--color-on-tooltip);border-radius:var(--radius-pill);padding:var(--space-2) var(--space-4);font:var(--type-label);font-weight:var(--weight-semibold);z-index:var(--z-toast);display:flex;gap:var(--space-3);align-items:center;animation:toast 2.6s ease forwards;white-space:nowrap;max-width:calc(100% - 32px);box-shadow:var(--shadow-3)}
 .toast button{border:0;background:var(--color-primary);color:var(--color-on-primary);border-radius:var(--radius-pill);padding:var(--space-1) var(--space-3);font:var(--type-label);font-weight:var(--weight-semibold)}
-.xpfloat{position:fixed;z-index:45;pointer-events:none;font:var(--type-h3);font-weight:var(--weight-bold);color:var(--color-on-primary);background:var(--color-primary);padding:2px var(--space-3);border-radius:var(--radius-pill);animation:float 1.1s ease-out forwards}
+.xpfloat{position:fixed;z-index:45;pointer-events:none;font:var(--type-h3);font-weight:var(--weight-bold);color:var(--color-on-primary);background:var(--color-primary);padding:var(--space-px) var(--space-3);border-radius:var(--radius-pill);animation:float 1.1s ease-out forwards}
 .bit{position:fixed;z-index:44;pointer-events:none;width:12px;height:12px}
 .modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:var(--space-6);background:var(--color-scrim);animation:fade .2s}
 .modal-in{background:var(--color-sheet);border-radius:var(--radius-xl);padding:var(--space-6) var(--space-5);max-width:340px;width:100%;text-align:center;display:flex;flex-direction:column;gap:var(--space-3);align-items:center;animation:popin .5s cubic-bezier(.2,1.5,.4,1)}
@@ -609,15 +636,15 @@ input.switch:checked::after{transform:translateX(20px)}
 .mood{font:var(--type-h3);text-align:center}
 .sum{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:var(--space-3);margin-top:var(--space-5)}
 .sum .btn{padding:0 var(--space-4)}
-.sum-card{background:var(--color-surface);border:var(--stroke-hair) solid var(--color-line);border-radius:var(--radius-lg);padding:var(--space-5);display:flex;flex-direction:column;gap:2px;min-width:0}
+.sum-card{background:var(--color-surface);border:var(--stroke-hair) solid var(--color-line);border-radius:var(--radius-lg);padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-px);min-width:0}
 .sum-label{gap:var(--space-2);color:var(--color-ink-2);font:var(--type-label);font-weight:var(--weight-semibold)}
 .sum-big{font:var(--type-display);letter-spacing:var(--tracking-display);margin-top:var(--space-1);font-variant-numeric:tabular-nums}
 .heat-day{font:var(--type-h2);margin-top:var(--space-1)}
 .heat-tip{align-items:flex-start;gap:var(--space-2);font:var(--type-label);color:var(--color-ink-2)}
-.heat-tip .ico-s{flex:none;margin-top:2px;color:var(--color-ink-3)}
+.heat-tip .ico-s{flex:none;margin-top:var(--space-px);color:var(--color-ink-3)}
 .sum-big span{font-size:var(--text-h2);color:var(--color-ink-2);letter-spacing:0}
 .bar.big{height:8px;margin-top:var(--space-4);background:var(--color-surface-2)}
-.carousel{display:grid;grid-auto-flow:column;grid-auto-columns:86%;gap:var(--space-3);overflow-x:auto;scroll-snap-type:x mandatory;padding:var(--space-1) 2px var(--space-2);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.carousel{display:grid;grid-auto-flow:column;grid-auto-columns:86%;gap:var(--space-3);overflow-x:auto;scroll-snap-type:x mandatory;padding:var(--space-1) var(--space-px) var(--space-2);scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .carousel::-webkit-scrollbar{display:none}
 .ins{scroll-snap-align:start;border:0;border-radius:var(--radius-lg);padding:var(--space-5);display:flex;align-items:center;gap:var(--space-2);min-height:160px;text-align:left;color:var(--color-ink);position:relative;overflow:hidden;background:var(--color-surface-2)}
 .ins-mint,.ins-blush,.ins-lav{background:var(--color-surface-2)}
@@ -625,7 +652,7 @@ input.switch:checked::after{transform:translateX(20px)}
 .ins-sky .ins-big{color:var(--color-feature-title)}
 .ins-t{font:var(--type-title)}
 .ins-big{font:var(--type-h1);letter-spacing:var(--tracking-tight)}
-.ins-x{font:var(--type-body);margin-top:2px}
+.ins-x{font:var(--type-body);margin-top:var(--space-px)}
 .ins-art{width:108px;height:108px;flex-shrink:0;position:relative}
 .ins-art svg{width:100%;height:100%;animation:bob 4s ease-in-out infinite}
 .spark{position:absolute;width:8px;height:8px;background:var(--color-pink);transform:rotate(45deg);border-radius:2px;animation:twinkle 2.4s ease-in-out infinite}
@@ -695,7 +722,7 @@ input.switch:checked::after{transform:translateX(20px)}
 .ticket .route{font:var(--type-h3)}
 /* life-stage timeline (Age guide): stops on a line, the pet's stage marked Now */
 .stage-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-2)}
-.stage-card{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:var(--space-3);min-height:var(--tap-min);border-radius:var(--radius-md);border:var(--stroke-hair) solid var(--color-line);background:var(--color-surface);color:var(--color-ink-2);text-align:left}
+.stage-card{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-px);padding:var(--space-3);min-height:var(--tap-min);border-radius:var(--radius-md);border:var(--stroke-hair) solid var(--color-line);background:var(--color-surface);color:var(--color-ink-2);text-align:left}
 .stage-card .stage-name{font:var(--type-label);font-weight:var(--weight-semibold);color:var(--color-ink)}
 .stage-card .stage-range{font:var(--type-caption)}
 .stage-card .stage-now{display:inline-flex;align-items:center;gap:var(--space-1);font:var(--type-caption);font-weight:var(--weight-semibold);color:var(--color-ink);margin-top:var(--space-1)}
@@ -813,6 +840,7 @@ body[data-screen="today"] .app{color:var(--on-scene);isolation:isolate}
 .scene svg{display:block;width:100%;height:100%}
 .sc-sky{fill:var(--scene-sky)} .sc-far{fill:var(--scene-far)} .sc-mid{fill:var(--scene-mid)} .sc-ground{fill:var(--scene-ground)}
 .sc-flower-p{fill:var(--pink-300)} .sc-flower-l{fill:var(--lime-300)}
+body[data-screen="today"] .age-line{color:var(--on-scene-2)}
 body[data-screen="today"] .top{position:static;background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;color:var(--color-ink)}
 /* the pet stands on the hill; status floats below */
 body[data-screen="today"] main .glance{flex-direction:column;align-items:stretch;gap:var(--space-3);padding-top:0}
@@ -826,6 +854,21 @@ body[data-screen="today"] main .qbtn,
 body[data-screen="today"] main .li{background:var(--glass-bg);-webkit-backdrop-filter:blur(var(--glass-blur));backdrop-filter:blur(var(--glass-blur));border:var(--stroke-hair) solid var(--glass-line);color:var(--on-scene)}
 body[data-screen="today"] main .glance .grow{border-radius:var(--radius-lg);padding:var(--space-4)}
 /* Today greets by name; no badge around it */
+.btn.google{background:var(--color-surface-2);color:var(--color-ink);border:var(--stroke-hair) solid var(--color-line-strong)}
+.btn.google img{width:var(--icon-md);height:var(--icon-md)}
+.ob-legal{margin:var(--space-3) 0 0;font:var(--type-caption);color:var(--color-ink-2);text-align:center}
+.ob-legal .link{font:inherit;padding:0;min-height:0}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.photo-pick{display:flex;align-items:center;gap:var(--space-4)}
+.photo-ring{width:72px;height:72px;flex:none;border-radius:var(--radius-round);display:grid;place-items:center;overflow:hidden;background:var(--color-surface-2);color:var(--color-ink-2);border:var(--stroke-ui) dashed var(--color-line-strong);cursor:pointer}
+.photo-ring img{width:100%;height:100%;object-fit:cover}
+.photo-ring:has(img){border-style:solid;border-color:var(--color-line)}
+.photo-copy{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-1)}
+.photo-copy .link{cursor:pointer}
+.link.quiet{color:var(--color-ink-2)}
+.field-error{margin:var(--space-1) 0 0;font:var(--type-label);color:var(--color-danger)}
+.in[aria-invalid="true"]{border-color:var(--color-danger)}
+.age-line{display:inline-flex;align-items:center;gap:var(--space-1);border:0;background:transparent;padding:0;margin-top:var(--space-1);min-height:var(--tap-sm);font:var(--type-body);color:var(--color-ink-2)}
 .greet{font:var(--type-h2);color:var(--on-scene);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 /* header controls on the scene are the same dark glass as the cards */
 body[data-screen="today"] .top .navpill,body[data-screen="today"] .top .iconbtn{background:var(--glass-bg);-webkit-backdrop-filter:blur(var(--glass-blur));backdrop-filter:blur(var(--glass-blur));border:var(--stroke-hair) solid var(--glass-line);color:var(--on-scene)}
@@ -902,6 +945,10 @@ body[data-screen="welcome"] .app{padding-block:0;height:100dvh;overflow:hidden}
 /* ---------- icons ---------- */
 /* icons:start (Tabler Icons outline, one pack for the whole app; filled set for the selected tab) */
 const P = {
+  "camera": "<path d=\"M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M9 13a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>",
+  "scissors": "<path d=\"M6 7m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M6 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8.6 8.6l10.4 10.4\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8.6 15.4l10.4 -10.4\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>",
+  "steth": "<path d=\"M6 4h-1a2 2 0 0 0 -2 2v3.5h0a5.5 5.5 0 0 0 11 0v-3.5a2 2 0 0 0 -2 -2h-1\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8 15a6 6 0 1 0 12 0v-3\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M11 3v2\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M6 3v2\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M20 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>",
+  "bath": "<path d=\"M4 12h16a1 1 0 0 1 1 1v3a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-3a1 1 0 0 1 1 -1z\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M6 12v-7a2 2 0 0 1 2 -2h3v2.25\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M4 21l1 -1.5\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M20 21l-1 -1.5\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>",
   "home": "<path d=\"M17 21H7C4.79086 21 3 19.2091 3 17V10.7076C3 9.30887 3.73061 8.01175 4.92679 7.28679L9.92679 4.25649C11.2011 3.48421 12.7989 3.48421 14.0732 4.25649L19.0732 7.28679C20.2694 8.01175 21 9.30887 21 10.7076V17C21 19.2091 19.2091 21 17 21Z\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M9 17H15\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", /* the earlier house (Iconoir), kept on request */
   "bowl": "<path d=\"M4 8h16a1 1 0 0 1 1 1v.5c0 1.5 -2.517 5.573 -4 6.5v1a1 1 0 0 1 -1 1h-8a1 1 0 0 1 -1 -1v-1c-1.687 -1.054 -4 -5 -4 -6.5v-.5a1 1 0 0 1 1 -1z\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>",
   "pill": "<path d=\"M4.5 12.5l8 -8a4.94 4.94 0 0 1 7 7l-8 8a4.94 4.94 0 0 1 -7 -7\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8.5 8.5l7 7\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>",
@@ -941,7 +988,7 @@ const P = {
   "female": "<path d=\"M12 9m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M12 14v7\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M9 18h6\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>",
   "male": "<path d=\"M10 14m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M19 5l-5.4 5.4\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M19 5h-5\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M19 5v5\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
 };
-const PF = {"paw": "<path d=\"M12 10c-1.32 0 -1.983 .421 -2.931 1.924l-.244 .398l-.395 .688a50.89 50.89 0 0 0 -.141 .254c-.24 .434 -.571 .753 -1.139 1.142l-.55 .365c-.94 .627 -1.432 1.118 -1.707 1.955c-.124 .338 -.196 .853 -.193 1.28c0 1.687 1.198 2.994 2.8 2.994l.242 -.006c.119 -.006 .234 -.017 .354 -.034l.248 -.043l.132 -.028l.291 -.073l.162 -.045l.57 -.17l.763 -.243l.455 -.136c.53 -.15 .94 -.222 1.283 -.222c.344 0 .753 .073 1.283 .222l.455 .136l.764 .242l.569 .171l.312 .084c.097 .024 .187 .045 .273 .062l.248 .043c.12 .017 .235 .028 .354 .034l.242 .006c1.602 0 2.8 -1.307 2.8 -3c0 -.427 -.073 -.939 -.207 -1.306c-.236 -.724 -.677 -1.223 -1.48 -1.83l-.257 -.19l-.528 -.38c-.642 -.47 -1.003 -.826 -1.253 -1.278l-.27 -.485l-.252 -.432c-1.011 -1.696 -1.618 -2.099 -3.053 -2.099z\"/><path d=\"M19.78 7h-.03c-1.219 .02 -2.35 1.066 -2.908 2.504c-.69 1.775 -.348 3.72 1.075 4.333c.256 .109 .527 .163 .801 .163c1.231 0 2.38 -1.053 2.943 -2.504c.686 -1.774 .34 -3.72 -1.076 -4.332a2.05 2.05 0 0 0 -.804 -.164z\"/><path d=\"M9.025 3c-.112 0 -.185 .002 -.27 .015l-.093 .016c-1.532 .206 -2.397 1.989 -2.108 3.855c.272 1.725 1.462 3.114 2.92 3.114l.187 -.005a1.26 1.26 0 0 0 .084 -.01l.092 -.016c1.533 -.206 2.397 -1.989 2.108 -3.855c-.27 -1.727 -1.46 -3.114 -2.92 -3.114z\"/><path d=\"M14.972 3c-1.459 0 -2.647 1.388 -2.916 3.113c-.29 1.867 .574 3.65 2.174 3.867c.103 .013 .2 .02 .296 .02c1.39 0 2.543 -1.265 2.877 -2.883l.041 -.23c.29 -1.867 -.574 -3.65 -2.174 -3.867a2.154 2.154 0 0 0 -.298 -.02z\"/><path d=\"M4.217 7c-.274 0 -.544 .054 -.797 .161c-1.426 .615 -1.767 2.562 -1.078 4.335c.563 1.451 1.71 2.504 2.941 2.504c.274 0 .544 -.054 .797 -.161c1.426 -.615 1.767 -2.562 1.078 -4.335c-.563 -1.451 -1.71 -2.504 -2.941 -2.504z\"/>", "bowl": "<path d=\"M20 7a2 2 0 0 1 2 2v.5c0 1.694 -2.247 5.49 -3.983 6.983l-.017 .013v.504a2 2 0 0 1 -1.85 1.995l-.15 .005h-8a2 2 0 0 1 -2 -2v-.496l-.065 -.053c-1.76 -1.496 -3.794 -4.965 -3.928 -6.77l-.007 -.181v-.5a2 2 0 0 1 2 -2z\" fill=\"currentColor\"/>", "pill": "<path d=\"M20.207 3.793a5.95 5.95 0 0 1 0 8.414l-8 8a5.95 5.95 0 0 1 -8.414 -8.414l8 -8a5.95 5.95 0 0 1 8.414 0m-7 1.414l-4.294 4.293l5.586 5.586l4.294 -4.292a3.95 3.95 0 1 0 -5.586 -5.586\" fill=\"currentColor\"/>", "user": "<path d=\"M12 2a5 5 0 1 1 -5 5l.005 -.217a5 5 0 0 1 4.995 -4.783z\" fill=\"currentColor\"/><path d=\"M14 14a5 5 0 0 1 5 5v1a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-1a5 5 0 0 1 5 -5h4z\" fill=\"currentColor\"/>"};
+const PF = {"cal": "<path d=\"M16 2a1 1 0 0 1 .993 .883l.007 .117v1h1a3 3 0 0 1 2.995 2.824l.005 .176v12a3 3 0 0 1 -2.824 2.995l-.176 .005h-12a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-12a3 3 0 0 1 2.824 -2.995l.176 -.005h1v-1a1 1 0 0 1 1.993 -.117l.007 .117v1h6v-1a1 1 0 0 1 1 -1zm3 7h-14v9.625c0 .705 .386 1.286 .883 1.366l.117 .009h12c.513 0 .936 -.53 .993 -1.215l.007 -.16v-9.625z\"/><path d=\"M12 12a1 1 0 0 1 .993 .883l.007 .117v3a1 1 0 0 1 -1.993 .117l-.007 -.117v-2a1 1 0 0 1 -.117 -1.993l.117 -.007h1z\"/>", "paw": "<path d=\"M12 10c-1.32 0 -1.983 .421 -2.931 1.924l-.244 .398l-.395 .688a50.89 50.89 0 0 0 -.141 .254c-.24 .434 -.571 .753 -1.139 1.142l-.55 .365c-.94 .627 -1.432 1.118 -1.707 1.955c-.124 .338 -.196 .853 -.193 1.28c0 1.687 1.198 2.994 2.8 2.994l.242 -.006c.119 -.006 .234 -.017 .354 -.034l.248 -.043l.132 -.028l.291 -.073l.162 -.045l.57 -.17l.763 -.243l.455 -.136c.53 -.15 .94 -.222 1.283 -.222c.344 0 .753 .073 1.283 .222l.455 .136l.764 .242l.569 .171l.312 .084c.097 .024 .187 .045 .273 .062l.248 .043c.12 .017 .235 .028 .354 .034l.242 .006c1.602 0 2.8 -1.307 2.8 -3c0 -.427 -.073 -.939 -.207 -1.306c-.236 -.724 -.677 -1.223 -1.48 -1.83l-.257 -.19l-.528 -.38c-.642 -.47 -1.003 -.826 -1.253 -1.278l-.27 -.485l-.252 -.432c-1.011 -1.696 -1.618 -2.099 -3.053 -2.099z\"/><path d=\"M19.78 7h-.03c-1.219 .02 -2.35 1.066 -2.908 2.504c-.69 1.775 -.348 3.72 1.075 4.333c.256 .109 .527 .163 .801 .163c1.231 0 2.38 -1.053 2.943 -2.504c.686 -1.774 .34 -3.72 -1.076 -4.332a2.05 2.05 0 0 0 -.804 -.164z\"/><path d=\"M9.025 3c-.112 0 -.185 .002 -.27 .015l-.093 .016c-1.532 .206 -2.397 1.989 -2.108 3.855c.272 1.725 1.462 3.114 2.92 3.114l.187 -.005a1.26 1.26 0 0 0 .084 -.01l.092 -.016c1.533 -.206 2.397 -1.989 2.108 -3.855c-.27 -1.727 -1.46 -3.114 -2.92 -3.114z\"/><path d=\"M14.972 3c-1.459 0 -2.647 1.388 -2.916 3.113c-.29 1.867 .574 3.65 2.174 3.867c.103 .013 .2 .02 .296 .02c1.39 0 2.543 -1.265 2.877 -2.883l.041 -.23c.29 -1.867 -.574 -3.65 -2.174 -3.867a2.154 2.154 0 0 0 -.298 -.02z\"/><path d=\"M4.217 7c-.274 0 -.544 .054 -.797 .161c-1.426 .615 -1.767 2.562 -1.078 4.335c.563 1.451 1.71 2.504 2.941 2.504c.274 0 .544 -.054 .797 -.161c1.426 -.615 1.767 -2.562 1.078 -4.335c-.563 -1.451 -1.71 -2.504 -2.941 -2.504z\"/>", "bowl": "<path d=\"M20 7a2 2 0 0 1 2 2v.5c0 1.694 -2.247 5.49 -3.983 6.983l-.017 .013v.504a2 2 0 0 1 -1.85 1.995l-.15 .005h-8a2 2 0 0 1 -2 -2v-.496l-.065 -.053c-1.76 -1.496 -3.794 -4.965 -3.928 -6.77l-.007 -.181v-.5a2 2 0 0 1 2 -2z\" fill=\"currentColor\"/>", "pill": "<path d=\"M20.207 3.793a5.95 5.95 0 0 1 0 8.414l-8 8a5.95 5.95 0 0 1 -8.414 -8.414l8 -8a5.95 5.95 0 0 1 8.414 0m-7 1.414l-4.294 4.293l5.586 5.586l4.294 -4.292a3.95 3.95 0 1 0 -5.586 -5.586\" fill=\"currentColor\"/>", "user": "<path d=\"M12 2a5 5 0 1 1 -5 5l.005 -.217a5 5 0 0 1 4.995 -4.783z\" fill=\"currentColor\"/><path d=\"M14 14a5 5 0 0 1 5 5v1a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-1a5 5 0 0 1 5 -5h4z\" fill=\"currentColor\"/>"};
 /* icons:end */
 const ic = (n, cls='ico') => (P[n] ? '' : console.error(`Kudi: missing icon "${n}"`), '') + `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]||''}</svg>`;
 
@@ -972,50 +1019,50 @@ const WELCOME_ART = 'art/welcome-pack.jpg';
 let welcomeArtReady = false;
 (() => { const im = new Image(); im.onload = () => { welcomeArtReady = true; if (appBooted && ui.ob && ui.ob.step === 1) render(); }; im.src = WELCOME_ART; })();
 const AVATAR_ART = 'art/avatar-dog.jpg'; // painted head portrait for the pet's round avatar
-function petAvatar(){ return S.pet.species !== 'cat' ? `<img class="av-photo" src="${AVATAR_ART}" alt="" aria-hidden="true">` : mascot(S.pet.species,'happy'); }
+function petAvatar(){ if (S.pet.photo) return `<img class="av-photo" src="${S.pet.photo}" alt="" aria-hidden="true">`; return S.pet.species !== 'cat' ? `<img class="av-photo" src="${AVATAR_ART}" alt="" aria-hidden="true">` : mascot(S.pet.species,'happy'); }
 function mascot(species, mood, extraClass){
   if (species !== 'cat' && dogArtReady) return `<img class="art-img ${extraClass||''}" src="${DOG_ART}" alt="" aria-hidden="true">`;
   return mascotDrawn(species, mood, extraClass);
 }
 function mascotDrawn(species, mood, extraClass){
   const u = 'm' + (++MID);
-  const fur1 = species === 'cat' ? '#C9CCD6' : '#E8B48A', fur2 = species === 'cat' ? '#9EA3B3' : '#C78A5E', dark = species === 'cat' ? '#7E8496' : '#A96F48';
-  const cream = species === 'cat' ? '#F1F2F6' : '#F6DCC4', line = '#3A2A22';
+  const fur1 = species === 'cat' ? 'var(--art-cat-fur)' : 'var(--art-pup-fur)', fur2 = species === 'cat' ? 'var(--art-cat-fur-2)' : 'var(--art-pup-fur-2)', dark = species === 'cat' ? 'var(--art-cat-dark)' : 'var(--art-pup-dark)';
+  const cream = species === 'cat' ? 'var(--art-cat-muzzle)' : 'var(--art-pup-muzzle)', line = 'var(--art-face-line)';
   let ears;
-  if (species === 'cat') ears = `<path d="M50 70 L58 20 L92 50 Z" fill="${dark}"/><path d="M150 70 L142 20 L108 50 Z" fill="${dark}"/><path d="M60 58 L63 34 L80 50 Z" fill="#F2B4B4"/><path d="M140 58 L137 34 L120 50 Z" fill="#F2B4B4"/>`;
-  else if (species === 'dog') ears = `<ellipse cx="48" cy="86" rx="20" ry="38" fill="${dark}" transform="rotate(22 48 86)"/><ellipse cx="152" cy="86" rx="20" ry="38" fill="${dark}" transform="rotate(-22 152 86)"/>`;
-  else ears = `<circle cx="60" cy="46" r="18" fill="${dark}"/><circle cx="140" cy="46" r="18" fill="${dark}"/>`;
+  if (species === 'cat') ears = `<path d="M50 70 L58 20 L92 50 Z" style="fill:${dark}"/><path d="M150 70 L142 20 L108 50 Z" style="fill:${dark}"/><path d="M60 58 L63 34 L80 50 Z" style="fill:var(--art-ear-pink)"/><path d="M140 58 L137 34 L120 50 Z" style="fill:var(--art-ear-pink)"/>`;
+  else if (species === 'dog') ears = `<ellipse cx="48" cy="86" rx="20" ry="38" style="fill:${dark}" transform="rotate(22 48 86)"/><ellipse cx="152" cy="86" rx="20" ry="38" style="fill:${dark}" transform="rotate(-22 152 86)"/>`;
+  else ears = `<circle cx="60" cy="46" r="18" style="fill:${dark}"/><circle cx="140" cy="46" r="18" style="fill:${dark}"/>`;
   let eyes, mouth;
   if (mood === 'happy'){
-    eyes = `<path d="M70 84 Q78 74 86 84" stroke="${line}" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M114 84 Q122 74 130 84" stroke="${line}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
-    mouth = `<path d="M88 106 Q100 126 112 106 Z" fill="${line}"/><path d="M93 114 Q100 124 107 114 Q100 110 93 114 Z" fill="#E36A64"/>`;
+    eyes = `<path d="M70 84 Q78 74 86 84" style="stroke:${line}" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M114 84 Q122 74 130 84" style="stroke:${line}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+    mouth = `<path d="M88 106 Q100 126 112 106 Z" style="fill:${line}"/><path d="M93 114 Q100 124 107 114 Q100 110 93 114 Z" style="fill:var(--art-tongue)"/>`;
   } else if (mood === 'hungry'){
-    eyes = `<circle cx="78" cy="82" r="9" fill="${line}"/><circle cx="122" cy="82" r="9" fill="${line}"/><circle cx="81" cy="78" r="3.2" fill="#fff"/><circle cx="125" cy="78" r="3.2" fill="#fff"/>`;
-    mouth = `<ellipse cx="100" cy="112" rx="6" ry="7" fill="${line}"/>`;
+    eyes = `<circle cx="78" cy="82" r="9" style="fill:${line}"/><circle cx="122" cy="82" r="9" style="fill:${line}"/><circle cx="81" cy="78" r="3.2" style="fill:var(--art-white)"/><circle cx="125" cy="78" r="3.2" style="fill:var(--art-white)"/>`;
+    mouth = `<ellipse cx="100" cy="112" rx="6" ry="7" style="fill:${line}"/>`;
   } else {
-    eyes = `<circle cx="78" cy="83" r="7" fill="${line}"/><circle cx="122" cy="83" r="7" fill="${line}"/><circle cx="80.5" cy="80.5" r="2.4" fill="#fff"/><circle cx="124.5" cy="80.5" r="2.4" fill="#fff"/>`;
-    mouth = `<path d="M92 108 Q100 115 108 108" stroke="${line}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    eyes = `<circle cx="78" cy="83" r="7" style="fill:${line}"/><circle cx="122" cy="83" r="7" style="fill:${line}"/><circle cx="80.5" cy="80.5" r="2.4" style="fill:var(--art-white)"/><circle cx="124.5" cy="80.5" r="2.4" style="fill:var(--art-white)"/>`;
+    mouth = `<path d="M92 108 Q100 115 108 108" style="stroke:${line}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
   }
-  const whiskers = species === 'cat' ? `<path d="M60 102 H40 M60 108 L42 114 M140 102 H160 M140 108 L158 114" stroke="${line}" stroke-width="2" stroke-linecap="round" opacity=".5"/>` : '';
+  const whiskers = species === 'cat' ? `<path d="M60 102 H40 M60 108 L42 114 M140 102 H160 M140 108 L158 114" style="stroke:${line}" stroke-width="2" stroke-linecap="round" opacity=".5"/>` : '';
   const label = (mood==='happy'?'Happy':mood==='hungry'?'Hungry':'Calm') + ' ' + (species==='cat'?'cat':species==='dog'?'dog':'pet');
   return `<svg class="${extraClass||''}" viewBox="0 0 200 200" role="img" aria-label="${label}">
     <defs>
       <radialGradient id="${u}h" cx="40%" cy="30%" r="75%"><stop offset="0" stop-color="${fur1}"/><stop offset="1" stop-color="${fur2}"/></radialGradient>
       <radialGradient id="${u}b" cx="40%" cy="25%" r="80%"><stop offset="0" stop-color="${fur1}"/><stop offset="1" stop-color="${fur2}"/></radialGradient>
     </defs>
-    <ellipse cx="100" cy="190" rx="44" ry="6" fill="rgba(30,50,90,.10)"/>
-    <path class="tail" d="M136 160 Q168 150 160 120" stroke="${fur2}" stroke-width="13" fill="none" stroke-linecap="round"/>
+    <ellipse cx="100" cy="190" rx="44" ry="6" style="fill:var(--art-shadow)"/>
+    <path class="tail" d="M136 160 Q168 150 160 120" style="stroke:${fur2}" stroke-width="13" fill="none" stroke-linecap="round"/>
     <ellipse cx="100" cy="152" rx="38" ry="34" fill="url(#${u}b)"/>
-    <ellipse cx="100" cy="156" rx="19" ry="21" fill="${cream}"/>
-    <rect x="76" y="166" width="20" height="24" rx="10" fill="${fur2}"/><rect x="104" y="166" width="20" height="24" rx="10" fill="${fur2}"/>
+    <ellipse cx="100" cy="156" rx="19" ry="21" style="fill:${cream}"/>
+    <rect x="76" y="166" width="20" height="24" rx="10" style="fill:${fur2}"/><rect x="104" y="166" width="20" height="24" rx="10" style="fill:${fur2}"/>
     ${ears}
     <ellipse cx="100" cy="88" rx="56" ry="50" fill="url(#${u}h)"/>
-    <ellipse cx="100" cy="106" rx="26" ry="18" fill="${cream}"/>
+    <ellipse cx="100" cy="106" rx="26" ry="18" style="fill:${cream}"/>
     ${eyes}
-    <ellipse cx="100" cy="98" rx="7" ry="5" fill="${line}"/>
+    <ellipse cx="100" cy="98" rx="7" ry="5" style="fill:${line}"/>
     ${mouth}
     ${whiskers}
-    <circle cx="64" cy="102" r="7" fill="#F2A79A" opacity=".55"/><circle cx="136" cy="102" r="7" fill="#F2A79A" opacity=".55"/>
+    <circle cx="64" cy="102" r="7" style="fill:var(--art-blush)" opacity=".55"/><circle cx="136" cy="102" r="7" style="fill:var(--art-blush)" opacity=".55"/>
   </svg>`;
 }
 
@@ -1361,6 +1408,8 @@ const STRINGS = {
     champ_title:'{0} ლეგენდაა!',champ_desc:'თქვენ შეაგროვეთ ყველა ნიშანი. {0}-ს ყველაზე ერთგული ოჯახი ჰყავს.',
   }
 };
+const EDITION = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && new URLSearchParams(location.search).get('edition') === 'full' ? 'full' : 'mvp';
+const MVP = EDITION === 'mvp';
 let lang = 'en';
 const LSLANG = 'kudi.lang';
 function T(key,...args){ const s=(STRINGS[lang]||STRINGS.en)[key]||STRINGS.en[key]||key; return args.reduce((r,a,i)=>r.replace(new RegExp(`\\{${i}\\}`,'g'),String(a)),s); }
@@ -1387,13 +1436,35 @@ const lsDel = k => { try { localStorage.removeItem(k); } catch(e){} };
 const SUPABASE_URL = 'https://uvnodtadnhypdkfodlse.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_Gwp7bzOy-so0sveWHHx6JA_jUZZo7iY';
 const AUTH_CONFIGURED = SUPABASE_URL !== 'YOUR_SUPABASE_URL';
+const IOS_AUTH_REDIRECT = 'app.kudi.pet://auth';
+const IS_NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+const IS_LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+// MVP: you are in once Google has signed you in (or, on localhost only, after "Skip sign-in" for testing)
+const signedIn = () => !!currentUser || (IS_LOCAL && lsGet('kudi.devauth') === '1');
+const newOb = () => ({step:1, pet:{name:'',species:'dog',birthday:'',breed:'',sex:'',spayed:'',photo:''}, meals:[{name:'Breakfast',time:'08:00'},{name:'Dinner',time:'19:00'}], members:[], meName:''});
+function afterSignIn(){
+  if (!ui.ob) return;
+  if (S && !S.sample){ ui.ob = null; render({anim:true, top:true}); return; }
+  if (S && S.sample){ S = null; lsDel(LS); }
+  const full = currentUser && currentUser.user_metadata && (currentUser.user_metadata.full_name || currentUser.user_metadata.name);
+  if (full && !ui.ob.meName) ui.ob.meName = String(full).split(' ')[0];
+  ui.ob.step = 2; render({dir:'fwd'}); window.scrollTo(0,0);
+}
 let sbClient = null;
 let currentUser = null;
 
 async function initAuth(){
   if (!AUTH_CONFIGURED || typeof window.supabase === 'undefined') return true;
   try {
-    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {auth:{flowType:'pkce', detectSessionInUrl:true, persistSession:true}});
+    // iOS app: Google sends the user back to app.kudi.pet://auth?code=..., which we swap for a session
+    const cap = window.Capacitor && window.Capacitor.Plugins;
+    if (cap && cap.App) cap.App.addListener('appUrlOpen', async ({url}) => {
+      if (!url || !url.startsWith(IOS_AUTH_REDIRECT)) return;
+      const code = new URL(url).searchParams.get('code');
+      if (code){ const { error } = await sbClient.auth.exchangeCodeForSession(code); if (error) toast("Couldn't finish signing in. Try again."); }
+      if (cap.Browser) cap.Browser.close().catch(()=>{});
+    });
     // Handle magic link callback: Supabase v2 auto-parses hash tokens
     const { data: { session }, error } = await sbClient.auth.getSession();
     if (session) { currentUser = session.user; return true; }
@@ -1412,22 +1483,22 @@ function renderAuthScreen(){
         <div class="auth-logo-icon">${ic('heart')}</div>
         <span style="font-family:var(--f-display);font-weight:var(--weight-bold);font-size:var(--text-h2)">kudi</span>
       </div>
-      <h1 style="font-size:28px;margin-bottom:6px">Welcome</h1>
-      <p class="muted" style="margin-bottom:24px">Sign in to sync your pet care, share with family and unlock Pawmates.</p>
-      <form data-form="authMagic" style="display:flex;flex-direction:column;gap:10px">
+      <h1 style="font-size:var(--text-h1);margin-bottom:var(--space-2)">Welcome</h1>
+      <p class="muted" style="margin-bottom:var(--space-6)">Sign in to sync your pet care, share with family and unlock Pawmates.</p>
+      <form data-form="authMagic" style="display:flex;flex-direction:column;gap:var(--space-3)">
         <input class="in" id="authEmailInput" name="email" type="email" placeholder="your@email.com" required autocomplete="email">
         <button class="btn ink xl block" type="submit" id="authSendBtn">Send magic link</button>
       </form>
       <div class="auth-msg" id="authMsg"></div>
       <div class="auth-divider">or</div>
       <button class="btn ghost block" data-a="authSkip" style="font-size:var(--text-body)">Continue without account</button>
-      <p class="small muted" style="text-align:center;margin-top:16px">We will email you a sign-in link. No password needed.</p>
+      <p class="small muted" style="text-align:center;margin-top:var(--space-4)">We will email you a sign-in link. No password needed.</p>
     </div>
   </div>`;
 }
 
-function blank(){ return {v:1, sample:false, pet:{name:'',species:'dog',birthday:'',breed:'',sex:'',spayed:''}, members:[], meals:[], log:[], meds:[], vaccines:[], items:[], trips:[], heats:[], xp:0, badges:{}, updatedAt:Date.now()}; }
-function normalize(s){ const b = blank(); s = Object.assign(b, JSON.parse(JSON.stringify(s||{}))); s.pet = Object.assign({name:'',species:'dog',birthday:'',breed:'',sex:'',spayed:''}, s.pet||{}); ['members','meals','log','meds','vaccines','items','trips','heats'].forEach(k=>{ if(!Array.isArray(s[k])) s[k]=[]; }); if(!s.badges||typeof s.badges!=='object') s.badges={}; return s; }
+function blank(){ return {v:1, sample:false, pet:{name:'',species:'dog',birthday:'',breed:'',sex:'',spayed:'',photo:''}, members:[], meals:[], log:[], meds:[], vaccines:[], items:[], trips:[], heats:[], events:[], xp:0, badges:{}, updatedAt:Date.now()}; }
+function normalize(s){ const b = blank(); s = Object.assign(b, JSON.parse(JSON.stringify(s||{}))); s.pet = Object.assign({name:'',species:'dog',birthday:'',breed:'',sex:'',spayed:'',photo:''}, s.pet||{}); ['members','meals','log','meds','vaccines','items','trips','heats','events'].forEach(k=>{ if(!Array.isArray(s[k])) s[k]=[]; }); if(!s.badges||typeof s.badges!=='object') s.badges={}; return s; }
 
 function save(){
   if (!S) return;
@@ -1605,6 +1676,7 @@ const f2 = (id, label, input) => `<div class="field"><label for="${id}">${label}
 /* ---------- render: onboarding ---------- */
 function renderOnboarding(){
   const o = ui.ob;
+  if (o.legal) return `<div class="ob enter">${legalPage(o.legal, 'obLegalClose')}</div>`;
   const progress = n => `<div class="ob-progress" role="progressbar" aria-label="Step ${n-1} of 3" aria-valuemin="1" aria-valuemax="3" aria-valuenow="${n-1}"><i style="width:${Math.round((n-1)/3*100)}%"></i></div>`;
   const top = n => `<div class="ob-top"><button class="iconbtn" data-a="obBack" aria-label="Back">${ic('back')}</button>${progress(n)}</div>`;
   if (o.step === 1){
@@ -1615,36 +1687,46 @@ function renderOnboarding(){
       </div>
       ${welcomeArtReady ? '' : `<div class="ob-pet">${mascot('dog','happy','mascot-sm')}</div>`}
       <div class="ob-copy">
-        <h1 class="ob-big">Fed, dosed and ready to travel.</h1>
+        <h1 class="ob-big">${MVP ? "Your pet's care, all in one place." : 'Fed, dosed and ready to travel.'}</h1>
         <div class="stack" style="gap:var(--space-1)">
-          <button class="btn ink xl block" data-a="obStart">${T('ob_add')}</button>
+          ${MVP && signedIn() ? `<button class="btn ink xl block" data-a="obStart">${T('ob_add')}</button>` : MVP ? `<button class="btn google xl block" data-a="authGoogle"><img src="art/google-g.svg" alt="" width="20" height="20">Sign in with Google</button>` : `<button class="btn ink xl block" data-a="obStart">${T('ob_add')}</button>`}
           <button class="link" data-a="obSample">${T('ob_sample')}</button>
+          ${MVP && IS_LOCAL && !signedIn() ? '<button class="link quiet" data-a="authDevSkip">Skip sign-in (testing on this computer only)</button>' : ''}
         </div>
+        ${MVP && !signedIn() ? `<p class="ob-legal">By signing in you agree to the <button class="link" data-a="obLegal" data-k="terms">Terms</button> and <button class="link" data-a="obLegal" data-k="privacy">Privacy policy</button>.</p>` : ''}
       </div>
     </div>`;
   }
   if (o.step === 2){
-    const p = o.pet;
+    const p = o.pet, er = o.errors || {};
     if (p.species !== 'cat') p.species = 'dog';
     const sp = (v, label, art) => `<button type="button" data-a="obSpecies" data-v="${v}" aria-pressed="${p.species===v}">${art}${label}</button>`;
-    return `<form class="ob enter" data-form="obPet">${top(2)}
+    // every pet field is required in the MVP; errors appear under the field that needs attention
+    const err = k => er[k] ? `<p class="field-error" id="err-${k}">${esc(er[k])}</p>` : '';
+    const inv = k => er[k] ? `aria-invalid="true" aria-describedby="err-${k}"` : '';
+    const opts = (list, val) => `<option value="" ${val?'':'selected'} disabled>Choose</option>${list.map(([k,l])=>`<option value="${k}" ${val===k?'selected':''}>${l}</option>`).join('')}`;
+    return `<form class="ob enter" data-form="obPet" novalidate>${top(2)}
       <h1>Who are we caring for?</h1>
+      ${photoPicker(p.photo, 'ob')}
       <div class="species">${sp('dog','Dog',`<img class="art" src="art/species-dog.jpg" alt="">`)}${sp('cat','Cat',`<span class="art">${mascotDrawn('cat','happy')}</span>`)}</div>
-      <div class="field"><label for="obName">Name</label><input class="in" id="obName" name="name" required maxlength="30" value="${esc(p.name)}" placeholder="e.g. Bubu" autocomplete="off"></div>
+      <div class="field"><label for="obName">Name</label><input class="in" id="obName" name="name" required maxlength="30" value="${esc(p.name)}" placeholder="e.g. Bubu" autocomplete="off" ${inv('name')}>${err('name')}</div>
       <div class="two">
-        <div class="field"><label for="obBday">Birthday</label><input class="in" id="obBday" name="birthday" type="date" max="${today()}" value="${esc(p.birthday)}"></div>
-        <div class="field"><label for="obBreed">Breed</label><input class="in" id="obBreed" name="breed" maxlength="40" value="${esc(p.breed)}" placeholder="Optional"></div>
+        <div class="field"><label for="obBday">Birthday</label><input class="in" id="obBday" name="birthday" type="date" required max="${today()}" value="${esc(p.birthday)}" ${inv('birthday')}>${err('birthday')}</div>
+        <div class="field"><label for="obBreed">Breed</label><input class="in" id="obBreed" name="breed" required maxlength="40" value="${esc(p.breed)}" placeholder="e.g. Beagle or mixed" ${inv('breed')}>${err('breed')}</div>
       </div>
-      <div class="two">${f2('obSex','Girl or boy',`<select class="in" id="obSex" name="sex">${[['','Not sure'],['female','Girl'],['male','Boy']].map(([k,l])=>`<option value="${k}" ${p.sex===k?'selected':''}>${l}</option>`).join('')}</select>`)}${f2('obSpay','Spayed / neutered',`<select class="in" id="obSpay" name="spayed">${[['','Not sure'],['no','No'],['yes','Yes']].map(([k,l])=>`<option value="${k}" ${p.spayed===k?'selected':''}>${l}</option>`).join('')}</select>`)}</div>
-      <p class="small muted" style="margin:0">The birthday sets the right food, treats and toys for each age.</p>
+      <div class="two">
+        <div class="field"><label for="obSex">Girl or boy</label><select class="in" id="obSex" name="sex" required ${inv('sex')}>${opts([['female','Girl'],['male','Boy']], p.sex)}</select>${err('sex')}</div>
+        <div class="field"><label for="obSpay">Spayed or neutered</label><select class="in" id="obSpay" name="spayed" required ${inv('spayed')}>${opts([['yes','Yes'],['no','No']], p.spayed)}</select>${err('spayed')}</div>
+      </div>
+      <p class="small muted" style="margin:0">Not sure of the birthday? A rough date is fine. It sets the right food and care for each age.</p>
       <button class="btn ink xl block" style="margin-top:auto" type="submit">Continue</button>
     </form>`;
   }
   if (o.step === 3){
     return `<form class="ob enter" data-form="obMeals">${top(3)}
       <h1>When does ${esc(o.pet.name||'your pet')} eat?</h1>
-      <p class="muted" style="margin:0">Everyone in the family gets a reminder, and sees who already fed.</p>
-      <div class="stack" style="gap:8px">${o.meals.map((m,i)=>`<div class="card"><span class="badge-ico sun">${ic('bowl')}</span><div class="grow"><div class="t">${esc(m.name)}</div><div class="s num">${esc(m.time)}</div></div><button type="button" class="iconbtn sm" data-a="obDelMeal" data-i="${i}" aria-label="Remove ${esc(m.name)}">${ic('x','ico-s')}</button></div>`).join('') || '<div class="empty">No meals yet. Add at least one.</div>'}</div>
+      <p class="muted" style="margin:0">${MVP ? 'Kudi reminds you at each meal time and keeps track of what was fed.' : 'Everyone in the family gets a reminder, and sees who already fed.'}</p>
+      <div class="stack" style="gap:var(--space-2)">${o.meals.map((m,i)=>`<div class="card"><span class="badge-ico sun">${ic('bowl')}</span><div class="grow"><div class="t">${esc(m.name)}</div><div class="s num">${esc(m.time)}</div></div><button type="button" class="iconbtn sm" data-a="obDelMeal" data-i="${i}" aria-label="Remove ${esc(m.name)}">${ic('x','ico-s')}</button></div>`).join('') || '<div class="empty">No meals yet. Add at least one.</div>'}</div>
       <div class="two">
         <div class="field"><label for="obMealName">Meal</label><input class="in" id="obMealName" maxlength="24" placeholder="Lunch"></div>
         <div class="field"><label for="obMealTime">Time</label><input class="in" id="obMealTime" type="time" value="13:00"></div>
@@ -1654,13 +1736,13 @@ function renderOnboarding(){
     </form>`;
   }
   return `<form class="ob enter" data-form="obFamily">${top(4)}
-    <h1>Feed together, never twice</h1>
+    <h1>${MVP ? `Who helps with ${esc(o.pet.name||'your pet')}?` : 'Feed together, never twice'}</h1>
     <div class="field"><label for="obMe">Your name</label><input class="in" id="obMe" name="me" required maxlength="24" value="${esc(o.meName)}" placeholder="e.g. Nino"></div>
     <div class="field"><span class="lbl">Family and sitters</span>
       <div class="chips">${o.members.map((n,i)=>`<span class="chip">${esc(n)}<button type="button" data-a="obDelMember" data-i="${i}" aria-label="Remove ${esc(n)}">${ic('x','ico-s')}</button></span>`).join('') || '<span class="small muted">Nobody added yet.</span>'}</div>
     </div>
-    <div class="row"><input class="in grow" id="obMember" maxlength="24" placeholder="Add a name, e.g. Giorgi" aria-label="Family member name"><button type="button" class="btn soft" data-a="obAddMember" style="min-height:50px">${ic('plus','ico-s')}Add</button></div>
-    <p class="small muted" style="margin:0">Open Kudi on each phone and pick your name. Everyone sees who fed ${esc(o.pet.name||'the pet')} and when.</p>
+    <div class="row"><input class="in grow" id="obMember" maxlength="24" placeholder="Add a name, e.g. Giorgi" aria-label="Family member name"><button type="button" class="btn soft" data-a="obAddMember" style="min-height:var(--tap-min)">${ic('plus','ico-s')}Add</button></div>
+    <p class="small muted" style="margin:0">${MVP ? 'Add the people who feed and walk your pet. Their names show next to what they log, so nobody feeds twice.' : `Open Kudi on each phone and pick your name. Everyone sees who fed ${esc(o.pet.name||'the pet')} and when.`}</p>
     <button class="btn sun xl block" style="margin-top:auto" type="submit">${T('ob_start')}</button>
   </form>`;
 }
@@ -1669,7 +1751,7 @@ function renderOnboarding(){
 function header(title, sub, extra){
   return `<header class="top"><div class="grow">${sub?`<div class="eyebrow">${esc(sub)}</div>`:''}<h1>${esc(title)}</h1></div>${S.sample?'<span class="pill sun">Sample data</span>':''}${extra||''}</header>`;
 }
-const bellBtn = () => `<button class="iconbtn" data-a="openReminders" aria-label="Reminders${remQ.length?`, ${remQ.length} due`:''}" style="position:relative">${ic('bell')}${remQ.length?`<span class="num" style="position:absolute;top:-2px;right:-2px;min-width:20px;height:20px;border-radius:999px;background:var(--color-pink);color:var(--color-on-pink);font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 5px">${remQ.length}</span>`:''}</button>`;
+const bellBtn = () => `<button class="iconbtn" data-a="openReminders" aria-label="Reminders${remQ.length?`, ${remQ.length} due`:''}" style="position:relative">${ic('bell')}${remQ.length?`<span class="num" style="position:absolute;top:calc(-1 * var(--space-px));right:calc(-1 * var(--space-px));min-width:20px;height:20px;border-radius:var(--radius-pill);background:var(--color-pink);color:var(--color-on-pink);font-size:var(--text-micro);font-weight:var(--weight-bold);display:grid;place-items:center;padding:0 var(--space-1)">${remQ.length}</span>`:''}</button>`;
 function heroBlock(){
   const L = levelOf(S.xp), tt = todayTasks(), st = streak(S), mood = moodOf();
   const C = 2*Math.PI*42;
@@ -1680,10 +1762,10 @@ function heroBlock(){
     </div>
     <div class="grow" style="position:relative;z-index:1">
       <h2>${esc(S.pet.name)}</h2>
-      <div style="font-size:13px;font-weight:700;opacity:.85">${mood==='hungry'?T('today_hungry'):mood==='happy'?T('today_happy'):T('today_of',tt.done,tt.total)}</div>
+      <div style="font-size:var(--text-label);font-weight:var(--weight-bold);opacity:.85">${mood==='hungry'?T('today_hungry'):mood==='happy'?T('today_happy'):T('today_of',tt.done,tt.total)}</div>
       <div class="meta"><span class="pill sun">${ic('flame','ico-s')}<span class="num">${st}</span> day streak</span><span class="pill">Lv ${L.i+1} · ${esc(L.name)}</span></div>
-      <div style="margin-top:10px"><div class="xpbar" role="progressbar" aria-label="Level progress" aria-valuenow="${Math.round(L.pct*100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.round(L.pct*100)}%"></i></div>
-      <div class="small num" style="margin-top:4px;opacity:.85">${S.xp} XP${L.toNext?` · ${L.toNext} to next level`:''}</div></div>
+      <div style="margin-top:var(--space-3)"><div class="xpbar" role="progressbar" aria-label="Level progress" aria-valuenow="${Math.round(L.pct*100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.round(L.pct*100)}%"></i></div>
+      <div class="small num" style="margin-top:var(--space-1);opacity:.85">${S.xp} XP${L.toNext?` · ${L.toNext} to next level`:''}</div></div>
     </div>
   </section>`;
 }
@@ -1699,14 +1781,14 @@ function weeklyBlock(){
   const names = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   return `<section class="sec"><div class="wk">
     <div class="row" style="justify-content:space-between;align-items:flex-start">
-      <div><div class="muted" style="font-weight:700">Weekly feeding</div><div class="wk-big num">${fedSum}<span> of ${totSum} meals</span></div></div>
+      <div><div class="muted" style="font-weight:var(--weight-bold)">Weekly feeding</div><div class="wk-big num">${fedSum}<span> of ${totSum} meals</span></div></div>
       <div class="navpill"><button data-a="week" data-d="-1" aria-label="Previous week" ${off<=-8?'disabled':''}>${ic('back','ico-s')}</button><span class="num">${range}</span><button data-a="week" data-d="1" aria-label="Next week" ${off>=0?'disabled':''}>${ic('right','ico-s')}</button></div>
     </div>
     <div class="bars" role="img" aria-label="Meals fed each day, ${range}: ${days.map((d,i)=>`${names[i]} ${d.future?'not yet':`${d.fed} of ${d.total}`}`).join(', ')}">
       ${days.map((d,i) => { const pct = d.total && !d.future ? d.fed/d.total : 0; const cls = pct >= 1 ? 'good' : d.isToday ? 'now' : pct > 0 ? 'part' : '';
         return `<div class="bcol ${d.isToday?'today':''}" title="${names[i]}: ${d.future?'not yet':`${d.fed} of ${d.total} meals`}"><span class="stamp-day ${cls || (d.future?'future':'')}" style="--tilt:${[-6,4,-3,7,-5,3,-4][i]}deg">${cls==='good'?ic('check','ico-s'):(cls==='part'||cls==='now')?`<b class="num">${d.fed}/${d.total}</b>`:''}</span><span>${names[i]}</span></div>`; }).join('')}
     </div>
-    <div class="row small muted" style="gap:14px;font-weight:700"><span class="row" style="gap:6px"><i class="lg good"></i>All meals</span><span class="row" style="gap:6px"><i class="lg part"></i>Some missed</span></div>
+    <div class="row small muted" style="gap:var(--space-4);font-weight:var(--weight-bold)"><span class="row" style="gap:var(--space-2)"><i class="lg good"></i>All meals</span><span class="row" style="gap:var(--space-2)"><i class="lg part"></i>Some missed</span></div>
   </div></section>`;
 }
 function sceneArt(){ return `<div class="scene" aria-hidden="true"><svg viewBox="0 0 400 340" preserveAspectRatio="xMidYMax slice">
@@ -1718,6 +1800,7 @@ function sceneArt(){ return `<div class="scene" aria-hidden="true"><svg viewBox=
       <g class="sc-flower-l"><circle cx="70" cy="270" r="2.5"/><circle cx="330" cy="258" r="3"/><circle cx="120" cy="228" r="2.5"/></g>
     </svg></div>`; }
 function viewToday(){
+  if (ui.todayView === 'guide') return guidePage();
   const t = today(), now = hmToMin(nowHM()), pet = S.pet.name;
   const tt = todayTasks(), st = streak(S), mood = moodOf();
   const meals = [...S.meals].sort((a,b)=>hmToMin(a.time)-hmToMin(b.time));
@@ -1751,7 +1834,7 @@ function viewToday(){
       ${act(next, true)}
     </section>` : '';
 
-  const checklist = items.length ? `<section class="sec"><div class="sec-h"><h3>Today</h3><button class="link" data-a="go" data-tab="food">Edit meals</button></div>
+  const checklist = items.length ? `<section class="sec"><div class="sec-h"><h3>Today</h3><button class="link" data-a="go" data-tab="${MEALS_TAB()}">Edit meals</button></div>
       <div class="list timeline">${items.map(i => `<div class="li ${i.done?'is-done':''} ${ui.flash===(i.kind==='meal'?'meal:'+i.id:'dose:'+i.id+i.time)?'enter':''}">
         <span class="when num">${esc(i.time)}</span>
         <span class="tile-s">${i.done?ic('check','ico-s'):ic(i.kind==='meal'?'bowl':'pill','ico-s')}</span>
@@ -1765,9 +1848,9 @@ function viewToday(){
   if (showHeat()){ const H = heatInfo();
     if (H.cur) soon.push({d:0, icon:'heart', cat:'heat', title:'In heat', sub:`Day ${H.day} · keep her on a leash outside`, go:'data-tab="health" data-seg="heat"'});
     else if (H.next && diffDays(t, H.next) <= 30) soon.push({d:diffDays(t, H.next), icon:'heart', cat:'heat', title:'Next heat', sub:`Around ${fmtS(H.next)}`, go:'data-tab="health" data-seg="heat"'}); }
-  S.trips.filter(x=>x.date>=t).forEach(tr => { const ts = tripStats(tr); if (ts.days <= 60) soon.push({d:ts.days, icon:'plane', cat:'trip', title:`Trip to ${tr.place||DESTS[tr.dest].label}`, sub:`In ${ts.days} days · ${ts.done} of ${ts.total} steps ready`, go:'data-tab="travel"'}); });
+  S.trips.filter(x=>x.date>=t).forEach(tr => { const ts = tripStats(tr); if (ts.days <= 60) soon.push({d:ts.days, icon:'plane', cat:'trip', title:`Trip to ${tr.place||DESTS[tr.dest].label}`, sub:`In ${ts.days} days · ${ts.done} of ${ts.total} steps ready`, go:`data-tab="${TRIP_TAB()}"`}); });
   soon.sort((a,b)=>a.d-b.d);
-  const pawRow = pmMatchesRow(pet);
+  const pawRow = MVP ? '' : pmMatchesRow(pet);
   const pawCard = pawRow ? `<section class="sec"><div class="sec-h"><h3>Pawmates</h3></div>${pawRow}</section>` : '';
   const comingUp = soon.length ? `<section class="sec"><div class="sec-h"><h3>Coming up</h3></div>
       <div class="list">${soon.slice(0,3).map(c => `<button class="li li-btn" data-a="go" ${c.go}><span class="tile-s cat-${c.cat}">${ic(c.icon,'ico-s')}</span><div class="grow"><div class="t">${esc(c.title)}</div><div class="s ${c.d<0?'late':''}">${esc(c.sub)}</div></div>${ic('right','ico-s')}</button>`).join('')}</div></section>` : '';
@@ -1779,9 +1862,9 @@ function viewToday(){
 
   const scene = S.pet.species==='cat' ? `<div class="scene today-scene" aria-hidden="true"></div>` : '';
   return `${scene}<header class="top">
-      <h1 class="greet">Hey, ${esc(pet)}</h1>
-      <span class="grow"></span>${S.sample?'<span class="pill sun">Sample</span>':''}
-      <button class="iconbtn has-dot" data-a="sheet" data-type="pawmates" aria-label="Pawmates${pmUnread()?`, ${pmUnread()} new`:''}">${ic('paw')}${pmUnread()?'<span class="unread-dot"></span>':''}</button>
+      <div class="grow"><h1 class="greet">Hey, ${esc(pet)}</h1>${MVP && S.pet.birthday ? `<button class="age-line" data-a="openGuide" aria-label="${esc(ageLong(S.pet.birthday))}. See what ${esc(pet)} needs at this age">${esc(ageLong(S.pet.birthday))}${ic('right','ico-s')}</button>` : ''}</div>
+      ${S.sample?'<span class="pill sun">Sample</span>':''}
+      ${MVP ? '' : `<button class="iconbtn has-dot" data-a="sheet" data-type="pawmates" aria-label="Pawmates${pmUnread()?`, ${pmUnread()} new`:''}">${ic('paw')}${pmUnread()?'<span class="unread-dot"></span>':''}</button>`}
     </header>
     ${S.pet.species==='cat' ? '' : `<button class="home-art ${ui.flash==='pat'?'wiggle':''}" data-a="pat" aria-label="Pet ${esc(pet)}"></button>`}
     <section class="glance">
@@ -1794,9 +1877,9 @@ function viewToday(){
     </section>
     ${upNext}
     ${checklist}
-    <section class="sec"><div class="sec-h"><h3>${T('today_quick')}</h3></div>
+    ${MVP ? '' : `<section class="sec"><div class="sec-h"><h3>${T('today_quick')}</h3></div>
       <div class="quick">${qb('treat','Treat','bone')}${qb('walk','Walk','walk')}${qb('water','Water','drop')}</div>
-    </section>
+    </section>`}
     ${comingUp}
     ${pawCard}`;
 }
@@ -1814,11 +1897,11 @@ function viewHealth(){
           <div class="grow"><div class="t">${esc(m.name)} ${esc(m.dose||'')}</div><div class="s">${(m.times||[]).length}× a day · <span class="num">${(m.times||[]).map(esc).join(', ')}</span></div>${m.vet?`<div class="s">${esc(m.vet)}</div>`:''}${m.notes?`<div class="s">${esc(m.notes)}</div>`:''}</div>
           <button class="iconbtn sm" data-a="sheet" data-type="med" data-id="${m.id}" aria-label="Edit ${esc(m.name)}">${ic('edit','ico-s')}</button></div>
         <div class="bar" role="progressbar" aria-label="${p.given} of ${p.total} doses given" aria-valuenow="${Math.round(pct*100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.round(pct*100)}%"></i></div>
-        <div class="row small muted num" style="justify-content:space-between;font-weight:700"><span>${p.given} of ${p.total} doses</span><span>${fmtS(m.start)} to ${fmtS(end)}</span></div>
+        <div class="row small muted num" style="justify-content:space-between;font-weight:var(--weight-bold)"><span>${p.given} of ${p.total} doses</span><span>${fmtS(m.start)} to ${fmtS(end)}</span></div>
       </div>`; };
     body = `<button class="card" data-a="sheet" data-type="med" style="text-align:left;width:100%;border-style:dashed"><span class="badge-ico sun">${ic('plus')}</span><div class="grow"><div class="t">${T('health_add_presc')}</div><div class="s">${T('health_add_presc_s')}</div></div></button>
-      ${active.length?`<div class="eyebrow" style="margin-top:6px">Current</div>${active.map(card).join('')}`:`<div class="empty">${T('health_no_meds')}</div>`}
-      ${past.length?`<div class="eyebrow" style="margin-top:6px">Finished</div>${past.map(card).join('')}`:''}`;
+      ${active.length?`<div class="eyebrow" style="margin-top:var(--space-2)">Current</div>${active.map(card).join('')}`:`<div class="empty">${T('health_no_meds')}</div>`}
+      ${past.length?`<div class="eyebrow" style="margin-top:var(--space-2)">Finished</div>${past.map(card).join('')}`:''}`;
   } else if (seg === 'heat'){
     body = heatBody();
   } else if (seg === 'vaccines'){
@@ -1842,10 +1925,116 @@ function viewHealth(){
       ${ws.length ? `<div class="sec-h" style="margin-top:var(--space-2)"><h3>History</h3></div>
       <div class="list">${ws.map(w=>`<button class="li li-btn" data-a="sheet" data-type="weight" data-id="${w.id}" aria-label="Edit ${esc(w.value)} kg from ${fmt(w.date)}"><div class="grow"><div class="t num">${esc(w.value)} kg</div><div class="s">${fmt(w.date)} · ${esc(nameOf(w.by))}</div></div>${ic('right','ico-s')}</button>`).join('')}</div>` : ''}`;
   }
-  const insuranceCard = `<div class="aff-card" style="margin-top:8px"><span class="badge-ico">${ic('heart')}</span><div class="grow"><div class="aff-tag">Partner</div><div class="t" style="font-size:15px">${T('health_ins_t')} for ${esc(S.pet.name)}</div><div class="s">${T('health_ins_s')}</div><div class="aff-links"><a href="https://www.petinsurance.com/?ref=kudiapp" target="_blank" rel="noopener">${T('health_ins_cta')}${ic('right','ico-s')}</a></div></div></div>`;
+  const insuranceCard = `<div class="aff-card" style="margin-top:var(--space-2)"><span class="badge-ico">${ic('heart')}</span><div class="grow"><div class="aff-tag">Partner</div><div class="t" style="font-size:var(--text-body)">${T('health_ins_t')} for ${esc(S.pet.name)}</div><div class="s">${T('health_ins_s')}</div><div class="aff-links"><a href="https://www.petinsurance.com/?ref=kudiapp" target="_blank" rel="noopener">${T('health_ins_cta')}${ic('right','ico-s')}</a></div></div></div>`;
   return `${header(T('health_title'))}
     <div class="seg">${segBtn('meds',T('health_meds'))}${segBtn('vaccines',T('health_vacc')+(healthAlerts()?` (${healthAlerts()})`:''))}${heatTab()?segBtn('heat',T('health_heat')):''}${segBtn('weight',T('health_weight'))}</div>
-    <div class="stack" style="margin-top:14px">${body}${seg==='vaccines'?insuranceCard:''}</div>`;
+    <div class="stack" style="margin-top:var(--space-4)">${body}${seg==='vaccines'?insuranceCard:''}</div>`;
+}
+function guideBody(){
+  let body = '';
+    const st = stageOf();
+    const sp = S.pet.species;
+    const sel = ui.guideStage || st.cur.id;
+    const g = st.list.find(x=>x.id===sel) || st.cur;
+    const block = (title, icn, pair, sun) => `<div class="card" style="align-items:flex-start"><span class="badge-ico ${sun?'sun':''}">${ic(icn)}</span><div class="grow"><div class="eyebrow">${title}</div><div class="t">${esc(pair[0])}</div><div class="s">${esc(pair[1])}</div></div></div>`;
+    body = `${sp==='other'?'<div class="card"><span class="badge-ico sun">'+ic('alert')+'</span><div class="grow"><div class="t">General dog guide shown</div><div class="s">For rabbits, birds and other pets, ask your vet for a species plan.</div></div></div>':''}
+      ${(()=>{ const i = st.list.findIndex(x=>x.id===g.id), isNow = g.id===st.cur.id && S.pet.birthday, mo = S.pet.birthday ? monthsOld(S.pet.birthday) : null;
+        return `<div class="stage-cards" role="group" aria-label="Life stage">${st.list.map(x=>`<button class="stage-card ${x.id===g.id?'on':''}" data-a="stage" data-v="${x.id}" aria-pressed="${x.id===g.id}"><span class="stage-name">${x.label}</span><span class="stage-range">${x.range}</span>${x.id===st.cur.id && S.pet.birthday?'<span class="stage-now">Now</span>':''}</button>`).join('')}</div>`; })()}
+      ${block('Food','bowl',g.food,true)}${block('Treats','bone',g.treats)}${block('Toys','ball',g.toys)}
+      <div class="card col never"><div class="row" style="gap:var(--space-2)">${ic('ban')}<span class="t">Never give</span></div><div class="chips">${(NEVER[sp]||NEVER.dog).map(n=>`<span class="pill">${esc(n)}</span>`).join('')}</div></div>
+      <p class="small muted" style="margin:0;text-align:center">General guidance. Your vet's advice comes first.</p>`;
+  return body;
+}
+/* ---------- MVP: Pawmates tab ----------
+   The same Pawmates screens as the full edition's takeover, drawn as the tab's page. */
+function viewPawmatesTab(){
+  if (!ui.sheet || (ui.sheet.type !== 'pawmates' && ui.sheet.type !== 'chat')) ui.sheet = {type:'pawmates'};
+  const html = ui.sheet.type === 'chat' ? takeover(chatSheet(), null) : pawmatesSheet();
+  const root = !ui.sheet.showMatches && !ui.sheet.justMatched && ui.sheet.type !== 'chat';
+  let page = html.replace('<div class="scrim" data-a="close"></div>', '').replace(/<div class="sheet takeover"[^>]*>/, '<div class="pm-page">');
+  // the tab itself is the root: no back arrow there
+  if (root) page = page.replace(/<header class="pm-top">[\s\S]*?<\/header>/, header('Pawmates'));
+  return page;
+}
+
+/* ---------- MVP: age guide page, opened from the age line under the greeting on Today ---------- */
+function ageLong(b){
+  if (!b) return '';
+  const m = monthsOld(b);
+  if (m < 1){ const w = Math.floor(diffDays(b, today()) / 7); return w < 1 ? 'Born this week' : `${w} week${w>1?'s':''} old`; }
+  const y = Math.floor(m/12), r = m % 12;
+  return [y ? `${y} year${y>1?'s':''}` : '', r ? `${r} month${r>1?'s':''}` : ''].filter(Boolean).join(' and ') + ' old';
+}
+function guidePage(){
+  return `<header class="top trip-top"><button class="iconbtn" data-a="closeGuide" aria-label="Back to Today">${ic('back')}</button><h1 class="grow">What ${esc(S.pet.name)} needs now</h1></header>
+    <div class="stack" style="margin-top:var(--space-4)">${guideBody()}</div>`;
+}
+
+/* ---------- MVP: Calendar ----------
+   One place for the daily routine (meals, doses) and everything with a date: groomer, vet, walks, trips, vaccines.
+   Week strip on top, the chosen day's agenda below, then meal times and trips. */
+const EVENT_TYPES = [['groomer','Groomer','scissors'],['vet','Vet visit','steth'],['walk','Walk','walk'],['bath','Bath','bath'],['other','Other','cal']];
+const eventType = k => EVENT_TYPES.find(x => x[0] === k) || EVENT_TYPES[EVENT_TYPES.length-1];
+const WEEKDAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+function dayLabel(k){ const t = today(); if (k === t) return 'Today'; if (k === addDays(t, 1)) return 'Tomorrow'; if (k === addDays(t, -1)) return 'Yesterday'; const d = parseKey(k); return `${WEEKDAYS[(d.getDay()+6)%7]} ${fmtS(k)}`; }
+// everything on one day, in time order; all-day things (trips, vaccines) first
+function calItems(day){
+  const t = today(), now = hmToMin(nowHM()), items = [];
+  const place = tr => tr.place || DESTS[tr.dest].label;
+  S.trips.forEach(tr => {
+    if (tr.date === day) items.push({time:'', icon:'plane', title:`Fly to ${place(tr)}`, sub:`${tripStats(tr).done} of ${tripStats(tr).total} steps ready`, a:`data-a="openTrip" data-id="${tr.id}"`});
+    tr.steps.filter(st => !st.done && st.due === day).forEach(st => items.push({time:'', icon:'plane', title:st.title, sub:`For the trip to ${place(tr)}`, a:`data-a="openTrip" data-id="${tr.id}"`}));
+  });
+  S.vaccines.filter(v => v.due === day).forEach(v => items.push({time:'', icon:'syringe', title:`${v.name} vaccine due`, sub:'Book the vet', a:'data-a="go" data-tab="health" data-seg="vaccines"'}));
+  (S.events||[]).filter(e => e.date === day).forEach(e => { const [, label, icn] = eventType(e.type); items.push({time:e.time||'', icon:icn, title: e.type === 'other' ? (e.note || 'Other') : label, sub: e.type === 'other' ? '' : e.note, a:`data-a="sheet" data-type="event" data-id="${e.id}"`, ev:true}); });
+  S.meals.forEach(m => { const f = day <= t ? mealFed(S, m.id, day) : null; const late = !f && (day < t || (day === t && hmToMin(m.time) + 30 < now));
+    items.push({time:m.time, icon:'bowl', title:m.name, sub: f ? `Fed by ${nameOf(f.by)} at ${f.time}` : late ? (day < t ? 'Not logged' : 'Late') : [m.food, m.portion].filter(Boolean).join(' · '), late: late && day === t, done:!!f, feed: day === t && !f ? m.id : null, a:`data-a="sheet" data-type="meal" data-id="${m.id}"`}); });
+  S.meds.filter(m => medActive(m, day)).forEach(m => (m.times||[]).forEach(time => { const l = day <= t ? doseLog(S, m, time, day) : null; const late = !l && day === t && hmToMin(time) + 30 < now;
+    items.push({time, icon:'pill', title:`${m.name} ${m.dose||''}`.trim(), sub: l ? `Given by ${nameOf(l.by)} at ${l.time}` : late ? 'Late' : 'Dose', late, done:!!l, give: day === t && !l ? {id:m.id, time} : null, a:'data-a="go" data-tab="health" data-seg="meds"'}); }));
+  return items.sort((x, y) => (x.time ? hmToMin(x.time) : -1) - (y.time ? hmToMin(y.time) : -1));
+}
+// days that hold something beyond the daily routine get a dot in the week strip
+function calHasPlans(day){ return calItems(day).some(i => i.icon !== 'bowl' && i.icon !== 'pill'); }
+function viewCalendar(){
+  if (ui.tripId && S.trips.find(x => x.id === ui.tripId)) return viewTravel();
+  const t = today(), day = ui.calDay || t;
+  const monday = addDays(day, -((parseKey(day).getDay() + 6) % 7));
+  const week = [...Array(7)].map((_, i) => addDays(monday, i));
+  const d0 = parseKey(monday), d6 = parseKey(week[6]);
+  const month = d0.getMonth() === d6.getMonth() ? `${MONTHS_LONG[d0.getMonth()]} ${d0.getFullYear()}` : `${MONTHS[d0.getMonth()]} to ${MONTHS[d6.getMonth()]} ${d6.getFullYear()}`;
+  const items = calItems(day);
+  const row = i => `<div class="li ${i.done?'is-done':''}">
+      <span class="when num">${i.time ? esc(i.time) : 'All day'}</span>
+      <span class="tile-s">${i.done ? ic('check','ico-s') : ic(i.icon,'ico-s')}</span>
+      <button class="grow cal-open" ${i.a}><span class="t">${esc(i.title)}</span>${i.sub ? `<span class="s ${i.late?'late':''}">${esc(i.sub)}</span>` : ''}</button>
+      ${i.feed ? `<button class="btn ink sm" data-a="feed" data-id="${i.feed}">Fed</button>` : i.give ? `<button class="btn ink sm" data-a="give" data-id="${i.give.id}" data-time="${esc(i.give.time)}">Given</button>` : ''}
+    </div>`;
+  const trips = [...S.trips].filter(x => x.date >= t).sort((a, b) => a.date.localeCompare(b.date));
+  const meals = [...S.meals].sort((a, b) => hmToMin(a.time) - hmToMin(b.time));
+  return `${header('Calendar', '', `<button class="iconbtn" data-a="sheet" data-type="event" data-date="${day}" aria-label="Add to calendar">${ic('plus')}</button>`)}
+    <section class="cal-week" aria-label="Week of ${fmtS(monday)}">
+      <div class="row" style="justify-content:space-between">
+        <h2 class="cal-month">${month}</h2>
+        <div class="navpill"><button data-a="calWeek" data-d="-7" aria-label="Previous week">${ic('back','ico-s')}</button><button data-a="calDay" data-v="${t}" class="cal-today" ${week.includes(t)?'disabled':''}>Today</button><button data-a="calWeek" data-d="7" aria-label="Next week">${ic('right','ico-s')}</button></div>
+      </div>
+      <div class="cal-days">${week.map((k, i) => `<button class="cal-day ${k===t?'now':''}" data-a="calDay" data-v="${k}" aria-pressed="${k===day}" aria-label="${dayLabel(k)}${calHasPlans(k)?', has plans':''}"><span class="cal-dow">${WEEKDAYS[i].slice(0,1)}</span><span class="cal-num num">${parseKey(k).getDate()}</span><i class="cal-dot ${calHasPlans(k)?'on':''}"></i></button>`).join('')}</div>
+    </section>
+    <section class="sec">
+      <div class="sec-h"><h3>${dayLabel(day)}</h3></div>
+      ${items.length ? `<div class="list timeline">${items.map(row).join('')}</div>` : ''}
+      <button class="btn soft block" data-a="sheet" data-type="event" data-date="${day}">${ic('plus','ico-s')}Add groomer, vet or walk</button>
+    </section>
+    ${trips.length ? `<section class="sec"><div class="sec-h"><h3>Trips</h3></div><div class="stack">${trips.map(tr => { const st = tripStats(tr); return `<button class="card col ticket" data-a="openTrip" data-id="${tr.id}" style="text-align:left;width:100%">
+      <div class="trip-art" aria-hidden="true">${tripArt(tr.place||DESTS[tr.dest].label)}</div>
+      <div class="row"><div class="grow"><div class="route">${esc(tr.place||DESTS[tr.dest].label)}</div><div class="s">${fmt(tr.date)} · ${st.days} days to go</div></div>${ic('right','ico-s')}</div>
+      <div class="bar sun"><i style="width:${Math.round(st.pct*100)}%"></i></div>
+      <div class="s">${st.done} of ${st.total} steps${st.next?` · Next: ${esc(st.next.title)}`:' · Ready to fly'}</div></button>`; }).join('')}</div></section>` : ''}
+    <section class="sec">
+      <div class="sec-h"><h3>Meal times</h3><button class="link" data-a="sheet" data-type="meal">Add</button></div>
+      ${meals.length ? `<div class="list">${meals.map(m => `<button class="li li-btn" data-a="sheet" data-type="meal" data-id="${m.id}"><span class="tile-s">${ic('bowl','ico-s')}</span><div class="grow"><div class="t">${esc(m.name)} · <span class="num">${esc(m.time)}</span></div>${m.food||m.portion?`<div class="s">${esc([m.food, m.portion].filter(Boolean).join(' · '))}</div>`:''}</div>${ic('right','ico-s')}</button>`).join('')}</div>` : `<div class="empty">No meal times yet.</div>`}
+    </section>
+    <button class="btn ghost block" data-a="sheet" data-type="trip">${ic('plane','ico-s')}Plan a trip</button>`;
 }
 function viewFood(){
   const seg = ui.foodSeg;
@@ -1860,26 +2049,16 @@ function viewFood(){
     const kinds = [['food',T('pantry_food'),'bowl'],['treat',T('pantry_treats'),'bone'],['toy',T('pantry_toys'),'ball']];
     const foodItems = S.items.filter(i=>i.kind==='food');
     body = kinds.map(([k,label,icn]) => { const list = S.items.filter(i=>i.kind===k);
-      return `<div class="sec-h" style="margin-top:6px"><h3>${label}</h3><button class="link" data-a="sheet" data-type="item" data-kind="${k}">${T('act_add')}</button></div>
-      ${list.length?`<div class="list">${list.map(i=>`<div class="li ${ui.flash==='item:'+i.id?'enter':''}"><span class="badge-ico" style="width:36px;height:36px;border-radius:12px">${ic(icn,'ico-s')}</span><div class="grow"><div class="t">${esc(i.name)}</div>${i.note?`<div class="s">${esc(i.note)}</div>`:''}</div>${k==='food'?`<a href="${amazonPetLink(i.name)}" target="_blank" rel="noopener" class="btn ghost sm" style="font-size:12px;padding:0 10px;min-height:34px" aria-label="Shop ${esc(i.name)} on Amazon">${T('pantry_shop')}</a>`:''}
+      return `<div class="sec-h" style="margin-top:var(--space-2)"><h3>${label}</h3><button class="link" data-a="sheet" data-type="item" data-kind="${k}">${T('act_add')}</button></div>
+      ${list.length?`<div class="list">${list.map(i=>`<div class="li ${ui.flash==='item:'+i.id?'enter':''}"><span class="badge-ico" style="width:36px;height:36px;border-radius:var(--radius-md)">${ic(icn,'ico-s')}</span><div class="grow"><div class="t">${esc(i.name)}</div>${i.note?`<div class="s">${esc(i.note)}</div>`:''}</div>${k==='food'?`<a href="${amazonPetLink(i.name)}" target="_blank" rel="noopener" class="btn ghost sm" style="font-size:var(--text-caption);padding:0 var(--space-3);min-height:var(--tap-sm)" aria-label="Shop ${esc(i.name)} on Amazon">${T('pantry_shop')}</a>`:''}
         <button class="iconbtn sm" data-a="fav" data-id="${i.id}" aria-pressed="${!!i.fav}" aria-label="${i.fav?'Remove from favourites':'Mark as favourite'}" style="${i.fav?'color:var(--color-pink-strong)':''}">${i.fav?ic('heart','ico-s').replace('<path','<path fill="currentColor"'):ic('heart','ico-s')}</button><button class="iconbtn sm" data-a="sheet" data-type="item" data-id="${i.id}" aria-label="Edit ${esc(i.name)}">${ic('edit','ico-s')}</button></div>`).join('')}</div>`:`<div class="empty">No ${label.toLowerCase()} saved yet.</div>`}`; }).join('');
-    body += `<div class="aff-card" style="margin-top:8px"><span class="badge-ico sun">${ic('bone')}</span><div class="grow"><div class="aff-tag">${T('set_partner')}</div><div class="t" style="font-size:15px">${T('set_shop',esc(S.pet.name))}</div><div class="s">${foodItems.length?foodItems.slice(0,2).map(i=>esc(i.name)).join(', ')+(foodItems.length>2?` +${foodItems.length-2} more`:''):'Find food, treats and supplies'}</div><div class="aff-links"><a href="${foodItems.length?amazonPetLink(foodItems[0].name):'https://www.amazon.com/s?tag=kudiapp-20&k='+encodeURIComponent(S.pet.species+' pet food')}" target="_blank" rel="noopener">Amazon${ic('right','ico-s')}</a><a href="${foodItems.length?chewyLink(foodItems[0].name):'https://www.chewy.com/s?query='+encodeURIComponent(S.pet.species+' food')}" target="_blank" rel="noopener">Chewy${ic('right','ico-s')}</a></div></div></div>`;
+    body += `<div class="aff-card" style="margin-top:var(--space-2)"><span class="badge-ico sun">${ic('bone')}</span><div class="grow"><div class="aff-tag">${T('set_partner')}</div><div class="t" style="font-size:var(--text-body)">${T('set_shop',esc(S.pet.name))}</div><div class="s">${foodItems.length?foodItems.slice(0,2).map(i=>esc(i.name)).join(', ')+(foodItems.length>2?` +${foodItems.length-2} more`:''):'Find food, treats and supplies'}</div><div class="aff-links"><a href="${foodItems.length?amazonPetLink(foodItems[0].name):'https://www.amazon.com/s?tag=kudiapp-20&k='+encodeURIComponent(S.pet.species+' pet food')}" target="_blank" rel="noopener">Amazon${ic('right','ico-s')}</a><a href="${foodItems.length?chewyLink(foodItems[0].name):'https://www.chewy.com/s?query='+encodeURIComponent(S.pet.species+' food')}" target="_blank" rel="noopener">Chewy${ic('right','ico-s')}</a></div></div></div>`;
   } else {
-    const st = stageOf();
-    const sp = S.pet.species;
-    const sel = ui.guideStage || st.cur.id;
-    const g = st.list.find(x=>x.id===sel) || st.cur;
-    const block = (title, icn, pair, sun) => `<div class="card" style="align-items:flex-start"><span class="badge-ico ${sun?'sun':''}">${ic(icn)}</span><div class="grow"><div class="eyebrow">${title}</div><div class="t">${esc(pair[0])}</div><div class="s">${esc(pair[1])}</div></div></div>`;
-    body = `${sp==='other'?'<div class="card"><span class="badge-ico sun">'+ic('alert')+'</span><div class="grow"><div class="t">General dog guide shown</div><div class="s">For rabbits, birds and other pets, ask your vet for a species plan.</div></div></div>':''}
-      ${(()=>{ const i = st.list.findIndex(x=>x.id===g.id), isNow = g.id===st.cur.id && S.pet.birthday, mo = S.pet.birthday ? monthsOld(S.pet.birthday) : null;
-        return `<div class="stage-cards" role="group" aria-label="Life stage">${st.list.map(x=>`<button class="stage-card ${x.id===g.id?'on':''}" data-a="stage" data-v="${x.id}" aria-pressed="${x.id===g.id}"><span class="stage-name">${x.label}</span><span class="stage-range">${x.range}</span>${x.id===st.cur.id && S.pet.birthday?'<span class="stage-now">Now</span>':''}</button>`).join('')}</div>`; })()}
-      ${block('Food','bowl',g.food,true)}${block('Treats','bone',g.treats)}${block('Toys','ball',g.toys)}
-      <div class="card col never"><div class="row" style="gap:8px">${ic('ban')}<span class="t">Never give</span></div><div class="chips">${(NEVER[sp]||NEVER.dog).map(n=>`<span class="pill">${esc(n)}</span>`).join('')}</div></div>
-      <p class="small muted" style="margin:0;text-align:center">General guidance. Your vet's advice comes first.</p>`;
+    body = guideBody();
   }
   return `${header(T('food_section'))}
     <div class="seg">${segBtn('meals',T('food_meals'))}${segBtn('pantry',T('food_pantry'))}${segBtn('guide',T('food_guide'))}</div>
-    <div class="stack" style="margin-top:14px">${body}</div>`;
+    <div class="stack" style="margin-top:var(--space-4)">${body}</div>`;
 }
 function tripStats(t){ const done = t.steps.filter(s=>s.done).length; const next = t.steps.find(s=>!s.done); return {done, total:t.steps.length, pct: t.steps.length? done/t.steps.length : 0, next, days: diffDays(today(), t.date)}; }
 function viewTravel(){
@@ -1895,7 +2074,7 @@ function viewTravel(){
         <div class="bar" role="progressbar" aria-label="Checklist ready" aria-valuenow="${Math.round(st.pct*100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.round(st.pct*100)}%"></i></div>
         <div class="trip-ready"><span class="grow">${st.next?`Next: ${esc(st.next.title)}`:'Ready to fly'}</span><span class="num">${st.done} of ${st.total} ready</span></div>
       </section>
-      ${late.length?`<div class="card" style="margin-top:12px;background:var(--blush);color:var(--blush-ink);border-color:transparent"><span class="badge-ico ink">${ic('alert')}</span><div class="grow"><div class="t">${late.length} step${late.length>1?'s are':' is'} past the safe date</div><div class="s" style="color:var(--blush-ink)">Do ${esc(late[0].title.toLowerCase())} now, or move the trip.</div></div></div>`:''}
+      ${late.length?`<div class="card" style="margin-top:var(--space-3);background:var(--blush);color:var(--blush-ink);border-color:transparent"><span class="badge-ico ink">${ic('alert')}</span><div class="grow"><div class="t">${late.length} step${late.length>1?'s are':' is'} past the safe date</div><div class="s" style="color:var(--blush-ink)">Do ${esc(late[0].title.toLowerCase())} now, or move the trip.</div></div></div>`:''}
       <section class="sec"><div class="sec-h"><h3>Checklist</h3></div>
         <p class="small muted" style="margin:0">${esc(DESTS[t.dest].note)}</p>
         <div class="list">${t.steps.map(s=>{ const isLate = !s.done && s.due && s.due < today(); return `<div class="step ${isLate?'late':''} ${ui.flash==='step:'+s.id?'enter':''}">
@@ -1915,7 +2094,7 @@ function viewTravel(){
       <div class="bar sun"><i style="width:${Math.round(st.pct*100)}%"></i></div>
       <div class="s">${st.done} of ${st.total} steps${st.next?` · Next: ${esc(st.next.title)}`:' · Ready to fly'}</div></button>`; }).join('');
   return `${header(T('travel_title'))}
-    ${trips.length ? `<div class="stack">${list}${plan}</div>` : `${plan}<div class="stack" style="margin-top:12px"><div class="empty">${T('travel_none')}</div></div>`}`;
+    ${trips.length ? `<div class="stack">${list}${plan}</div>` : `${plan}<div class="stack" style="margin-top:var(--space-3)"><div class="empty">${T('travel_none')}</div></div>`}`;
 }
 function viewMe(){
   if (ui.meView === 'settings') return settingsPage();
@@ -1924,15 +2103,15 @@ function viewMe(){
   const L = levelOf(S.xp);
   const earned = BADGES.filter(b=>S.badges[b.id]).length;
   return `${header('Profile', '', `<button class="iconbtn" data-a="openSettings" aria-label="Settings">${ic('settings')}</button>`)}
-    <div class="card"><span class="badge-ico avatar-ring" style="width:60px;height:60px;border-radius:50%;overflow:hidden">${petAvatar()}</span><div class="grow"><div class="t" style="font-size:18px">${esc(S.pet.name)}</div><div class="s">${esc({dog:'Dog',cat:'Cat',other:'Pet'}[S.pet.species]||'Pet')}${S.pet.breed?` · ${esc(S.pet.breed)}`:''}${S.pet.birthday?` · born ${fmt(S.pet.birthday)}`:''}</div></div><button class="iconbtn sm" data-a="sheet" data-type="pet" aria-label="Edit pet">${ic('edit','ico-s')}</button></div>
+    <div class="card"><span class="badge-ico avatar-ring" style="width:60px;height:60px;border-radius:50%;overflow:hidden">${petAvatar()}</span><div class="grow"><div class="t" style="font-size:var(--text-h3)">${esc(S.pet.name)}</div><div class="s">${esc({dog:'Dog',cat:'Cat',other:'Pet'}[S.pet.species]||'Pet')}${S.pet.breed?` · ${esc(S.pet.breed)}`:''}${S.pet.birthday?` · born ${fmt(S.pet.birthday)}`:''}</div></div><button class="iconbtn sm" data-a="sheet" data-type="pet" aria-label="Edit pet">${ic('edit','ico-s')}</button></div>
 
     <section class="sec"><div class="sec-h"><h3>Progress</h3><button class="link" data-a="sheet" data-type="report">${T('me_report')}</button></div>
       <div class="card col progress-card">
-        <div class="row"><span class="badge-ico">${ic('trophy')}</span><div class="grow"><div class="t">${T('me_level')} ${L.i+1} · ${T('lv'+L.i)}</div><div class="bar sun" style="margin-top:6px"><i style="width:${Math.round(L.pct*100)}%"></i></div><div class="s num" style="margin-top:4px">${S.xp} XP${L.toNext?` · ${L.toNext} to ${T('lv'+(L.i+1))}`:' · Top level'}</div></div></div>
+        <div class="row"><span class="badge-ico">${ic('trophy')}</span><div class="grow"><div class="t">${T('me_level')} ${L.i+1} · ${T('lv'+L.i)}</div><div class="bar sun" style="margin-top:var(--space-2)"><i style="width:${Math.round(L.pct*100)}%"></i></div><div class="s num" style="margin-top:var(--space-1)">${S.xp} XP${L.toNext?` · ${L.toNext} to ${T('lv'+(L.i+1))}`:' · Top level'}</div></div></div>
         <div class="progress-sep"></div>
         <div class="row" style="justify-content:space-between"><span class="eyebrow">${T('me_badges')}</span><span class="small muted num">${earned} of ${BADGES.length}</span></div>
         <div class="badges">
-          ${allBadgesEarned() ? `<div class="bdg champion-all"><div class="medal">${ic('trophy')}</div><div><div style="font-size:15px;font-weight:var(--weight-bold);color:var(--gold-deep)">Champion!</div><div style="font-size:13px;color:var(--muted);font-weight:700">${esc(S.pet.name)} collected every badge.</div></div></div>` : ''}
+          ${allBadgesEarned() ? `<div class="bdg champion-all"><div class="medal">${ic('trophy')}</div><div><div style="font-size:var(--text-body);font-weight:var(--weight-bold);color:var(--gold-deep)">Champion!</div><div style="font-size:var(--text-label);color:var(--muted);font-weight:var(--weight-bold)">${esc(S.pet.name)} collected every badge.</div></div></div>` : ''}
           ${BADGES.map(b=>`<div class="bdg ${S.badges[b.id]?'on':''}" title="${esc(b.desc)}"><span class="medal">${ic(b.icon)}</span><span>${T('bd_'+b.id)}</span></div>`).join('')}
         </div>
       </div>
@@ -1942,7 +2121,7 @@ function viewMe(){
       <div class="list">${S.members.map(m=>{ const n = S.log.filter(l=>l.by===m.id && l.type==='meal').length; return `<div class="li"><span class="badge-ico avatar ${m.id===me?'is-me':''}" style="border-radius:50%;font-weight:var(--weight-bold)">${esc(m.name.slice(0,1).toUpperCase())}</span><div class="grow"><div class="t">${esc(m.name)}${m.id===me?' <span class="s">(you)</span>':''}</div><div class="s">${n} meal${n===1?'':'s'} fed recently</div></div>
         ${m.id===me?'':`<button class="btn soft sm" data-a="iam" data-id="${m.id}">That's me</button>`}
         ${S.members.length>1?`<button class="iconbtn sm" data-a="confirm" data-what="member" data-id="${m.id}" aria-label="Remove ${esc(m.name)}">${ic('x','ico-s')}</button>`:''}</div>`; }).join('')}
-        <button class="li li-btn" data-a="sheet" data-type="${subscribed?'member':'subscribe'}"><span class="badge-ico" style="border-radius:50%">${ic('plus')}</span><div class="grow"><div class="t">Invite family</div><div class="s">${subscribed?'Add a family member or sitter.':'See who fed and gave meds, live on every phone.'}</div>${subscribed?'':'<div class="plan-line">Family Plan · $3.99/mo</div>'}</div>${ic('right','ico-s')}</button></div>
+        <button class="li li-btn" data-a="sheet" data-type="${subscribed?'member':'subscribe'}"><span class="badge-ico" style="border-radius:50%">${ic('plus')}</span><div class="grow"><div class="t">${MVP ? 'Add someone who helps' : 'Invite family'}</div><div class="s">${MVP ? 'Their name shows next to what they log.' : subscribed?'Add a family member or sitter.':'See who fed and gave meds, live on every phone.'}</div>${subscribed?'':'<div class="plan-line">Family Plan · $3.99/mo</div>'}</div>${ic('right','ico-s')}</button></div>
       ${subscribed && homeCode && syncMode==='shared' ? `<div class="card col"><div class="t">${T('me_invite_t')}</div><div class="s">${T('me_invite_s',esc(S.pet.name))}</div><div class="row"><input class="in grow" id="inviteLink" readonly value="${esc(location.origin + '/?home=' + homeCode)}" aria-label="Invite link" style="font-size:var(--text-label)"><button class="btn ink" data-a="copyInvite">${T('act_copy')}</button></div></div>` : ''}
     </section>
 
@@ -1950,7 +2129,7 @@ function viewMe(){
       <button class="card" data-a="openReminders" style="text-align:left;width:100%"><span class="badge-ico">${ic('bell')}</span><div class="grow"><div class="t">Feeding, medicine and vaccine reminders</div><div class="s">${['meals','meds','vacc','trips'].filter(k=>REM[k]).length} of 4 types on · ${REM.lead?`${REM.lead} min early`:'at the time'} · add them to your phone calendar</div></div>${ic('right','ico-s')}</button>
     </section>
 
-    <section class="sec">
+    ${MVP ? '' : `<section class="sec">
     ${subscribed ? `<div class="sec-h"><h3>Pawmates</h3></div><div class="list">${pmMatchesRow(S.pet.name) || `<button class="li li-btn" data-a="sheet" data-type="pawmates"><span class="badge-ico">${icSolid('paw')}</span><div class="grow"><div class="t">Find playmates</div><div class="s">Dogs and cats nearby want to meet ${esc(S.pet.name)}</div></div>${ic('right','ico-s')}</button>`}</div>`
       : `<button class="card col promo" data-a="sheet" data-type="pawmates" style="text-align:left;width:100%">
         <span class="promo-art"><span class="sub-badge">Family Plan</span></span>
@@ -1958,7 +2137,7 @@ function viewMe(){
         <span class="s">Find playmates for ${esc(S.pet.name)} nearby. Swipe, match and plan a walk together.</span>
         <span class="btn ink block">See Pawmates</span>
       </button>`}
-    </section>`;
+    </section>`}`;
 }
 const APP_VERSION = '0.1.0';
 function settingsPage(){
@@ -1968,7 +2147,11 @@ function settingsPage(){
   const head = (t) => `<div class="eyebrow" style="margin-top:var(--space-2)">${t}</div>`;
   return `<header class="top trip-top"><button class="iconbtn" data-a="closeSettings" aria-label="Back to Me">${ic('back')}</button><h1 class="grow">Settings</h1></header>
     <div class="stack" style="margin-top:var(--space-4)">
-      <div class="eyebrow">Plan</div>
+      ${MVP ? `<div class="eyebrow">Account</div>
+      <div class="list">
+        ${row('user', currentUser ? esc(currentUser.email) : 'Not signed in', currentUser ? 'Signed in with Google' : 'Sign in to keep your account', currentUser ? `<button class="btn ghost sm" data-a="authSignOut">Sign out</button>` : `<button class="btn soft sm" data-a="authGoogle">Sign in</button>`)}
+        ${row('cloud', 'Saved on this phone', `${esc(S.pet.name||'Your pet')}'s records stay on this device for now.`)}
+      </div>` : `<div class="eyebrow">Plan</div>
       <div class="list">
         ${subscribed ? row('trophy', T('sub_active'), T('sub_active_s'), `<button class="btn ghost sm" data-a="cancelSub">${T('sub_cancel')}</button>`) : `<button class="li li-btn" data-a="sheet" data-type="subscribe"><span class="badge-ico">${ic('users')}</span><div class="grow"><div class="t">${T('sub_free')}</div><div class="s">${T('sub_free_s')}</div></div>${ic('right','ico-s')}</button>`}
       </div>
@@ -1977,9 +2160,10 @@ function settingsPage(){
         ${row('cloud', syncMode==='shared'?T('me_sync_on'):T('me_sync_off'), syncMode==='shared' ? (IN_ARTIFACT ? 'Changes appear live for everyone who opens this app link.' : 'Shared with everyone who joined with your family link.') : dbMissing ? 'Data stays on this phone. Family sharing turns on once the app has a database.' : 'Data stays in this browser.')}
         ${AUTH_CONFIGURED ? row('user', currentUser ? esc(currentUser.email) : 'Not signed in', currentUser ? 'Signed in' : 'Sign in to sync across devices', currentUser ? `<button class="btn ghost sm" data-a="authSignOut">Sign out</button>` : `<button class="btn soft sm" data-a="authSignIn">Sign in</button>`) : ''}
       </div>
-      ${head('Preferences')}
+      `}
+      ${MVP ? '' : `${head('Preferences')}
       <div class="seg">${['en','ru','ka'].map(l=>`<button data-a="setLang" data-l="${l}" aria-pressed="${lang===l}">${T('lang_'+l)}</button>`).join('')}</div>
-      <div class="list">${row('sun', 'Dark mode', 'Easy on the eyes at night', `<input type="checkbox" class="switch" data-a="theme" aria-label="Dark mode" ${dark?'checked':''}>`)}</div>
+      <div class="list">${row('sun', 'Dark mode', 'Easy on the eyes at night', `<input type="checkbox" class="switch" data-a="theme" aria-label="Dark mode" ${dark?'checked':''}>`)}</div>`}
       ${head('About')}
       <div class="list">${link('openPrivacy', 'lock', 'Privacy policy')}${link('openTerms', 'book', 'Terms and conditions')}</div>
       <div class="list">${S.sample
@@ -1992,7 +2176,7 @@ function settingsPage(){
 const LEGAL = {
   privacy: {title:'Privacy policy', sections: () => [
     ['Who we are', 'Kudi is a pet-care app for families. This policy explains what information Kudi collects when you use the app, how it is used and the choices you have.'],
-    ['Information you give us', 'When you set up Kudi you enter details about your pet (name, species, breed, sex, birthday and weight) and your care routine: meal times, medicine, vaccines, heat cycles and trips. When family members join, Kudi records who logged each meal, dose or walk and when. If you create an account, we also keep your email address.'],
+    ['Information you give us', 'When you set up Kudi you enter details about your pet (name, species, breed, sex, birthday and weight) and your care routine: meal times, medicine, vaccines, heat cycles and trips. When family members join, Kudi records who logged each meal, dose or walk and when. When you sign in with Google, we receive your name, email address and a Google account ID, and use them only to sign you in. You can also add a photo of your pet; it stays on your phone.'],
     ['Where your information is stored', syncMode==='shared' ? 'Because family sharing is on, your records are stored on Kudi\'s servers so that everyone in your family sees the same information. They are sent over an encrypted connection.' : 'Right now your records are stored only in this browser on this device. They are not sent to Kudi or anyone else. If you turn on family sharing, your records are stored on Kudi\'s servers so your family can see them.'],
     ['How we use it', 'We use your information only to run the app: to show your pet\'s day, send the reminders you switch on, keep your family in sync and show your progress. We do not sell your information and we do not use it for advertising.'],
     ['Reminders and calendars', 'Reminders are shown by your phone while Kudi is running. When you add a reminder to your calendar, Kudi opens your calendar app with the details filled in; nothing is saved there until you tap Save.'],
@@ -2008,7 +2192,7 @@ const LEGAL = {
     ['Using Kudi', 'By using Kudi you agree to these terms. If you do not agree, please do not use the app.'],
     ['Not veterinary advice', 'Kudi helps you keep track of your pet\'s care. Feeding guides, heat predictions, travel checklists and other tips are general information, not veterinary advice. Always follow your vet\'s advice, and contact a vet straight away if you are worried about your pet.'],
     ['Your account and your family', 'You are responsible for the information you enter and for who you invite to your family. Anyone you invite can see and change your pet\'s records.'],
-    ['Family Plan', 'Family Plan costs $3.99 a month and renews each month until you cancel. You can cancel at any time in Settings; you keep Family Plan until the end of the month you paid for. Using Kudi on your own stays free.'],
+    ...(MVP ? [] : [['Family Plan', 'Family Plan costs $3.99 a month and renews each month until you cancel. You can cancel at any time in Settings; you keep Family Plan until the end of the month you paid for. Using Kudi on your own stays free.']]),
     ['Pawmates', 'Be kind and honest. Meet other pet owners in public places, keep your pet on a leash at first meetings and make sure both pets are vaccinated. Kudi does not check members and is not responsible for meetings arranged through the app. We may remove anyone who behaves badly.'],
     ['Travel checklists', 'Entry rules for pets change often. Check the official rules for your destination and your airline before you travel. Kudi is not responsible if a pet is refused entry.'],
     ['Partner sites', 'Products and services on partner sites are sold by those partners under their own terms.'],
@@ -2018,17 +2202,22 @@ const LEGAL = {
     ['Contact', 'Questions? Write to us at hello@kudi.app.'],
   ]},
 };
-function legalPage(kind){
+function legalPage(kind, back){
   const L = LEGAL[kind];
-  return `<header class="top trip-top"><button class="iconbtn" data-a="openSettings" aria-label="Back to Settings">${ic('back')}</button><h1 class="grow">${L.title}</h1></header>
+  return `<header class="top trip-top"><button class="iconbtn" data-a="${back||'openSettings'}" aria-label="Back">${ic('back')}</button><h1 class="grow">${L.title}</h1></header>
     <article class="doc">
       <p class="doc-date">Last updated 17 Oct 2026</p>
       ${L.sections().map(([h, t], i) => `<h2>${i+1}. ${h}</h2><p>${t}</p>`).join('')}
     </article>`;
 }
+// MVP tabs: Today, Calendar (meals, trips and one-off care in one place), Health, Pawmates, Me
+const TRIP_TAB = () => MVP ? 'calendar' : 'travel';
+const MEALS_TAB = () => MVP ? 'calendar' : 'food';
+const TABS = () => MVP ? ['today','calendar','health','pawmates','me'] : ['today','health','food','travel','me'];
 function nav(){
   const b = (tab, label, icn, dot) => `<button data-a="go" data-tab="${tab}" ${ui.tab===tab?'aria-current="page"':''}>${dot?'<span class="dot" aria-hidden="true"></span>':''}${ui.tab===tab?icSolid(icn):ic(icn)}${label}</button>`;
   const fedAll = S.meals.every(m=>mealFed(S,m.id,today()));
+  if (MVP) return `<nav class="nav" aria-label="Main"><div class="nav-in">${b('today','Today','home',!fedAll)}${b('calendar','Calendar','cal')}${b('health','Health','pill',healthAlerts()>0)}${b('pawmates','Pawmates','paw',pmUnread()>0)}${b('me','Me','user')}</div></nav>`;
   return `<nav class="nav" aria-label="Main"><div class="nav-in">${b('today',T('nav_today'),'home',!fedAll)}${b('health',T('nav_health'),'pill',healthAlerts()>0)}${b('food',T('nav_food'),'bowl')}${b('travel',T('nav_travel'),'plane')}${b('me',T('nav_me'),'user')}</div></nav>`;
 }
 
@@ -2044,7 +2233,7 @@ function chatSheet(){
   const nowHr = new Date().getHours(), nowMin = new Date().getMinutes();
   const timeStr = `${String(nowHr).padStart(2,'0')}:${String(nowMin).padStart(2,'0')}`;
   const bubbles = msgs.map(m=>`<div class="chat-bubble ${m.from==='me'?'me':'them'}">${esc(m.text)}</div>`).join('');
-  return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="chatTitle" style="max-height:92%;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))">
+  return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="chatTitle" style="max-height:92%;padding-bottom:calc(var(--space-3) + env(safe-area-inset-bottom,0px))">
     <div class="grab"></div>
     <div class="chat-header">
       <button class="iconbtn" data-a="chatBack" aria-label="Back to matches">${ic('back')}</button>
@@ -2097,21 +2286,21 @@ function pmUnread(){
 function pmMarkRead(pid){ const ms = loadPawmates(); ms.seen = [...new Set([...(ms.seen||[]), ...(pid ? [pid] : ms.matched)])]; if (pid){ ms.read = ms.read || {}; ms.read[pid] = ((ms.chats||{})[pid]||[]).length; } savePawmates(ms); }
 function pawmatesBody(){
   // Subscription gate
-  if (!subscribed) return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))">
+  if (!subscribed) return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(var(--space-8) + env(safe-area-inset-bottom,0px))">
     <div class="grab"></div>
-    <div style="text-align:center;padding:10px 0 16px">
+    <div style="text-align:center;padding:var(--space-3) 0 var(--space-4)">
       <div class="pm-hero" aria-hidden="true"></div>
       <h2 id="pmTitle">Pawmates</h2>
-      <p class="muted" style="margin:8px 0 0">Find playmates and mates for ${esc(S.pet.name)} nearby. Swipe, match and chat, all in one place.</p>
+      <p class="muted" style="margin:var(--space-2) 0 0">Find playmates and mates for ${esc(S.pet.name)} nearby. Swipe, match and chat, all in one place.</p>
     </div>
-    <div style="background:var(--tint);border-radius:18px;padding:14px 16px;margin-bottom:14px">
+    <div style="background:var(--tint);border-radius:var(--radius-lg);padding:var(--space-4) var(--space-4);margin-bottom:var(--space-4)">
       <div class="eyebrow" style="margin-bottom:var(--space-2)">Included in Family Plan</div>
-      <div style="display:flex;flex-direction:column;gap:7px">
-        ${['Swipe profiles of dogs &amp; cats nearby','Match and start a conversation','Live family sync across all phones','Unlimited family members'].map(f=>`<div style="display:flex;align-items:center;gap:8px;font:var(--type-body)">${ic('check','ico-s')}<span>${f}</span></div>`).join('')}
+      <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+        ${['Swipe profiles of dogs &amp; cats nearby','Match and start a conversation','Live family sync across all phones','Unlimited family members'].map(f=>`<div style="display:flex;align-items:center;gap:var(--space-2);font:var(--type-body)">${ic('check','ico-s')}<span>${f}</span></div>`).join('')}
       </div>
     </div>
     <button class="btn ink xl block" data-a="subscribePawmates">Unlock Pawmates · $3.99/mo</button>
-    <button class="btn ghost block" style="margin-top:6px" data-a="close">Maybe later</button>
+    <button class="btn ghost block" style="margin-top:var(--space-2)" data-a="close">Maybe later</button>
   </div>`;
 
   const ms = loadPawmates();
@@ -2120,20 +2309,20 @@ function pawmatesBody(){
   // Matches list view
   if (ui.sheet && ui.sheet.showMatches){
     const matchedProfiles = PAWMATES.filter(x=>ms.matched.includes(x.id));
-    return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))">
+    return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(var(--space-8) + env(safe-area-inset-bottom,0px))">
       <div class="grab"></div>
       
       ${matchedProfiles.length?`<div>${matchedProfiles.map(mp=>{ const msgs=(ms.chats||{})[mp.id]||[]; const last=msgs[msgs.length-1]; const unread=!(ms.seen||[]).includes(mp.id)||msgs.length>((ms.read||{})[mp.id]||0); return `<button class="match-row" data-a="chatOpen" data-pid="${mp.id}" style="width:100%;text-align:left;border:0;background:transparent">
         <div class="av" style="background:${mp.color}">${mascot(mp.species,'happy')}</div>
         <div class="grow"><div class="t" style="${unread?'font-weight:var(--weight-bold)':''}">${esc(mp.name)} · ${esc(mp.breed)}</div><div class="s">${last?esc(last.text.slice(0,44)+(last.text.length>44?'…':'')):'Tap to say hi'}</div></div>
-        ${unread?'<span class="unread-dot" aria-label="New"></span>':''}${ic('right','ico-s')}</button>`; }).join('')}</div>`:`<p class="muted" style="text-align:center;margin:24px 0">No matches yet. Keep swiping!</p>`}
+        ${unread?'<span class="unread-dot" aria-label="New"></span>':''}${ic('right','ico-s')}</button>`; }).join('')}</div>`:`<p class="muted" style="text-align:center;margin:var(--space-6) 0">No matches yet. Keep swiping!</p>`}
     </div>`;
   }
 
   // Just-matched celebration screen
   if (ui.sheet && ui.sheet.justMatched) {
     const p = PAWMATES.find(x=>x.id===ui.sheet.justMatched);
-    if (p) return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))">
+    if (p) return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(var(--space-8) + env(safe-area-inset-bottom,0px))">
       <div class="grab"></div>
       <div class="pm-match">
         <div class="pm-match-avs">
@@ -2141,56 +2330,56 @@ function pawmatesBody(){
           <div class="pm-match-heart">${ic('heart','ico-s')}</div>
           <div class="pm-match-av" style="background:var(--sun)">${petAvatar()}</div>
         </div>
-        <h2 id="pmTitle" style="font-size:28px;margin-bottom:6px">It's a match!</h2>
-        <p class="muted" style="margin:0 0 6px">${esc(p.name)} liked ${esc(S.pet.name)} back!</p>
-        <span class="pill sun" style="margin-bottom:16px">${matched} match${matched>1?'es':''} total</span>
-        <div class="card" style="text-align:left;gap:14px">
+        <h2 id="pmTitle" style="font-size:var(--text-h1);margin-bottom:var(--space-2)">It's a match!</h2>
+        <p class="muted" style="margin:0 0 var(--space-2)">${esc(p.name)} liked ${esc(S.pet.name)} back!</p>
+        <span class="pill sun" style="margin-bottom:var(--space-4)">${matched} match${matched>1?'es':''} total</span>
+        <div class="card" style="text-align:left;gap:var(--space-4)">
           <div class="pm-match-av" style="width:52px;height:52px;flex-shrink:0;background:${p.color}">${mascot(p.species,'happy')}</div>
           <div><div class="t">${esc(p.name)}, ${p.age} yr${p.age>1?'s':''} · ${esc(p.breed)}</div><div class="s">${esc(p.bio)}</div></div>
         </div>
       </div>
-      <button class="btn ink xl block" style="margin-top:14px" data-a="chatOpen" data-pid="${p.id}">Send a woof!</button>
-      <button class="btn ghost block" style="margin-top:6px" data-a="pawmatesContinue">Keep swiping</button>
+      <button class="btn ink xl block" style="margin-top:var(--space-4)" data-a="chatOpen" data-pid="${p.id}">Send a woof!</button>
+      <button class="btn ghost block" style="margin-top:var(--space-2)" data-a="pawmatesContinue">Keep swiping</button>
     </div>`;
   }
 
   const p = nextPawmate(ms);
   if (!p){
     const matchedProfiles = PAWMATES.filter(x=>ms.matched.includes(x.id));
-    return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))">
+    return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(var(--space-8) + env(safe-area-inset-bottom,0px))">
     <div class="grab"></div>
-    <div style="text-align:center;padding:20px 0 12px">
+    <div style="text-align:center;padding:var(--space-5) 0 var(--space-3)">
       <div class="pm-hero" aria-hidden="true"></div>
       <h2 id="pmTitle">No more pets nearby</h2>
-      <p class="muted" style="margin:0 0 4px">You've seen everyone. New pets join every week.</p>
+      <p class="muted" style="margin:0 0 var(--space-1)">You've seen everyone. New pets join every week.</p>
     </div>
-    ${matchedProfiles.length?`<div class="sec-h" style="margin-top:8px"><h3>Your matches</h3><span class="pill sun">${ic('heart','ico-s')}${matchedProfiles.length}</span></div>
+    ${matchedProfiles.length?`<div class="sec-h" style="margin-top:var(--space-2)"><h3>Your matches</h3><span class="pill sun">${ic('heart','ico-s')}${matchedProfiles.length}</span></div>
     <div>${matchedProfiles.map(mp=>{ const msgs = (ms.chats||{})[mp.id]||[]; const last = msgs[msgs.length-1]; return `<button class="match-row" data-a="chatOpen" data-pid="${mp.id}" style="width:100%;text-align:left;border:0;background:transparent">
       <div class="av" style="background:${mp.color}">${mascot(mp.species,'happy')}</div>
       <div class="grow"><div class="t">${esc(mp.name)} · ${esc(mp.breed)}</div><div class="s">${last?esc(last.text.slice(0,40)+(last.text.length>40?'…':'')):'Tap to say hi'}</div></div>
       ${ic('right','ico-s')}</button>`; }).join('')}</div>`:''}
-    <button class="btn ghost block" data-a="pawmatesReset" style="margin-top:12px">Start over</button>
-    <button class="btn ink block" style="margin-top:8px" data-a="close">Close</button>
+    <button class="btn ghost block" data-a="pawmatesReset" style="margin-top:var(--space-3)">Start over</button>
+    <button class="btn ink block" style="margin-top:var(--space-2)" data-a="close">Close</button>
   </div>`;
   }
 
-  return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))">
+  return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pmTitle" style="padding-bottom:calc(var(--space-6) + env(safe-area-inset-bottom,0px))">
     <div class="grab"></div>
     <div class="pm-card" id="pmCard">
       <div class="pm-photo" style="background:${p.color}">${mascot(p.species,'happy','pm-mascot')}
-        <div style="position:absolute;bottom:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap">${p.tags.map(tag=>`<span class="pm-tag">${esc(tag)}</span>`).join('')}</div>
+        <div style="position:absolute;bottom:var(--space-3);left:var(--space-3);display:flex;gap:var(--space-2);flex-wrap:wrap">${p.tags.map(tag=>`<span class="pm-tag">${esc(tag)}</span>`).join('')}</div>
       </div>
       <div class="pm-info">
         <div class="pm-name">${esc(p.name)}, ${p.age} yr${p.age>1?'s':''} <span class="pm-g">${p.gender==='f'?ic('female','ico-s'):ic('male','ico-s')}</span></div>
-        <div class="s" style="margin-top:2px">${esc(p.breed)} · Tbilisi</div>
-        <p style="margin:8px 0 0;font-size:var(--text-body);color:var(--muted)">${esc(p.bio)}</p>
+        <div class="s" style="margin-top:var(--space-px)">${esc(p.breed)} · Tbilisi</div>
+        <p style="margin:var(--space-2) 0 0;font-size:var(--text-body);color:var(--muted)">${esc(p.bio)}</p>
       </div>
     </div>
     <div class="pm-btns">
       <button class="pm-pass" data-a="pawmatePass" data-pid="${p.id}" aria-label="Pass">${ic('x')}</button>
       <button class="pm-like" data-a="pawmateLike" data-pid="${p.id}" aria-label="Like">${ic('heart')}</button>
     </div>
-    <p class="small muted" style="text-align:center;margin:8px 0 0">${(()=>{ const n = PAWMATES.length - ms.liked.length - ms.passed.length - 1; return n > 0 ? `${n} more pet${n>1?'s':''} nearby after this one` : 'Last pet nearby for now'; })()}</p>
+    <p class="small muted" style="text-align:center;margin:var(--space-2) 0 0">${(()=>{ const n = PAWMATES.length - ms.liked.length - ms.passed.length - 1; return n > 0 ? `${n} more pet${n>1?'s':''} nearby after this one` : 'Last pet nearby for now'; })()}</p>
   </div>`;
 }
 
@@ -2200,9 +2389,9 @@ function subscribeSheet(){
     <div class="grab"></div>
     <h2 id="shTitle" style="text-align:center">${T('sub_title')}</h2>
     <div class="sub-hero">
-      <div style="font-size:var(--text-body);font-weight:var(--weight-bold);color:var(--color-feature-ink-2);margin-bottom:8px">${T('sub_plan')}</div>
+      <div style="font-size:var(--text-body);font-weight:var(--weight-bold);color:var(--color-feature-ink-2);margin-bottom:var(--space-2)">${T('sub_plan')}</div>
       <div class="price"><sup>$</sup>3.99<sub>/mo</sub></div>
-      <div style="margin-top:8px;font-size:var(--text-body);color:var(--color-feature-ink-2)">${T('sub_plan_s')}</div>
+      <div style="margin-top:var(--space-2);font-size:var(--text-body);color:var(--color-feature-ink-2)">${T('sub_plan_s')}</div>
     </div>
     <ul class="sub-feats">
       <li>${ic('cloud','ico-s')}<span>${T('sub_f1')}</span></li>
@@ -2210,9 +2399,9 @@ function subscribeSheet(){
       <li>${ic('bell','ico-s')}<span>${T('sub_f3')}</span></li>
       <li>${ic('check','ico-s')}<span>${T('sub_f4')}</span></li>
     </ul>
-    <p class="small muted" style="margin:0 0 4px;text-align:center">${T('sub_note')}</p>
+    <p class="small muted" style="margin:0 0 var(--space-1);text-align:center">${T('sub_note')}</p>
     <button class="btn ink xl block" data-a="subscribe">${T('sub_cta')}</button>
-    <button class="btn ghost block" data-a="close" style="margin-top:4px">${T('sub_later')}</button>
+    <button class="btn ghost block" data-a="close" style="margin-top:var(--space-1)">${T('sub_later')}</button>
   </div>`;
 }
 
@@ -2220,15 +2409,15 @@ function subscribeSheet(){
 function careReportSheet(){
   const cs = careStats(), champ = allBadgesEarned(), L = levelOf(S.xp);
   const earned = BADGES.filter(b=>S.badges[b.id]).length;
-  const row = (label, val, unit='') => `<div class="report-stat"><span class="lbl">${label}</span><span class="val">${val}<span style="font-size:13px;font-weight:700;color:var(--color-ink-2)"> ${unit}</span></span></div>`;
-  return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle" style="padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))">
+  const row = (label, val, unit='') => `<div class="report-stat"><span class="lbl">${label}</span><span class="val">${val}<span style="font-size:var(--text-label);font-weight:var(--weight-bold);color:var(--color-ink-2)"> ${unit}</span></span></div>`;
+  return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle" style="padding-bottom:calc(var(--space-8) + env(safe-area-inset-bottom,0px))">
     <div class="grab"></div>
-    <div style="text-align:center;margin-bottom:16px">
-      <div class="rep-av" style="width:80px;height:80px;border-radius:50%;background:${champ?'var(--yellow-300)':'var(--color-surface-3)'};margin:0 auto 10px;display:grid;place-items:center;overflow:hidden">${petAvatar()}</div>
-      <h2 id="shTitle" style="margin-bottom:2px">${esc(S.pet.name)} · ${T('rep_title')}</h2>
+    <div style="text-align:center;margin-bottom:var(--space-4)">
+      <div class="rep-av" style="width:80px;height:80px;border-radius:50%;background:${champ?'var(--yellow-300)':'var(--color-surface-3)'};margin:0 auto var(--space-3);display:grid;place-items:center;overflow:hidden">${petAvatar()}</div>
+      <h2 id="shTitle" style="margin-bottom:var(--space-px)">${esc(S.pet.name)} · ${T('rep_title')}</h2>
       <span class="pill ${champ?'sun':'ink'}">${champ?`Champion · ${T('me_badges')}`:`${T('me_level')} ${L.i+1} · ${T('lv'+L.i)}`}</span>
     </div>
-    <div class="card col" style="gap:0;padding:0 14px">
+    <div class="card col" style="gap:0;padding:0 var(--space-4)">
       ${cs.days ? row(T('rep_days'), cs.days, 'days') : ''}
       ${row(T('rep_meals'), cs.meals)}
       ${row(T('rep_streak'), streak(S), 'days')}
@@ -2242,20 +2431,21 @@ function careReportSheet(){
       ${row(T('rep_xp'), S.xp, 'XP')}
       ${row(T('rep_badges'), `${earned} / ${BADGES.length}`)}
     </div>
-    ${champ ? `<p class="small muted" style="text-align:center;margin:12px 0 0">${T('rep_champ',esc(S.pet.name))}</p>` : ''}
-    <button class="btn ghost block" style="margin-top:8px" data-a="close">${T('act_close')}</button>
+    ${champ ? `<p class="small muted" style="text-align:center;margin:var(--space-3) 0 0">${T('rep_champ',esc(S.pet.name))}</p>` : ''}
+    <button class="btn ghost block" style="margin-top:var(--space-2)" data-a="close">${T('act_close')}</button>
   </div>`;
 }
 
 /* ---------- sheets ---------- */
 function sheetHTML(){
   const sh = ui.sheet; if (!sh) return '';
+  if (MVP && ui.tab === 'pawmates' && (sh.type === 'pawmates' || sh.type === 'chat')) return ''; // drawn in the tab itself
   if (sh.type === 'subscribe') return subscribeSheet();
   if (sh.type === 'pawmates') return pawmatesSheet();
   if (sh.type === 'chat') return takeover(chatSheet(), null);
   if (sh.type === 'report') return careReportSheet();
   if (sh.type === 'whoami') return `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle"><div class="grab"></div>
-    <h2 id="shTitle">${T('whoami_t')}</h2><p class="muted" style="margin:0 0 14px">Your name shows next to everything you log for ${esc(S.pet.name)}.</p>
+    <h2 id="shTitle">${T('whoami_t')}</h2><p class="muted" style="margin:0 0 var(--space-4)">Your name shows next to everything you log for ${esc(S.pet.name)}.</p>
     <div class="stack">${S.members.map(m=>`<button class="card" data-a="iam" data-id="${m.id}" style="text-align:left;width:100%"><span class="badge-ico sun" style="border-radius:50%;font-weight:var(--weight-bold)">${esc(m.name.slice(0,1).toUpperCase())}</span><div class="grow t">I'm ${esc(m.name)}</div>${ic('right','ico-s')}</button>`).join('')}
     <form class="row" data-form="joinme"><input class="in grow" id="joinName" name="name" maxlength="24" placeholder="${T('whoami_new')}" aria-label="Your name"><button class="btn ink" type="submit">${T('act_join')}</button></form></div></div>`;
   let title = '', body = '';
@@ -2290,7 +2480,7 @@ function sheetHTML(){
   } else if (sh.type === 'item'){
     const it = S.items.find(x=>x.id===sh.id) || {kind: sh.kind||'food', name:'', note:''};
     title = sh.id ? 'Edit item' : 'Add to pantry';
-    body = `<div class="choice">${[['food','Food','bowl'],['treat','Treat','bone'],['toy','Toy','ball']].map(([k,l,i])=>`<label style="display:contents"><input type="radio" name="kind" value="${k}" ${it.kind===k?'checked':''} style="position:absolute;opacity:0;width:1px;height:1px"><span class="kindopt" data-k="${k}" style="border:1.5px solid ${it.kind===k?'var(--color-pink)':'var(--line)'};background:var(--card);box-shadow:${it.kind===k?'0 0 0 1px var(--color-pink)':'none'};color:inherit;border-radius:18px;min-height:78px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-weight:var(--weight-bold);cursor:pointer">${ic(i)}${l}</span></label>`).join('')}</div>
+    body = `<div class="choice">${[['food','Food','bowl'],['treat','Treat','bone'],['toy','Toy','ball']].map(([k,l,i])=>`<label class="opt"><input type="radio" name="kind" value="${k}" ${it.kind===k?'checked':''}><span>${ic(i)}${l}</span></label>`).join('')}</div>
       ${f('fItemName','Name',`<input class="in" id="fItemName" name="name" required maxlength="50" value="${esc(it.name)}" placeholder="e.g. Salmon training bites">`)}
       ${f('fItemNote','Note',`<input class="in" id="fItemNote" name="note" maxlength="80" value="${esc(it.note)}" placeholder="Where to buy, how much they like it">`)}`;
   } else if (sh.type === 'trip'){
@@ -2303,6 +2493,13 @@ function sheetHTML(){
     title = 'Add a step';
     body = `${f('fStepTitle','Step',`<input class="in" id="fStepTitle" name="title" required maxlength="50" placeholder="e.g. Buy a travel carrier">`)}
       ${f('fStepDue','Do by (optional)',`<input class="in" id="fStepDue" name="due" type="date">`)}`;
+  } else if (sh.type === 'event'){
+    const e = (S.events||[]).find(x=>x.id===sh.id) || {type:'groomer', date: sh.date || ui.calDay || today(), time:'', note:''};
+    title = sh.id ? 'Edit event' : 'Add to calendar';
+    body = `<div class="choice">${EVENT_TYPES.map(([k,l,i])=>`<label class="opt"><input type="radio" name="type" value="${k}" ${e.type===k?'checked':''}><span>${ic(i)}${l}</span></label>`).join('')}</div>
+      <div class="two">${f('fEvDate','Date',`<input class="in" id="fEvDate" name="date" type="date" required value="${esc(e.date)}">`)}${f('fEvTime','Time (optional)',`<input class="in" id="fEvTime" name="time" type="time" value="${esc(e.time)}">`)}</div>
+      ${f('fEvNote','Details (optional)',`<input class="in" id="fEvNote" name="note" maxlength="60" value="${esc(e.note)}" placeholder="e.g. Happy Paws, full groom">`)}
+      ${sh.id ? '' : `<p class="small muted" style="margin:0">Flying somewhere? <button type="button" class="link" data-a="sheet" data-type="trip">Plan a trip</button> and Kudi builds the checklist.</p>`}`;
   } else if (sh.type === 'weight'){
     const last = sh.id ? S.log.find(l=>l.id===sh.id) : S.log.filter(l=>l.type==='weight').sort((a,b)=>b.at-a.at)[0];
     title = sh.id ? 'Edit weight' : `Weigh ${S.pet.name}`;
@@ -2310,7 +2507,8 @@ function sheetHTML(){
   } else if (sh.type === 'pet'){
     const p = S.pet;
     title = 'Edit pet';
-    body = `${f('fPetName','Name',`<input class="in" id="fPetName" name="name" required maxlength="30" value="${esc(p.name)}">`)}
+    body = `${photoPicker(sh.photo !== undefined ? sh.photo : p.photo, 'pet')}
+      ${f('fPetName','Name',`<input class="in" id="fPetName" name="name" required maxlength="30" value="${esc(p.name)}">`)}
       ${f('fPetSpecies','Species',`<select class="in" id="fPetSpecies" name="species">${[['dog','Dog'],['cat','Cat'],['other','Other']].map(([k,l])=>`<option value="${k}" ${p.species===k?'selected':''}>${l}</option>`).join('')}</select>`)}
       <div class="two">${f('fPetBday','Birthday',`<input class="in" id="fPetBday" name="birthday" type="date" max="${today()}" value="${esc(p.birthday)}">`)}${f('fPetBreed','Breed',`<input class="in" id="fPetBreed" name="breed" maxlength="40" value="${esc(p.breed)}">`)}</div>
       <div class="two">${f2('fPetSex','Girl or boy',`<select class="in" id="fPetSex" name="sex">${[['','Not sure'],['female','Girl'],['male','Boy']].map(([k,l])=>`<option value="${k}" ${p.sex===k?'selected':''}>${l}</option>`).join('')}</select>`)}${f2('fPetSpay','Spayed / neutered',`<select class="in" id="fPetSpay" name="spayed">${[['','Not sure'],['no','No'],['yes','Yes']].map(([k,l])=>`<option value="${k}" ${p.spayed===k?'selected':''}>${l}</option>`).join('')}</select>`)}</div>`;
@@ -2326,15 +2524,15 @@ function sheetHTML(){
   } else if (sh.type === 'confirm'){
     const c = ui.confirm || {};
     return `<div class="scrim" data-a="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle"><div class="grab"></div>
-      <h2 id="shTitle">${esc(c.title)}</h2><p class="muted" style="margin:0 0 16px">${esc(c.text)}</p>
+      <h2 id="shTitle">${esc(c.title)}</h2><p class="muted" style="margin:0 0 var(--space-4)">${esc(c.text)}</p>
       <div class="two"><button class="btn soft" data-a="close">Keep it</button><button class="btn danger" data-a="confirmYes">${esc(c.yes||'Delete')}</button></div></div>`;
   }
-  const delBtn = sh.id && ['meal','med','vac','item','heat','weight'].includes(sh.type) ? `<button type="button" class="btn ghost" data-a="confirm" data-what="${sh.type}" data-id="${sh.id}">${ic('trash','ico-s')}Delete</button>` : '';
+  const delBtn = sh.id && ['meal','med','vac','item','heat','weight','event'].includes(sh.type) ? `<button type="button" class="btn ghost" data-a="confirm" data-what="${sh.type}" data-id="${sh.id}">${ic('trash','ico-s')}Delete</button>` : '';
   return `<div class="scrim" data-a="close"></div>
     <form class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle" data-form="sheet">
       <div class="grab"></div>
-      <div class="row" style="justify-content:space-between;margin-bottom:4px"><h2 id="shTitle" style="margin:0">${esc(title)}</h2><button type="button" class="iconbtn sm" data-a="close" aria-label="Close">${ic('x','ico-s')}</button></div>
-      <div class="stack" style="margin-top:12px">${body}
+      <div class="row" style="justify-content:space-between;margin-bottom:var(--space-1)"><h2 id="shTitle" style="margin:0">${esc(title)}</h2><button type="button" class="iconbtn sm" data-a="close" aria-label="Close">${ic('x','ico-s')}</button></div>
+      <div class="stack" style="margin-top:var(--space-3)">${body}
         <button class="btn ink xl block" type="submit">${sh.id||sh.type==='pet'?'Save changes':'Save'}</button>
         ${delBtn}
       </div>
@@ -2367,11 +2565,30 @@ function pageTransition(prev, r, next, dir){
   next.animate(inn, {duration:PAGE_MS, easing:PAGE_EASE});
 }
 
+/* ---------- Live Activity (iOS Dynamic Island) ----------
+   In the iOS app, the next meal or dose due within the hour shows on the Dynamic Island and Lock Screen
+   with a countdown and the mascot. Nothing happens on the web. */
+let liveKey = '';
+function syncLiveActivity(){
+  const LA = IS_NATIVE && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LiveActivity;
+  if (!LA || !S || ui.ob) return;
+  const t = today(), now = hmToMin(nowHM());
+  const due = [
+    ...S.meals.filter(m => !mealFed(S, m.id, t)).map(m => ({time:m.time, title:`${m.name} for ${S.pet.name}`, sub:[m.food, m.portion].filter(Boolean).join(' · ') || 'Tap to mark as fed'})),
+    ...S.meds.filter(m => medActive(m, t)).flatMap(m => (m.times||[]).filter(time => !doseLog(S, m, time, t)).map(time => ({time, title:`${m.name} for ${S.pet.name}`, sub:m.dose || 'Medicine'})))
+  ].filter(x => hmToMin(x.time) - now <= 60 && now - hmToMin(x.time) <= 120).sort((a, b) => hmToMin(a.time) - hmToMin(b.time))[0];
+  const key = due ? `${due.title}@${due.time}` : '';
+  if (key === liveKey) return; liveKey = key;
+  if (!due){ LA.end().catch(()=>{}); return; }
+  const at = parseKey(t); const [h, mi] = due.time.split(':').map(Number); at.setHours(h, mi, 0, 0);
+  LA.start({petName:S.pet.name, title:due.title, subtitle:due.sub, dueAt:at.getTime(), isLate: hmToMin(due.time) + 30 < now}).catch(()=>{});
+}
+
 /* ---------- render ---------- */
 function render(opts){
   const app = document.getElementById('app');
   if (!S || ui.ob){
-    if (!ui.ob) ui.ob = {step:1, pet:{name:'',species:'dog',birthday:'',breed:'',sex:'',spayed:''}, meals:[{name:'Breakfast',time:'08:00'},{name:'Dinner',time:'19:00'}], members:[], meName:''};
+    if (!ui.ob) ui.ob = {step:1, pet:{name:'',species:'dog',birthday:'',breed:'',sex:'',spayed:'',photo:''}, meals:[{name:'Breakfast',time:'08:00'},{name:'Dinner',time:'19:00'}], members:[], meName:''};
     document.body.dataset.screen = ui.ob.step === 1 ? 'welcome' : 'onboarding';
     const prevOb = app.firstElementChild, prevObRect = prevOb && prevOb.getBoundingClientRect();
     app.innerHTML = renderOnboarding();
@@ -2383,8 +2600,8 @@ function render(opts){
   }
   inRender = true; checkReminders(); inRender = false;
   const scrollKeep = opts && opts.keepScroll ? window.scrollY : 0;
-  const v = {today:viewToday, health:viewHealth, food:viewFood, travel:viewTravel, me:viewMe}[ui.tab] || viewToday;
-  const screen = ui.tab in {health:1, food:1, travel:1, me:1} ? ui.tab : 'today';
+  const v = {today:viewToday, health:viewHealth, food:viewFood, travel:viewTravel, me:viewMe, calendar:viewCalendar, pawmates:viewPawmatesTab}[ui.tab] || viewToday;
+  const screen = ui.tab === 'today' && ui.todayView === 'guide' ? 'guide' : ui.tab in {health:1, food:1, travel:1, me:1, calendar:1, pawmates:1} ? ui.tab : 'today';
   clearTimeout(render.screenT);
   if (opts && opts.dir==='tab' && !reduced() && document.body.dataset.screen !== screen) render.screenT = setTimeout(() => { document.body.dataset.screen = screen; }, TAB_OUT);
   else document.body.dataset.screen = screen;
@@ -2404,6 +2621,7 @@ function render(opts){
   else if (opts && opts.top) window.scrollTo(0,0);
   ui.flash = null;
   if (ui.sheet){ const first = layer.querySelector('.sheet input:not([type=radio]), .sheet select, .sheet button[data-a="confirmYes"]'); if (first) setTimeout(()=>{ try{ first.focus({preventScroll:true}); }catch(e){} }, 60); }
+  syncLiveActivity();
   const chatMsgs = document.getElementById('chatMsgs'); if (chatMsgs) setTimeout(()=>{ chatMsgs.scrollTop = chatMsgs.scrollHeight; }, 30);
 }
 
@@ -2449,6 +2667,7 @@ const XPOF = l => XP[l.type] || 5;
 const A = {
   obStart(){ ui.ob.step = 2; render({dir:'fwd'}); window.scrollTo(0,0); },
   obSample(){ const r = makeSample(); S = r.s; me = r.me; lsSet(LSME, me); ui.ob = null; ui.tab='today'; save(); render({anim:true, top:true}); toast('Sample pet loaded. Try Mark as fed.'); },
+  photoRemove(d){ if (d.w === 'ob'){ syncObForm(); ui.ob.pet.photo = ''; render(); } else if (ui.sheet){ ui.sheet.photo = ''; const pick = document.querySelector('.photo-pick'); if (pick) pick.outerHTML = photoPicker('', 'pet'); } },
   obBack(){ syncObForm(); ui.ob.step = Math.max(1, ui.ob.step-1); render({dir:'back'}); },
   obSpecies(d){ syncObForm(); ui.ob.pet.species = d.v; render(); },
   obAddMeal(){ const n = document.getElementById('obMealName'), t = document.getElementById('obMealTime'); const name = (n.value||'').trim() || 'Meal'; ui.ob.meals.push({name, time:t.value||'12:00'}); ui.ob.meals.sort((a,b)=>hmToMin(a.time)-hmToMin(b.time)); render(); },
@@ -2458,11 +2677,15 @@ const A = {
   openSettings(d){ const back = ui.meView === 'privacy' || ui.meView === 'terms'; ui.meView = 'settings'; render({dir: back ? 'back' : 'fwd', top:true}); },
   openPrivacy(){ ui.meView = 'privacy'; render({dir:'fwd', top:true}); },
   openTerms(){ ui.meView = 'terms'; render({dir:'fwd', top:true}); },
+  calDay(d){ ui.calDay = d.v; render({keepScroll:true}); },
+  calWeek(d){ ui.calDay = addDays(ui.calDay || today(), +d.d); render({keepScroll:true}); },
+  openGuide(){ ui.todayView = 'guide'; render({dir:'fwd', top:true}); },
+  closeGuide(){ ui.todayView = null; render({dir:'back', top:true}); },
   closeSettings(){ ui.meView = null; render({dir:'back', top:true}); },
   openReminders(d){ const back = ui.meView === 'calendar'; ui.tab = 'me'; ui.meView = 'reminders'; lsSet(LSTAB, ui.tab); render({dir: back ? 'back' : 'fwd', top:true}); },
   closeReminders(){ ui.meView = null; render({dir:'back', top:true}); },
   openCalendar(){ ui.meView = 'calendar'; render({dir:'fwd', top:true}); },
-  go(d){ ui.meView = null; ui.tab = d.tab; if (d.seg){ if (d.tab==='health') ui.healthSeg = d.seg; if (d.tab==='food') ui.foodSeg = d.seg; } if (d.tab !== 'travel') ui.tripId = null; lsSet(LSTAB, ui.tab); render({dir:'tab', top:true}); },
+  go(d){ ui.meView = null; ui.todayView = null; if (MVP){ const pm = ui.sheet && (ui.sheet.type === 'pawmates' || ui.sheet.type === 'chat'); if (d.tab === 'pawmates' && !pm) ui.sheet = {type:'pawmates'}; if (d.tab !== 'pawmates' && pm) ui.sheet = null; } ui.tab = d.tab; if (d.seg){ if (d.tab==='health') ui.healthSeg = d.seg; if (d.tab==='food') ui.foodSeg = d.seg; } if (d.tab !== 'travel') ui.tripId = null; lsSet(LSTAB, ui.tab); render({dir:'tab', top:true}); },
   seg(d){ ui[d.k] = d.v; render({keepScroll:true}); },
   stage(d){ ui.guideStage = d.v; render({keepScroll:true}); },
   feed(d, ev){ const l = logEntry('meal', d.id); award(XP.meal, ev); burst(ev); buzz(); ui.flash = 'meal:'+d.id; commit({keepScroll:true}); toast(`${S.pet.name} is fed. Everyone can see it.`); },
@@ -2487,6 +2710,7 @@ const A = {
       vac:{title:`Delete ${nm(S.vaccines)}?`, text:'This vaccine record is removed from the health book.'},
       item:{title:`Delete ${nm(S.items)}?`, text:'It is removed from the pantry.'},
       heat:{title:'Delete this heat?', text:'Predictions are recalculated without it.'},
+      event:{title:'Delete this event?', text:'It is removed from the calendar.'},
       weight:{title:'Delete this weigh-in?', text:'It is removed from the history and the chart.'},
       trip:{title:'Delete this trip?', text:'The checklist and its progress are removed.'},
       member:{title:`Remove ${nm(S.members)}?`, text:'Their past logs stay, shown as "Someone".'},
@@ -2504,6 +2728,7 @@ const A = {
     if (c.what==='vac') rm('vaccines');
     if (c.what==='item') rm('items');
     if (c.what==='heat') rm('heats');
+    if (c.what==='event') rm('events');
     if (c.what==='weight') S.log = S.log.filter(l=>l.id!==c.id);
     if (c.what==='trip'){ rm('trips'); ui.tripId = null; }
     if (c.what==='member'){ rm('members'); if (me===c.id){ me = S.members[0] && S.members[0].id; lsSet(LSME, me||''); } }
@@ -2516,7 +2741,7 @@ const A = {
   },
   vacToday(d, ev){ const v = S.vaccines.find(x=>x.id===d.id); if (!v) return; v.given = today(); v.due = +v.repeat ? addMonths(today(), +v.repeat) : null; logEntry('vaccine', v.id); award(XP.vaccine, ev); burst(ev); ui.flash='vac:'+v.id; commit({keepScroll:true}); toast(`${v.name} recorded`); },
   fav(d){ const i = S.items.find(x=>x.id===d.id); if (i){ i.fav = !i.fav; commit({keepScroll:true}); } },
-  openTrip(d){ ui.tripId = d.id; render({dir:'fwd', top:true}); },
+  openTrip(d){ ui.tab = TRIP_TAB(); ui.tripId = d.id; render({dir:'fwd', top:true}); },
   tripBack(){ ui.tripId = null; render({dir:'back', top:true}); },
   step(d, ev){ const t = S.trips.find(x=>x.id===d.trip); const s = t && t.steps.find(x=>x.id===d.id); if (!s) return; s.done = !s.done; if (s.done){ award(XP.step, ev); burst(ev, 12); buzz(); } else award(-XP.step); ui.flash = 'step:'+s.id; commit({keepScroll:true}); if (s.done) toast(`${s.title} done`); },
   delStep(d){ const t = S.trips.find(x=>x.id===d.trip); if (!t) return; const i = t.steps.findIndex(x=>x.id===d.id); const [s] = t.steps.splice(i,1); commit({keepScroll:true}); toast('Step removed', () => { t.steps.splice(i,0,s); commit({keepScroll:true}); }); },
@@ -2542,8 +2767,26 @@ const A = {
     else { ui.sheet = {type:'pawmates'}; render({keepScroll:true}); }
   },
   subscribePawmates(){ subscribed = true; lsSet(LSSUB, '1'); ui.sheet = {type:'pawmates'}; render({keepScroll:true}); toast(T('toast_sub_on')); if (!remote) startHttpSync(); },
+  async authGoogle(){
+    if (!sbClient) await initAuth().catch(()=>{});
+    if (!sbClient){ toast("Sign-in isn't available right now. Check your connection and try again."); return; }
+    // ask Supabase first, so a provider that is switched off never sends people to a raw error page
+    try {
+      const r = await fetch(`${SUPABASE_URL}/auth/v1/settings`, {headers:{apikey: SUPABASE_ANON_KEY}});
+      const cfg = r.ok ? await r.json() : null;
+      if (cfg && !(cfg.external && cfg.external.google)){ toast("Google sign-in isn't ready yet. Explore with a sample pet for now."); return; }
+    } catch(e){ toast("Couldn't reach Google. Check your connection and try again."); return; }
+    const redirectTo = IS_NATIVE ? IOS_AUTH_REDIRECT : location.origin + location.pathname;
+    const { data, error } = await sbClient.auth.signInWithOAuth({provider:'google', options:{redirectTo, skipBrowserRedirect: IS_NATIVE}});
+    if (error){ toast("Couldn't open Google. Try again."); return; }
+    const cap = window.Capacitor && window.Capacitor.Plugins;
+    if (IS_NATIVE && data && data.url && cap && cap.Browser) cap.Browser.open({url: data.url});
+  },
+  authDevSkip(){ if (!IS_LOCAL) return; lsSet('kudi.devauth','1'); afterSignIn(); },
+  obLegal(d){ ui.ob.legal = d.k; render({dir:'fwd'}); window.scrollTo(0,0); },
+  obLegalClose(){ ui.ob.legal = null; render({dir:'back'}); },
   authSkip(){ lsSet('kudi.authskip','1'); render(); if (!IN_ARTIFACT) startHttpSync(); if (CAN_NOTIFY) navigator.serviceWorker.register('/sw.js').catch(()=>{}); },
-  authSignOut(){ if (sbClient) sbClient.auth.signOut().catch(()=>{}); currentUser = null; lsDel('kudi.authskip'); renderAuthScreen(); },
+  authSignOut(){ if (sbClient) sbClient.auth.signOut().catch(()=>{}); currentUser = null; if (MVP){ lsDel('kudi.devauth'); ui.meView = null; ui.ob = newOb(); render(); return; } lsDel('kudi.authskip'); renderAuthScreen(); },
   authSignIn(){ renderAuthScreen(); },
   pawmatesContinue(){ const back = !!(ui.sheet && ui.sheet.showMatches); ui.sheet = {type:'pawmates'}; render({keepScroll:true, sheetDir: back ? 'back' : null}); },
   pawmatesReset(){ savePawmates({liked:[],passed:[],matched:[],chats:{}}); ui.sheet = {type:'pawmates'}; render({keepScroll:true}); },
@@ -2554,9 +2797,35 @@ const A = {
   subscribe(){ subscribed = true; lsSet(LSSUB, '1'); ui.sheet = null; render({keepScroll:true}); toast(T('toast_sub_on')); if (!remote) startHttpSync(); },
   cancelSub(){ subscribed = false; lsDel(LSSUB); render({keepScroll:true}); toast(T('toast_sub_off')); },
   setLang(d){ lang = d.l; lsSet(LSLANG, lang); render({keepScroll:true}); },
-  theme(){ const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme === 'dark' : (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches); r.dataset.theme = dark ? 'light' : 'dark'; lsSet('kudi.theme', r.dataset.theme); const mc = document.querySelector('meta[name="theme-color"]'); if (mc) mc.content = dark ? '#FFFFFF' : '#0E0F10'; render({keepScroll:true}); }
+  theme(){ const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme === 'dark' : (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches); r.dataset.theme = dark ? 'light' : 'dark'; lsSet('kudi.theme', r.dataset.theme); const mc = document.querySelector('meta[name="theme-color"]'); if (mc) mc.content = getComputedStyle(r).getPropertyValue('--color-bg').trim(); render({keepScroll:true}); }
 };
 
+/* ---------- pet photo ----------
+   Picked from the camera or library, cropped to a square and shrunk so it fits in the saved data. */
+function photoPicker(src, where){
+  return `<div class="photo-pick">
+    <label class="photo-ring" for="petPhoto-${where}">${src ? `<img src="${src}" alt="">` : ic('camera')}<span class="sr">${src ? 'Change photo' : 'Add a photo'}</span></label>
+    <input type="file" id="petPhoto-${where}" accept="image/*" data-photo="${where}" class="sr">
+    <div class="photo-copy"><label class="link" for="petPhoto-${where}">${src ? 'Change photo' : 'Add a photo'}</label>${src ? `<button type="button" class="link quiet" data-a="photoRemove" data-w="${where}">Remove</button>` : '<span class="small muted">Optional, shows as the avatar</span>'}</div>
+  </div>`;
+}
+function shrinkPhoto(file){
+  return new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => { const n = 320, c = document.createElement('canvas'); c.width = c.height = n; const k = Math.min(img.width, img.height);
+      c.getContext('2d').drawImage(img, (img.width - k) / 2, (img.height - k) / 2, k, k, 0, 0, n, n); URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', 0.82)); };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('photo')); };
+    img.src = url;
+  });
+}
+document.addEventListener('change', async e => {
+  const inp = e.target.closest('input[data-photo]'); if (!inp || !inp.files || !inp.files[0]) return;
+  try {
+    const src = await shrinkPhoto(inp.files[0]);
+    if (inp.dataset.photo === 'ob'){ syncObForm(); ui.ob.pet.photo = src; render(); }
+    else if (ui.sheet && ui.sheet.type === 'pet'){ ui.sheet.photo = src; const pick = document.querySelector('.photo-pick'); if (pick) pick.outerHTML = photoPicker(src, 'pet'); }
+  } catch(err){ toast('That photo could not be opened. Try another one.'); }
+});
 function syncObForm(){
   const o = ui.ob; if (!o) return;
   const g = id => document.getElementById(id);
@@ -2575,7 +2844,10 @@ async function onSubmit(e){
   e.preventDefault();
   const fd = new FormData(form); const v = k => (fd.get(k)||'').toString().trim();
   const kind = form.dataset.form;
-  if (kind === 'obPet'){ syncObForm(); if (!ui.ob.pet.name) return; ui.ob.step = 3; render({dir:'fwd'}); window.scrollTo(0,0); return; }
+  if (kind === 'obPet'){ syncObForm(); const p = ui.ob.pet, nm = p.name || 'your pet';
+    const er = {}; if (!p.name) er.name = 'Add a name.'; if (!p.birthday) er.birthday = `Add ${nm}'s birthday.`; if (!p.breed) er.breed = 'Add a breed, or write mixed.'; if (!p.sex) er.sex = 'Choose girl or boy.'; if (!p.spayed) er.spayed = 'Choose yes or no.';
+    ui.ob.errors = er;
+    if (Object.keys(er).length){ render(); const first = document.querySelector('[aria-invalid="true"]'); if (first) first.focus(); return; } ui.ob.step = 3; render({dir:'fwd'}); window.scrollTo(0,0); return; }
   if (kind === 'obMeals'){ if (!ui.ob.meals.length) return; ui.ob.step = 4; render({dir:'fwd'}); window.scrollTo(0,0); return; }
   if (kind === 'obFamily'){
     syncObForm(); const o = ui.ob; if (!o.meName) return;
@@ -2645,25 +2917,29 @@ async function onSubmit(e){
   } else if (sh.type === 'trip'){
     const date = v('date'); if (!date) return;
     const t = {id:uid(), dest:v('dest')||'eu', place:v('place'), date, steps:tripSteps(v('dest')||'eu', date)};
-    S.trips.push(t); ui.tripId = t.id; ui.tab = 'travel';
+    S.trips.push(t); ui.tripId = t.id; ui.tab = TRIP_TAB();
   } else if (sh.type === 'step'){
     const t = S.trips.find(x=>x.id===sh.trip); if (t){ const s = {id:uid(), title:v('title'), detail:'Your own step.', due:v('due')||null, done:false}; t.steps.push(s); ui.flash='step:'+s.id; }
   } else if (sh.type === 'weight'){
     const kg = Math.round(parseFloat(v('kg'))*10)/10; if (!(kg>0)) return;
     if (sh.id){ const w = S.log.find(l=>l.id===sh.id); if (w) w.value = String(kg); } else logEntry('weight', null, String(kg));
   } else if (sh.type === 'pet'){
-    S.pet = {name:v('name')||S.pet.name, species:v('species')||'dog', birthday:v('birthday'), breed:v('breed'), sex:v('sex'), spayed:v('spayed')}; if (!heatTab() && ui.healthSeg==='heat') ui.healthSeg='meds';
+    S.pet = {name:v('name')||S.pet.name, species:v('species')||'dog', birthday:v('birthday'), breed:v('breed'), sex:v('sex'), spayed:v('spayed'), photo: sh.photo !== undefined ? sh.photo : (S.pet.photo||'')}; if (!heatTab() && ui.healthSeg==='heat') ui.healthSeg='meds';
   } else if (sh.type === 'heat'){
     let start = v('start') || today(), end = v('end') || '';
     if (end && end < start) end = start;
     const data = {start, end, notes:v('notes')};
     if (isNew){ const x = Object.assign({id:uid()}, data); S.heats.push(x); ui.flash='heat:'+x.id; logEntry('heat', x.id); } else Object.assign(S.heats.find(x=>x.id===sh.id), data);
+  } else if (sh.type === 'event'){
+    const data = {type:v('type')||'other', date:v('date')||today(), time:v('time'), note:v('note')};
+    if (data.type === 'other' && !data.note) data.note = 'Other';
+    if (isNew){ const x = Object.assign({id:uid()}, data); S.events.push(x); ui.calDay = data.date; } else Object.assign(S.events.find(x=>x.id===sh.id), data);
   } else if (sh.type === 'member'){
     S.members.push({id:uid(), name:v('name')});
   }
   const btn = form.querySelector('button[type=submit]'); const r = btn ? btn.getBoundingClientRect() : null;
   const ev = r ? {clientX:r.left + r.width/2, clientY:r.top} : null;
-  if (isNew && ['meal','med','vac','item','trip','step','member','heat'].includes(sh.type)) award(XP.add, ev);
+  if (isNew && ['meal','med','vac','item','trip','step','member','heat','event'].includes(sh.type)) award(XP.add, ev);
   if (sh.type === 'weight' && isNew) award(XP.weight, ev);
   ui.sheet = null;
   commit({keepScroll: sh.type !== 'trip', top: sh.type === 'trip', anim: sh.type === 'trip'});
@@ -2716,9 +2992,9 @@ function heatBody(){
   if (S.pet.sex !== 'female'){
     return `<div class="sum-card">
       <div class="row sum-label">${ic('heart')}<span>Heat tracking</span></div>
-      <div class="t" style="margin-top:4px">Is ${esc(S.pet.name)} a girl?</div>
+      <div class="t" style="margin-top:var(--space-1)">Is ${esc(S.pet.name)} a girl?</div>
       <div class="s">Heat tracking is for girls who are not spayed. Tell us once and Kudi sets it up.</div>
-      <div class="three" style="margin-top:12px">
+      <div class="three" style="margin-top:var(--space-3)">
         <button class="btn ink sm" data-a="setSex" data-sex="female" data-spayed="no">Girl</button>
         <button class="btn soft sm" data-a="setSex" data-sex="female" data-spayed="yes">Girl, spayed</button>
         <button class="btn soft sm" data-a="setSex" data-sex="male" data-spayed="">Boy</button>
@@ -2741,15 +3017,15 @@ function heatBody(){
     const d = diffDays(t, H.next);
     status = `<div class="sum-card">
       <div class="row sum-label">${ic('cal')}<span>Next heat</span></div>
-      <div class="muted" style="font-weight:700">Expected around ${fmt(H.next)}${H.sp==='dog'?', give or take 2 weeks':''}</div>
+      <div class="muted" style="font-weight:var(--weight-bold)">Expected around ${fmt(H.next)}${H.sp==='dog'?', give or take 2 weeks':''}</div>
       <div class="sum-big num">${d}<span> days</span></div>
-      <div class="s" style="margin-top:4px">${H.learned ? `Based on her last ${H.learned+1} heats (every ${H.avg} days on average).` : H.sp==='dog' ? 'Most dogs come into heat about every 6 months. Log two heats and Kudi learns her rhythm.' : 'In breeding season (spring to autumn), heat often comes back every 2 to 3 weeks.'}</div>
+      <div class="s" style="margin-top:var(--space-1)">${H.learned ? `Based on her last ${H.learned+1} heats (every ${H.avg} days on average).` : H.sp==='dog' ? 'Most dogs come into heat about every 6 months. Log two heats and Kudi learns her rhythm.' : 'In breeding season (spring to autumn), heat often comes back every 2 to 3 weeks.'}</div>
     </div>`;
   } else {
     status = `<div class="sum-card">
       <div class="row sum-label">${ic('heart')}<span>Heat tracking</span></div>
-      <div class="t" style="margin-top:4px">${H.sp==='dog' ? `First heat usually comes between 6 months and 2 years. Small breeds start earlier, large breeds later.` : 'First heat usually comes between 4 and 12 months, mostly in spring and summer.'}</div>
-      <div class="s" style="margin-top:4px">${m!=null ? `${esc(pet)} is ${ageLabel(m)} old. ` : ''}Log the first day you notice swelling or bleeding.</div>
+      <div class="t" style="margin-top:var(--space-1)">${H.sp==='dog' ? `First heat usually comes between 6 months and 2 years. Small breeds start earlier, large breeds later.` : 'First heat usually comes between 4 and 12 months, mostly in spring and summer.'}</div>
+      <div class="s" style="margin-top:var(--space-1)">${m!=null ? `${esc(pet)} is ${ageLabel(m)} old. ` : ''}Log the first day you notice swelling or bleeding.</div>
     </div>`;
   }
   const watch = H.watchUntil ? `<div class="card" style="align-items:flex-start;background:var(--blush);border-color:transparent">
@@ -2758,13 +3034,13 @@ function heatBody(){
       <div class="s" style="color:var(--blush-ink)">In the 2 months after a heat, see a vet the same day if she drinks much more than usual, seems tired, stops eating, has a swollen belly or any discharge. This can be pyometra, which is an emergency.</div></div></div>` : '';
   const hist = [...H.hs].reverse();
   const list = hist.length ? `<div class="list">${hist.map((h,i) => { const len = h.end ? diffDays(h.start, h.end) + 1 : null; const prev = hist[i+1]; const gap = prev ? diffDays(prev.start, h.start) : null;
-      return `<div class="li ${ui.flash==='heat:'+h.id?'enter':''}"><span class="badge-ico" style="width:36px;height:36px;border-radius:12px">${ic('heart','ico-s')}</span>
+      return `<div class="li ${ui.flash==='heat:'+h.id?'enter':''}"><span class="badge-ico" style="width:36px;height:36px;border-radius:var(--radius-md)">${ic('heart','ico-s')}</span>
         <div class="grow"><div class="t">${fmt(h.start)}</div><div class="s">${len ? `${len} days` : 'Still going'}${gap ? ` · ${gap} days after the one before` : ''}${h.notes ? ` · ${esc(h.notes)}` : ''}</div></div>
         <button class="iconbtn sm" data-a="sheet" data-type="heat" data-id="${h.id}" aria-label="Edit heat from ${fmt(h.start)}">${ic('edit','ico-s')}</button></div>`; }).join('')}</div>` : '<div class="empty">No heats logged yet.</div>';
   return `${status}
     ${H.cur ? '' : `<button class="btn ink block" data-a="sheet" data-type="heat">Log heat</button>`}
     ${watch}
-    <div class="eyebrow" style="margin-top:6px">History</div>
+    <div class="eyebrow" style="margin-top:var(--space-2)">History</div>
     ${list}
     <p class="small muted" style="margin:0;text-align:center">Thinking about spaying? Ask your vet about the best timing. Spaying prevents heats and womb infections.</p>`;
 }
@@ -2890,7 +3166,7 @@ function remindPage(cal){
   if (cal) return `${head('Add to phone calendar', true)}
     <div class="stack" style="margin-top:var(--space-4)">
       <p class="small muted" style="margin:0">Each one opens Google Calendar with the time and repeat filled in. Tap Save there, and your phone reminds you even when Kudi is closed.</p>
-      ${rows.length?`<div class="list calrow">${rows.map(r=>`<div class="li"><span class="badge-ico" style="width:36px;height:36px;border-radius:12px">${ic(r.icon,'ico-s')}</span><div class="grow"><div class="t">${esc(r.title)}</div><div class="s num">${esc(r.when)}</div></div><a class="btn ${opened[r.k]?'ghost':'soft'} sm" href="${esc(r.href)}" target="_blank" rel="noopener" data-cal="${esc(r.k)}">${opened[r.k]?ic('check','ico-s')+'Added':'Add'}</a></div>`).join('')}</div>`:'<div class="empty">Add meal times, medicine or vaccines first.</div>'}
+      ${rows.length?`<div class="list calrow">${rows.map(r=>`<div class="li"><span class="badge-ico" style="width:36px;height:36px;border-radius:var(--radius-md)">${ic(r.icon,'ico-s')}</span><div class="grow"><div class="t">${esc(r.title)}</div><div class="s num">${esc(r.when)}</div></div><a class="btn ${opened[r.k]?'ghost':'soft'} sm" href="${esc(r.href)}" target="_blank" rel="noopener" data-cal="${esc(r.k)}">${opened[r.k]?ic('check','ico-s')+'Added':'Add'}</a></div>`).join('')}</div>`:'<div class="empty">Add meal times, medicine or vaccines first.</div>'}
     </div>`;
   return `${head('Reminders')}
     <div class="stack" style="margin-top:var(--space-4)">
@@ -2920,7 +3196,7 @@ Object.assign(A, {
     if (d.do === 'feed') A.feed({id:d.id}, ev);
     else if (d.do === 'give') A.give({id:d.id, time:d.time}, ev);
     else if (d.do === 'remGo') A.go({tab:d.tab, seg:d.seg});
-    else if (d.do === 'remTrip'){ ui.tab = 'travel'; ui.tripId = d.trip; render({anim:true, top:true}); }
+    else if (d.do === 'remTrip'){ ui.tab = TRIP_TAB(); ui.tripId = d.trip; render({anim:true, top:true}); }
     checkReminders();
   },
   remSnooze(d){ fired[d.key] = Date.now() + 15*60000; saveFired(); announced.delete(d.key); checkReminders(); toast('Snoozed for 15 minutes'); },
@@ -2930,6 +3206,7 @@ Object.assign(A, {
 /* ---------- family sync on the web (Vercel API) ---------- */
 function newCode(){ const c = 'abcdefghjkmnpqrstuvwxyz23456789'; let x = ''; const r = new Uint32Array(12); try { crypto.getRandomValues(r); } catch(e){ for (let i=0;i<12;i++) r[i] = Math.random()*1e9; } for (let i=0;i<12;i++) x += c[r[i] % c.length]; return x; }
 async function startHttpSync(){
+  if (MVP) return; // MVP keeps records on this phone; family sync comes back with a server
   if (location.protocol === 'file:') return;
   if (!subscribed) return;
   const qp = new URLSearchParams(location.search), joined = (qp.get('home') || '').toLowerCase();
@@ -2961,13 +3238,21 @@ async function startHttpSync(){
   if (raw){ try { S = normalize(JSON.parse(raw)); } catch(e){ S = null; } }
   me = lsGet(LSME);
   subscribed = lsGet(LSSUB) === '1';
-  const savedLang = lsGet(LSLANG); if (savedLang && STRINGS[savedLang]) lang = savedLang;
-  const savedTheme = lsGet('kudi.theme'); if (savedTheme) document.documentElement.dataset.theme = savedTheme;
-  const tab = lsGet(LSTAB); if (tab && ['today','health','food','travel','me'].includes(tab)) ui.tab = tab;
+  if (MVP){ lang = 'en'; document.documentElement.dataset.theme = 'dark'; subscribed = true; const mc = document.querySelector('meta[name="theme-color"]'); if (mc) mc.content = getComputedStyle(document.documentElement).getPropertyValue('--color-bg').trim(); }
+  else {
+    const savedLang = lsGet(LSLANG); if (savedLang && STRINGS[savedLang]) lang = savedLang;
+    const savedTheme = lsGet('kudi.theme'); if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+  }
+  const tab = lsGet(LSTAB); if (tab && TABS().includes(tab)) ui.tab = tab;
   if (S && !S.members.find(m=>m.id===me)) me = S.members[0] && S.members[0].id;
 
+  if (MVP){
+    // Google sign-in: a pet you already set up opens straight away once you are signed in
+    await Promise.race([initAuth().catch(()=>{}), new Promise(res => setTimeout(res, 4000))]);
+    if (S && !S.sample && !signedIn()) ui.ob = newOb();
+  }
   // Auth check: if Supabase is configured and user is not logged in/skipped, show auth screen
-  if (AUTH_CONFIGURED && lsGet('kudi.authskip') !== '1'){
+  else if (AUTH_CONFIGURED && lsGet('kudi.authskip') !== '1'){
     try {
       const authed = await Promise.race([
         initAuth(),
@@ -3002,7 +3287,7 @@ async function startHttpSync(){
   }
   // Listen for auth state changes (magic link redirect)
   if (sbClient) sbClient.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN' && session){ currentUser = session.user; history.replaceState(null,'',location.pathname); render({keepScroll:true}); }
+    if (event === 'SIGNED_IN' && session){ currentUser = session.user; history.replaceState(null,'',location.pathname + location.search.replace(/[?&]code=[^&]*/,'')); if (MVP && ui.ob) afterSignIn(); else render({keepScroll:true}); }
     if (event === 'SIGNED_OUT'){ currentUser = null; }
   });
 

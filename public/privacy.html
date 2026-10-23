@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kudi Privacy policy</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&display=swap">
+<style>
+/* tokens:start (generated from design/tokens.css by npm run sync) */
+/* Kudi design tokens · v0.4
+   Palette after the Froli identity, calmed for the app: deep forest green, lime, cream and a warm
+   blush pink. One second accent only (pink; orange was dropped). Screens stay clean: white and
+   soft-grey surfaces with green-black ink. Colour lives in a few places: the lime primary button,
+   small pink details (badges, dots, hearts, selected chips), pastel category tiles, and at most one
+   deep-green feature card per screen, which carries cream text, lime data and one pink detail at most.
+   Icons: Tabler Icons only (outline set, filled set for the selected tab), 1.5px stroke on a 24px grid.
+   Primitives (raw scales) come first; components use only the semantic tokens below them.
+   Font: Figtree (Google Fonts), weights 400-700. */
+
+:root{
+  color-scheme:light;
+
+  /* ---------- Primitives ---------- */
+  /* neutrals: the bulk of every screen, with a faint green bias */
+  --grey-0:#FFFFFF;   --grey-25:#FAFBFA;  --grey-50:#F4F5F3;  --grey-100:#ECEEEB; --grey-200:#DEE1DD;
+  --grey-300:#C5CAC5; --grey-400:#9AA19C; --grey-500:#6A726D; --grey-600:#555D58; --grey-700:#3B423E;
+
+  /* brand: deep forest green, lime, cream, warm blush pink; yellow and red only for tiles and status */
+  --forest-50:#EAF3EE;  --forest-100:#CFE3D7; --forest-200:#9FC7B0; --forest-300:#5FA07D; --forest-500:#1D7A4C;
+  --forest-700:#0F5E38; --forest-800:#0B4A2C; --forest-900:#08361F; --forest-950:#06241A;
+  --pink-50:#FEF3F5;   --pink-100:#FCE4E9;  --pink-200:#F9CDD6;  --pink-300:#F4B3C2;  --pink-400:#EC93A8;
+  --pink-600:#C2577A;  --pink-800:#6E2340;
+  --lime-50:#F8FCE8;   --lime-100:#F1F9D2;  --lime-200:#E1F2A0;  --lime-300:#C9EA62;  --lime-400:#B5DA3E;  --lime-600:#6F8A16;
+  --cream-50:#FBF8F0;  --cream-100:#F6EFDF; --cream-200:#EDE2C9;
+  --yellow-50:#FFFBE8; --yellow-100:#FDF4C9; --yellow-300:#F4CF34; --yellow-700:#7A6200;
+  --red-50:#FEF1EE;    --red-300:#F59C8E;   --red-700:#B3261E;
+  /* dark greys, neutral (no green bias): the dark theme's surfaces */
+  --grey-750:#33353A; --grey-800:#27292B; --grey-850:#1E1F21; --grey-900:#161718; --grey-950:#0E0F10;
+
+  /* ---------- Semantic colour (light) ---------- */
+  --color-bg:var(--grey-0);                /* app background */
+  --color-surface:var(--grey-0);           /* cards, sheets */
+  --color-surface-2:var(--grey-50);        /* secondary button, inputs, segmented track */
+  --color-surface-3:var(--grey-100);       /* pressed / hover */
+  --color-ink:var(--forest-950);           /* primary text and icons: green-black */
+  --color-ink-2:var(--grey-600);           /* secondary text */
+  --color-ink-3:var(--grey-500);           /* hints, placeholders, disabled (4.5:1 on white) */
+  --color-line:rgba(6,36,26,.08);          /* hairlines, dividers */
+  --color-line-strong:rgba(6,36,26,.16);   /* input borders */
+  --chevron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2306241A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); /* select arrow, in --color-ink */
+  --color-scrim:color-mix(in srgb,var(--grey-950) 45%,transparent); /* dims the page behind sheets and modals */
+  --color-sheet:var(--color-surface);       /* bottom sheets and modals: one step above the page */
+  --color-sheet-field:var(--color-surface-2); /* inputs and secondary buttons inside a sheet */
+  --color-seg-on:var(--color-surface);      /* selected segment, one step above its track */
+
+  /* the one prominent colour: primary action */
+  --color-primary:var(--lime-300);
+  --color-primary-hover:var(--lime-400);
+  --color-primary-pressed:var(--lime-400);
+  --color-on-primary:var(--forest-900);
+  --color-switch-on:var(--color-primary);  /* a switch that is on: lime in both themes, dark knob */
+  --color-switch-knob-on:var(--color-on-primary);
+
+  --color-brand:var(--forest-700);         /* wordmark, links, selected tab icon */
+  --color-focus:var(--forest-700);
+  --color-tooltip:var(--forest-900);       /* dark callouts, toasts */
+  --color-on-tooltip:var(--cream-50);
+
+  /* pink: small details, never a button or a light card */
+  --color-pink:var(--pink-300);            /* badges, avatar rings, active tab dot, today marker */
+  --color-pink-strong:var(--pink-600);     /* hearts, notification dot (3:1 on white) */
+  --color-pink-soft:var(--pink-50);        /* selected chip, text selection */
+  --color-on-pink:var(--forest-900);
+
+  /* feature card: deep green with cream text and lime data; one pink detail at most. One per screen */
+  --color-feature:var(--forest-800);
+  --color-on-feature:var(--cream-50);
+  --color-feature-title:var(--cream-50);
+  --color-feature-ink-2:rgba(251,248,240,.72);
+  --color-feature-line:rgba(251,248,240,.18);
+
+
+  --color-success:var(--forest-700);  --color-success-bg:var(--forest-50);
+  --color-warning:var(--yellow-700);  --color-warning-bg:var(--yellow-50);
+  --color-danger:var(--red-700);      --color-danger-bg:var(--red-50);
+  --color-info:var(--pink-800);       --color-info-bg:var(--pink-50);
+
+  /* Pet-care categories: pale tile + ink, only on icon tiles, chips and calendar dots */
+  --cat-feed-bg:var(--yellow-100);  --cat-feed-ink:var(--yellow-700);
+  --cat-meds-bg:var(--pink-100);    --cat-meds-ink:var(--pink-800);
+  --cat-vax-bg:var(--forest-50);    --cat-vax-ink:var(--forest-700);
+  --cat-heat-bg:var(--red-50);      --cat-heat-ink:var(--red-700);
+  --cat-weight-bg:var(--cream-100); --cat-weight-ink:var(--forest-800);
+  --cat-trip-bg:var(--lime-100);    --cat-trip-ink:var(--forest-700);
+
+  /* ---------- Home scene + glass ----------
+     Today sits in an illustrated garden: flat layered hills in brand greens, then the ground fades
+     slowly into deep green-black. Everything on top is dark glass with cream text. */
+  --scene-sky:var(--cream-100);
+  --scene-far:var(--forest-300);
+  --scene-mid:var(--forest-500);
+  --scene-ground:var(--forest-700);
+  --on-scene:var(--cream-50);
+  --on-scene-2:rgba(251,248,240,.85);
+  --scene-deep:var(--forest-950);
+  /* the one gradient in the system: the home ground fading slowly into deep green-black */
+  --scene-fade:linear-gradient(180deg,var(--scene-ground) 0px,var(--scene-ground) 300px,var(--forest-900) 760px,var(--scene-deep) 1300px);
+  --glass-bg:rgba(3,16,10,.46);
+  --glass-line:rgba(251,248,240,.12);
+  --glass-blur:18px;
+
+  /* ---------- Illustration ---------- */
+  /* Hand-drawn dogs: sketchy charcoal outlines, crayon fills in fur tones or brand forest green,
+     accessories in brand colours (pink, lime, forest, red).
+     The same in both themes; an illustration always sits on its own ground panel. */
+  --art-rust:#B8612F;    --art-rust-dark:#8F4423;  --art-tan:#D9914A;   --art-fawn:#E3BC87;
+  --art-fawn-dark:#B98B55; --art-cream:#F6EDDC;     --art-cream-shade:#E6D5B8; --art-line:#C8705A;
+  --art-charcoal:#222623; --art-charcoal-2:#3B403C; --art-grey:#8D8B84;  --art-white:#FFFDF7;
+  --art-brown:#8A6550;   --art-paper:#EFE6DA;
+  --art-cat-fur:#C9CCD6; --art-cat-fur-2:#9EA3B3; --art-cat-dark:#7E8496; --art-cat-muzzle:#F1F2F6;   /* drawn cat */
+  --art-pup-fur:#E8B48A; --art-pup-fur-2:#C78A5E; --art-pup-dark:#A96F48; --art-pup-muzzle:#F6DCC4;   /* drawn dog (fallback) */
+  --art-face-line:#3A2A22; --art-ear-pink:#F2B4B4; --art-tongue:#E36A64; --art-blush:#F2A79A; --art-shadow:rgba(30,50,90,.10);
+  --art-blue:#1F78C8;    --art-blue-dark:#165C9E; --art-mustard:#E2B23A; --art-mustard-dark:#B98A1F;
+  --art-ink:#1C1E1C;
+  --art-welcome-ground:#065634; /* the solid green of the welcome illustration (art/welcome-pack.jpg) */
+  --art-home-ground:#094F30; /* the solid green of the home illustration (art/home-sleep.jpg) */
+  --art-ground:var(--art-paper);           /* default panel behind an illustration: warm paper */
+
+  /* ---------- Typography ---------- */
+  --font-sans:'Figtree', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --weight-regular:400; --weight-medium:500; --weight-semibold:600; --weight-bold:700;
+
+  --text-display:56px; --leading-display:60px;  /* one big number: grams eaten, kg, days to vaccine */
+  --text-h1:28px;      --leading-h1:34px;       /* screen titles */
+  --text-h2:22px;      --leading-h2:28px;       /* card headlines, sheet titles */
+  --text-h3:18px;      --leading-h3:24px;       /* section headings */
+  --text-title:16px;   --leading-title:22px;    /* list item titles, buttons */
+  --text-body:15px;    --leading-body:22px;     /* default text */
+  --text-label:13px;   --leading-label:18px;    /* field labels, chips, meta rows */
+  --text-caption:12px; --leading-caption:16px;  /* timestamps */
+  --text-micro:11px;   --leading-micro:14px;    /* tab bar labels */
+
+  --tracking-tight:-.02em; --tracking-display:-.04em; --tracking-normal:0; --tracking-wide:.06em;
+
+  --type-display:var(--weight-medium) var(--text-display)/var(--leading-display) var(--font-sans);
+  --type-h1:var(--weight-bold) var(--text-h1)/var(--leading-h1) var(--font-sans);
+  --type-h2:var(--weight-semibold) var(--text-h2)/var(--leading-h2) var(--font-sans);
+  --type-h3:var(--weight-semibold) var(--text-h3)/var(--leading-h3) var(--font-sans);
+  --type-title:var(--weight-semibold) var(--text-title)/var(--leading-title) var(--font-sans);
+  --type-body:var(--weight-regular) var(--text-body)/var(--leading-body) var(--font-sans);
+  --type-body-strong:var(--weight-semibold) var(--text-body)/var(--leading-body) var(--font-sans);
+  --type-label:var(--weight-medium) var(--text-label)/var(--leading-label) var(--font-sans);
+  --type-caption:var(--weight-regular) var(--text-caption)/var(--leading-caption) var(--font-sans);
+  --type-micro:var(--weight-semibold) var(--text-micro)/var(--leading-micro) var(--font-sans);
+
+  /* ---------- Spacing (4px base) ---------- */
+  --space-0:0;     --space-px:2px;  --space-1:4px;   --space-2:8px;   --space-3:12px;
+  --space-4:16px;  --space-5:20px;  --space-6:24px;  --space-8:32px;  --space-10:40px;
+  --space-12:48px; --space-16:64px;
+
+  /* ---------- Radius ---------- */
+  --radius-xs:6px;    /* tags, checkbox */
+  --radius-sm:10px;   /* inputs, small tiles */
+  --radius-md:14px;   /* icon tiles, list groups */
+  --radius-lg:20px;   /* cards, highlight card */
+  --radius-xl:28px;   /* bottom sheets (top corners) */
+  --radius-pill:999px;/* buttons, chips, segmented control, tooltips */
+  --radius-round:50%; /* avatars, icon buttons */
+
+  /* ---------- Stroke & elevation ---------- */
+  --stroke-hair:1px; --stroke-ui:1.5px;
+  --shadow-1:0 1px 2px rgba(20,25,21,.06);                                  /* chips, inputs */
+  --shadow-2:0 4px 16px rgba(20,25,21,.08);                                 /* floating pill button */
+  --shadow-3:0 12px 32px rgba(20,25,21,.12);                                /* sheets, tooltips */
+
+  /* ---------- Layout ---------- */
+  --layout-max:480px;          /* one phone-width column, centred on wide screens */
+  --layout-gutter:16px;        /* side padding at every width */
+  --layout-gap:12px;           /* between cards */
+  --layout-section:24px;       /* between sections */
+  --layout-cols:4;             /* quick-action grid */
+  --header-h:56px;             /* top bar: back, title, actions */
+  --tabbar-h:64px;             /* bottom tab bar, plus safe-area inset */
+  --actionbar-h:80px;          /* bottom action bar with primary + secondary button */
+  --sheet-max-h:88%;
+  --tap-min:48px;  --tap-lg:56px;  --tap-sm:36px;
+  --icon-sm:16px;  --icon-md:20px;  --icon-lg:24px;  --icon-stroke:1.5; /* Iconoir default */
+  --bp-sm:360px; --bp-md:480px; --bp-lg:768px; /* reference only: CSS can't read vars in @media */
+
+  --z-header:5; --z-tabbar:10; --z-scrim:20; --z-sheet:21; --z-toast:40;
+}
+
+/* ---------- Dark: neutral dark greys, cream ink, the same lime and pink ---------- */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --color-bg:var(--grey-950); --color-surface:var(--grey-900); --color-surface-2:var(--grey-850); --color-surface-3:var(--grey-800);
+    --color-ink:var(--cream-100); --color-ink-2:var(--grey-300); --color-ink-3:var(--grey-400);
+    --color-line:rgba(246,239,223,.08); --color-line-strong:rgba(246,239,223,.16); --chevron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F6EFDF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    --color-scrim:color-mix(in srgb,var(--grey-950) 75%,transparent); --color-sheet:var(--grey-850); --color-sheet-field:var(--grey-800); --color-seg-on:var(--grey-750);
+    --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
+    --color-brand:var(--pink-300); --color-focus:var(--lime-300);
+    --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
+    --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1C24; --color-on-pink:var(--forest-900);
+    --color-feature:var(--grey-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--cream-50);
+    --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
+    --color-success:var(--lime-300);   --color-success-bg:var(--grey-800);
+    --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
+    --color-danger:var(--red-300);     --color-danger-bg:#331A16;
+    --color-info:var(--pink-300);      --color-info-bg:#3A1C24;
+    --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
+    --cat-meds-bg:#3A1C24;   --cat-meds-ink:var(--pink-300);
+    --cat-vax-bg:var(--grey-800);    --cat-vax-ink:var(--forest-200);
+    --cat-heat-bg:#331A16;   --cat-heat-ink:var(--red-300);
+    --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
+    --cat-trip-bg:var(--grey-800);   --cat-trip-ink:var(--lime-300);
+
+    --scene-sky:var(--grey-950); --scene-far:var(--grey-900); --scene-mid:var(--grey-850); --scene-ground:var(--grey-800);
+    --scene-fade:linear-gradient(180deg,var(--scene-ground) 0px,var(--scene-ground) 300px,var(--grey-900) 760px,var(--scene-deep) 1300px);
+
+    --scene-deep:var(--grey-950); --glass-bg:rgba(0,0,0,.4); --glass-line:rgba(251,248,240,.1);
+    --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --color-bg:var(--grey-950); --color-surface:var(--grey-900); --color-surface-2:var(--grey-850); --color-surface-3:var(--grey-800);
+  --color-ink:var(--cream-100); --color-ink-2:var(--grey-300); --color-ink-3:var(--grey-400);
+  --color-line:rgba(246,239,223,.08); --color-line-strong:rgba(246,239,223,.16); --chevron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F6EFDF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    --color-scrim:color-mix(in srgb,var(--grey-950) 75%,transparent); --color-sheet:var(--grey-850); --color-sheet-field:var(--grey-800); --color-seg-on:var(--grey-750);
+  --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
+  --color-brand:var(--pink-300); --color-focus:var(--lime-300);
+  --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
+  --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1C24; --color-on-pink:var(--forest-900);
+  --color-feature:var(--grey-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--cream-50);
+  --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
+  --color-success:var(--lime-300);   --color-success-bg:var(--grey-800);
+  --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
+  --color-danger:var(--red-300);     --color-danger-bg:#331A16;
+  --color-info:var(--pink-300);      --color-info-bg:#3A1C24;
+  --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
+  --cat-meds-bg:#3A1C24;   --cat-meds-ink:var(--pink-300);
+  --cat-vax-bg:var(--grey-800);    --cat-vax-ink:var(--forest-200);
+  --cat-heat-bg:#331A16;   --cat-heat-ink:var(--red-300);
+  --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
+  --cat-trip-bg:var(--grey-800);   --cat-trip-ink:var(--lime-300);
+
+  --scene-sky:var(--grey-950); --scene-far:var(--grey-900); --scene-mid:var(--grey-850); --scene-ground:var(--grey-800);
+    --scene-fade:linear-gradient(180deg,var(--scene-ground) 0px,var(--scene-ground) 300px,var(--grey-900) 760px,var(--scene-deep) 1300px);
+
+  --scene-deep:var(--grey-950); --glass-bg:rgba(0,0,0,.4); --glass-line:rgba(251,248,240,.1);
+  --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
+}
+/* tokens:end */
+body{margin:0;background:var(--color-bg);color:var(--color-ink);font:var(--type-body)}
+main{max-width:var(--layout-max);margin:0 auto;padding:var(--space-8) var(--layout-gutter) var(--space-16)}
+h1{font:var(--type-h1);margin:0 0 var(--space-2)}
+h2{font:var(--type-title);margin:var(--space-6) 0 var(--space-2)}
+p{color:var(--color-ink-2);margin:0}
+</style></head>
+<body><main><h1>Privacy policy</h1><p>Last updated 17 Oct 2026</p>
+<h2>1. Who we are</h2>
+<p>Kudi is a pet-care app for families. This policy explains what information Kudi collects when you use the app, how it is used and the choices you have.</p>
+<h2>2. Information you give us</h2>
+<p>When you set up Kudi you enter details about your pet (name, species, breed, sex, birthday and weight) and your care routine: meal times, medicine, vaccines, heat cycles and trips. When family members join, Kudi records who logged each meal, dose or walk and when. When you sign in with Google, we receive your name, email address and a Google account ID, and use them only to sign you in. You can also add a photo of your pet; it stays on your phone.</p>
+<h2>3. Where your information is stored</h2>
+<p>Right now your records are stored only in this browser on this device. They are not sent to Kudi or anyone else. If you turn on family sharing, your records are stored on Kudi's servers so your family can see them.</p>
+<h2>4. How we use it</h2>
+<p>We use your information only to run the app: to show your pet's day, send the reminders you switch on, keep your family in sync and show your progress. We do not sell your information and we do not use it for advertising.</p>
+<h2>5. Reminders and calendars</h2>
+<p>Reminders are shown by your phone while Kudi is running. When you add a reminder to your calendar, Kudi opens your calendar app with the details filled in; nothing is saved there until you tap Save.</p>
+<h2>6. Pawmates</h2>
+<p>If you use Pawmates, other members nearby can see your pet's name, age, breed and the short description you write. Messages you send are visible to the person you send them to.</p>
+<h2>7. Partner links</h2>
+<p>Some screens link to partner sites such as Amazon, Chewy and pet insurers. If you buy something, Kudi may earn a small fee. We do not send your pet's records to partners. Their own privacy policies apply on their sites.</p>
+<h2>8. How long we keep it</h2>
+<p>We keep your records until you delete them. Deleting your account removes every record for you and your family.</p>
+<h2>9. Your choices</h2>
+<p>You can change or delete any record at any time. To delete everything, go to Settings and choose Delete my account. You can switch reminders off in Settings, then Reminders.</p>
+<h2>10. Children</h2>
+<p>Kudi is meant for adults caring for pets. Children can help log care inside a family, but accounts are created by an adult.</p>
+<h2>11. Changes to this policy</h2>
+<p>If we change this policy we will update the date below and tell you in the app before the change takes effect.</p>
+<h2>12. Contact</h2>
+<p>Questions about your privacy? Write to us at privacy@kudi.app.</p>
+</main></body></html>

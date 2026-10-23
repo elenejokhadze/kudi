@@ -1,0 +1,7 @@
+Decision eval: MVP copy
+headline order 0: pick=care_one_place (conf 0.35), clear=0.47, fits=0.59
+headline order 1: pick=care_one_place (conf 0.31), clear=0.46, fits=0.59
+headline: agreed on care_one_place
+google_button order 0: pick=signin (conf 0.70), new_and_returning=0.51
+google_button order 1: pick=signin (conf 0.61), new_and_returning=0.54
+google_button: agreed on signin

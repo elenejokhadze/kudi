@@ -11,13 +11,23 @@
     "deploy:prod": "vercel deploy --prod",
     "test": "node --test evals/design/*.test.mjs",
     "eval:jev": "node evals/decisions/palette.eval.mjs && node evals/decisions/accent-and-icons.eval.mjs",
-    "design": "node scripts/build-design-page.mjs"
+    "design": "node scripts/build-design-page.mjs",
+    "legal": "node scripts/build-legal-pages.mjs",
+    "ios:sync": "npm run legal && cap sync ios",
+    "ios:open": "cap open ios"
   },
   "engines": {
     "node": ">=18"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.5.3",
     "@typesafe-ai/sdk": "^0.6.0",
     "lucide-static": "^0.460.0"
+  },
+  "dependencies": {
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/browser": "^8.0.5",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/ios": "^8.5.3"
   }
 }

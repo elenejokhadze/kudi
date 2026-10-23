@@ -5,7 +5,10 @@ import { chromium } from 'playwright';
 import { writeFileSync, mkdirSync } from 'node:fs';
 const APP_URL = process.env.KUDI_URL || 'http://localhost:3000/';
 const measure = () => {
-  const parse = c => { const m = c.match(/rgba?\(([^)]+)\)/); if (!m) return null; const [r,g,b,a=1] = m[1].split(/[ ,/]+/).filter(Boolean).map(Number); return {r,g,b,a}; };
+  const parse = c => {
+    // color-mix() resolves to color(srgb r g b / a) with 0-1 channels
+    const k = c.match(/color\(srgb ([\d.]+) ([\d.]+) ([\d.]+)(?: \/ ([\d.]+))?\)/); if (k) return { r:k[1]*255, g:k[2]*255, b:k[3]*255, a: k[4] === undefined ? 1 : +k[4] };
+    const m = c.match(/rgba?\(([^)]+)\)/); if (!m) return null; const [r,g,b,a=1] = m[1].split(/[ ,/]+/).filter(Boolean).map(Number); return {r,g,b,a}; };
   const over = (top, bot) => ({ r: top.r*top.a + bot.r*(1-top.a), g: top.g*top.a + bot.g*(1-top.a), b: top.b*top.a + bot.b*(1-top.a), a: 1 });
   const lum = c => { const f = v => { v/=255; return v <= .03928 ? v/12.92 : ((v+.055)/1.055)**2.4; }; return .2126*f(c.r)+.7152*f(c.g)+.0722*f(c.b); };
   const bgOf = el => { const layers = []; let photo = false; for (let e = el; e; e = e.parentElement){ const cs = getComputedStyle(e); if (cs.backgroundImage !== 'none' && !cs.backgroundImage.startsWith('linear')) photo = true; const c = parse(cs.backgroundColor); if (c && c.a > 0){ layers.push(c); if (c.a >= 1) break; } } let base = {r:255,g:255,b:255,a:1}; if (layers.length && layers[layers.length-1].a < 1){ base = parse(getComputedStyle(document.body).backgroundColor) || base; } return { c: layers.reverse().reduce((acc, l) => over(l, acc), base), photo }; };
@@ -28,6 +31,8 @@ const measure = () => {
   return out;
 };
 const b = await chromium.launch(); const all = [];
+// full edition: every feature, both themes
+const FULL_URL = APP_URL + '?edition=full';
 for (const scheme of ['light','dark']){
   const p = await b.newPage({ viewport:{ width:390, height:844 }, colorScheme: scheme });
   // any console error or page error (a missing icon logs one) fails the scan too
@@ -36,7 +41,7 @@ for (const scheme of ['light','dark']){
   const scan = async (where) => { await p.waitForTimeout(450); const r = await p.evaluate(measure); r.forEach(x => all.push({ scheme, where, ...x })); };
   const tap = async (sel) => { const el = await p.$(sel); if (!el) return false; await el.click({ timeout: 4000 }).catch(e => console.error('tap failed', sel, e.message.split('\n')[0])); return true; };
   const close = async () => { await p.keyboard.press('Escape'); await p.waitForTimeout(250); };
-  await p.goto(APP_URL); await p.evaluate(() => { localStorage.clear(); localStorage.setItem('kudi.rem', JSON.stringify({meals:false,meds:false,vacc:false,trips:false,heat:false})); }); await p.reload(); await p.waitForTimeout(900);
+  await p.goto(FULL_URL); await p.evaluate(() => { localStorage.clear(); localStorage.setItem('kudi.rem', JSON.stringify({meals:false,meds:false,vacc:false,trips:false,heat:false})); }); await p.reload(); await p.waitForTimeout(900);
   await tap('[data-a="obStart"]'); await scan('setup 1'); await p.fill('#obName','Bubu'); await tap('form[data-form="obPet"] button[type=submit]'); await scan('setup 2');
   await tap('form[data-form="obMeals"] button[type=submit]'); await scan('setup 3');
   await p.evaluate(() => { localStorage.clear(); localStorage.setItem('kudi.rem', JSON.stringify({meals:false,meds:false,vacc:false,trips:false,heat:false})); }); await p.reload(); await p.waitForTimeout(800); await tap('[data-a="obSample"]'); await p.waitForTimeout(2900);
@@ -50,6 +55,39 @@ for (const scheme of ['light','dark']){
   for (const [tab, type] of sheets){ await tap('.nav [data-tab="'+tab+'"]'); await p.waitForTimeout(200); if (tab==='travel') await tap('[data-a="tripBack"]'); if (await tap(`[data-a="sheet"][data-type="${type}"]`)) { await scan(`sheet ${type}`); await close(); } }
   await tap('.nav [data-tab="me"]'); if (await tap('[data-a="openSettings"]')) await scan('settings page');
   await tap('.nav [data-tab="me"]'); if (await tap('[data-a="openReminders"]')) { await scan('reminders page'); if (await tap('[data-a="openCalendar"]')) await scan('calendar page'); }
+  await p.close();
+}
+// MVP edition (the default): dark only, Google sign-in (skipped on localhost), calendar, Pawmates tab, age guide page
+{
+  const scheme = 'mvp';
+  const p = await b.newPage({ viewport:{ width:390, height:844 }, colorScheme:'dark' });
+  p.on('console', m => { if (m.type() === 'error' && !/favicon|Failed to load resource|supabase/i.test(m.text())) all.push({ scheme, where:'console', text:m.text().slice(0,80), ratio:0, need:0, color:'', cls:'error' }); });
+  p.on('pageerror', e => all.push({ scheme, where:'pageerror', text:e.message.slice(0,80), ratio:0, need:0, color:'', cls:'error' }));
+  const scan = async (where) => { await p.waitForTimeout(450); const r = await p.evaluate(measure); r.forEach(x => all.push({ scheme, where, ...x })); };
+  const tap = async (sel) => { const el = await p.$(sel); if (!el) return false; await el.click({ timeout: 4000 }).catch(e => console.error('tap failed', sel, e.message.split('\n')[0])); return true; };
+  const close = async () => { await p.keyboard.press('Escape'); await p.waitForTimeout(250); };
+  const fresh = async () => { await p.evaluate(() => { localStorage.clear(); localStorage.setItem('kudi.rem', JSON.stringify({meals:false,meds:false,vacc:false,trips:false,heat:false})); }); await p.reload(); await p.waitForTimeout(900); };
+  await p.goto(APP_URL); await fresh();
+  await scan('welcome');
+  if (await tap('[data-a="obLegal"][data-k="privacy"]')) { await scan('privacy (signed out)'); await tap('[data-a="obLegalClose"]'); }
+  await tap('[data-a="authDevSkip"]'); await scan('setup pet');
+  await tap('form[data-form="obPet"] button[type=submit]'); await scan('setup errors');
+  await p.fill('#obName','Bubu'); await p.fill('#obBday','2024-09-10'); await p.fill('#obBreed','Beagle'); await p.selectOption('#obSex','female'); await p.selectOption('#obSpay','no');
+  await tap('form[data-form="obPet"] button[type=submit]'); await scan('setup meals');
+  await tap('form[data-form="obMeals"] button[type=submit]'); await p.fill('#obMe','Nino'); await scan('setup family');
+  await p.evaluate(() => { localStorage.clear(); localStorage.setItem('kudi.devauth','1'); localStorage.setItem('kudi.rem', JSON.stringify({meals:false,meds:false,vacc:false,trips:false,heat:false})); }); await p.reload(); await p.waitForTimeout(900);
+  await tap('[data-a="obSample"]'); await p.waitForTimeout(2900);
+  await scan('today');
+  if (await tap('[data-a="openGuide"]')) { await scan('age guide'); await tap('[data-a="closeGuide"]'); }
+  for (const [tab, segs] of [['calendar',[]],['health',['meds','vaccines','heat','weight']],['pawmates',[]],['me',[]]]){
+    await tap(`.nav [data-tab="${tab}"]`); await scan(tab);
+    for (const s of segs){ if (await tap(`[data-a="seg"][data-v="${s}"]`)) await scan(`${tab}/${s}`); }
+  }
+  await tap('.nav [data-tab="calendar"]'); if (await tap('[data-a="openTrip"]')) { await scan('trip'); await tap('[data-a="tripBack"]'); }
+  for (const [tab, type] of [['calendar','event'],['calendar','meal'],['calendar','trip'],['health','med'],['health','vac'],['me','report'],['me','pet']]){ await tap('.nav [data-tab="'+tab+'"]'); await p.waitForTimeout(200); if (await tap(`[data-a="sheet"][data-type="${type}"]`)) { await scan(`sheet ${type}`); await close(); } }
+  await tap('.nav [data-tab="pawmates"]'); if (await tap('[data-a="pawmateLike"]')) { await p.waitForTimeout(800); await scan('pawmates after like'); }
+  await tap('.nav [data-tab="me"]'); if (await tap('[data-a="openSettings"]')) { await scan('settings'); if (await tap('[data-a="openTerms"]')) await scan('terms'); }
+  await tap('.nav [data-tab="me"]'); if (await tap('[data-a="openReminders"]')) await scan('reminders');
   await p.close();
 }
 await b.close();

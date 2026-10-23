@@ -1,0 +1,10 @@
+{
+  "appId": "app.kudi.pet",
+  "appName": "Kudi",
+  "webDir": "public",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#0E0F10",
+    "scheme": "Kudi"
+  }
+}
