@@ -1,0 +1,7 @@
+Decision eval: health weight
+layout order 0: pick=summary_first (conf 0.98), answers_question=0.32, safe_delete=0.68
+layout order 1: pick=summary_first (conf 1.00), answers_question=0.33, safe_delete=0.64
+layout: agreed on summary_first
+insurance order 0: pick=vaccines_bottom_quiet (conf 0.59), less_dominant=0.16
+insurance order 1: pick=vaccines_bottom_quiet (conf 0.66), less_dominant=0.15
+insurance: agreed on vaccines_bottom_quiet

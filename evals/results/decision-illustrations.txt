@@ -1,0 +1,4 @@
+Decision eval: illustrations
+order 0: pick=generate_matched (conf 1.00), matches_style=0.44, owner_control=0.72
+order 1: pick=generate_matched (conf 1.00), matches_style=0.46, owner_control=0.73
+agreed on generate_matched

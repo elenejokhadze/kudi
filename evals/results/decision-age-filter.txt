@@ -1,0 +1,4 @@
+Decision eval: age filter
+order 0: pick=timeline (conf 0.98), distinct=0.24, shows_now=0.64
+order 1: pick=timeline (conf 0.98), distinct=0.23, shows_now=0.70
+agreed on timeline

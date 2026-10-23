@@ -1,0 +1,4 @@
+Decision eval: switch on
+order 0: pick=primary (conf 0.67), clear_state=0.50, consistent=0.29
+order 1: pick=primary (conf 0.79), clear_state=0.55, consistent=0.29
+agreed on primary

@@ -1,0 +1,7 @@
+Decision eval: reminders
+bell order 0: pick=remove_bell (conf 0.27), less_duplication=0.29
+bell order 1: pick=remove_bell (conf 0.49), less_duplication=0.28
+bell: agreed on remove_bell
+sheet order 0: pick=two_groups (conf 1.00), simpler=0.31
+sheet order 1: pick=two_groups (conf 1.00), simpler=0.31
+sheet: agreed on two_groups

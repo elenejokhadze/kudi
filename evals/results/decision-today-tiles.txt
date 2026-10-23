@@ -1,0 +1,4 @@
+Decision eval: Today tiles
+order 0: pick=neutral_status (conf 0.98), fewer_colours=0.15, status_clear=0.88
+order 1: pick=neutral_status (conf 0.98), fewer_colours=0.12, status_clear=0.89
+agreed on neutral_status

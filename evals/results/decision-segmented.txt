@@ -1,0 +1,4 @@
+Decision eval: segmented
+order 0: pick=flat_pill (conf 0.92), calmer=0.46, clear_selection=0.71
+order 1: pick=flat_pill (conf 0.80), calmer=0.46, clear_selection=0.70
+agreed on flat_pill

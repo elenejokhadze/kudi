@@ -1,0 +1,4 @@
+Decision eval: trip card
+order 0: pick=countdown_steps (conf 1.00), explains_number=0.17, empty_state_ok=0.20
+order 1: pick=countdown_steps (conf 0.98), explains_number=0.16, empty_state_ok=0.20
+agreed on countdown_steps

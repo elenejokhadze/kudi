@@ -1,0 +1,4 @@
+Decision eval: life-stage picker
+age_picker order 0: pick=sheet (conf 0.31), visible=0.33, no_tab_clash=0.72
+age_picker order 1: pick=cards (conf 0.69), visible=0.32, no_tab_clash=0.71
+age_picker: SPLIT between orders, ask the owner

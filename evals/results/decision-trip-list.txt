@@ -1,0 +1,4 @@
+Decision eval: trip list
+trip_list order 0: pick=compact (conf 0.79), distinct=0.15, fits_system=0.84
+trip_list order 1: pick=compact (conf 0.70), distinct=0.13, fits_system=0.84
+trip_list: agreed on compact

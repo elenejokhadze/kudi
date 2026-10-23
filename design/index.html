@@ -34,6 +34,8 @@
   --lime-50:#F8FCE8;   --lime-100:#F1F9D2;  --lime-200:#E1F2A0;  --lime-300:#C9EA62;  --lime-400:#B5DA3E;  --lime-600:#6F8A16;
   --cream-50:#FBF8F0;  --cream-100:#F6EFDF; --cream-200:#EDE2C9;
   --yellow-50:#FFFBE8; --yellow-100:#FDF4C9; --yellow-300:#F4CF34; --yellow-700:#7A6200;
+  /* dark greys, neutral (no green bias): the dark theme's surfaces */
+  --grey-750:#33353A; --grey-800:#27292B; --grey-850:#1E1F21; --grey-900:#161718; --grey-950:#0E0F10;
   --red-50:#FEF1EE;    --red-300:#F59C8E;   --red-700:#B3261E;
 
   /* ---------- Semantic colour (light) ---------- */
@@ -42,16 +44,21 @@
   --color-surface-2:var(--grey-50);        /* secondary button, inputs, segmented track */
   --color-surface-3:var(--grey-100);       /* pressed / hover */
   --color-ink:var(--forest-950);           /* primary text and icons: green-black */
-  --color-ink-2:var(--grey-500);           /* secondary text */
-  --color-ink-3:var(--grey-400);           /* hints, placeholders, disabled */
+  --color-ink-2:var(--grey-600);           /* secondary text */
+  --color-ink-3:var(--grey-500);           /* hints, placeholders, disabled (4.5:1 on white) */
   --color-line:rgba(6,36,26,.08);          /* hairlines, dividers */
   --color-line-strong:rgba(6,36,26,.16);   /* input borders */
+  --color-scrim:color-mix(in srgb,var(--grey-950) 45%,transparent); /* dims the page behind sheets and modals */
+  --color-sheet:var(--color-surface);       /* bottom sheets and modals: one step above the page */
+  --color-sheet-field:var(--color-surface-2); /* inputs and secondary buttons inside a sheet */
 
   /* the one prominent colour: primary action */
   --color-primary:var(--lime-300);
   --color-primary-hover:var(--lime-400);
   --color-primary-pressed:var(--lime-400);
   --color-on-primary:var(--forest-900);
+  --color-switch-on:var(--color-primary);  /* a switch that is on: lime in both themes, dark knob */
+  --color-switch-knob-on:var(--color-on-primary);
 
   --color-brand:var(--forest-700);         /* wordmark, links, selected tab icon */
   --color-focus:var(--forest-700);
@@ -149,53 +156,55 @@
   --z-header:5; --z-tabbar:10; --z-scrim:20; --z-sheet:21; --z-toast:40;
 }
 
-/* ---------- Dark: green-black night, cream ink, the same lime and pink ---------- */
+/* ---------- Dark: neutral dark greys, cream ink, the same lime and pink ---------- */
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --color-bg:#06170F; --color-surface:#0C2118; --color-surface-2:#132A20; --color-surface-3:#1B352A;
-    --color-ink:var(--cream-100); --color-ink-2:#A2B2A8; --color-ink-3:#73857A;
+    --color-bg:var(--grey-950); --color-surface:var(--grey-900); --color-surface-2:var(--grey-850); --color-surface-3:var(--grey-800);
+    --color-ink:var(--cream-100); --color-ink-2:var(--grey-300); --color-ink-3:var(--grey-400);
     --color-line:rgba(246,239,223,.08); --color-line-strong:rgba(246,239,223,.16);
+    --color-scrim:color-mix(in srgb,var(--grey-950) 75%,transparent); --color-sheet:var(--grey-850); --color-sheet-field:var(--grey-800);
     --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
     --color-brand:var(--pink-300); --color-focus:var(--lime-300);
     --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
     --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1C24; --color-on-pink:var(--forest-900);
-    --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--cream-50);
+    --color-feature:var(--grey-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--cream-50);
     --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
-    --color-success:var(--lime-300);   --color-success-bg:#1A2C12;
+    --color-success:var(--lime-300);   --color-success-bg:var(--grey-800);
     --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
     --color-danger:var(--red-300);     --color-danger-bg:#331A16;
     --color-info:var(--pink-300);      --color-info-bg:#3A1C24;
     --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
     --cat-meds-bg:#3A1C24;   --cat-meds-ink:var(--pink-300);
-    --cat-vax-bg:#123A27;    --cat-vax-ink:var(--forest-200);
+    --cat-vax-bg:var(--grey-800);    --cat-vax-ink:var(--forest-200);
     --cat-heat-bg:#331A16;   --cat-heat-ink:var(--red-300);
     --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
-    --cat-trip-bg:#1F2E10;   --cat-trip-ink:var(--lime-300);
+    --cat-trip-bg:var(--grey-800);   --cat-trip-ink:var(--lime-300);
     --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --color-bg:#06170F; --color-surface:#0C2118; --color-surface-2:#132A20; --color-surface-3:#1B352A;
-  --color-ink:var(--cream-100); --color-ink-2:#A2B2A8; --color-ink-3:#73857A;
+  --color-bg:var(--grey-950); --color-surface:var(--grey-900); --color-surface-2:var(--grey-850); --color-surface-3:var(--grey-800);
+  --color-ink:var(--cream-100); --color-ink-2:var(--grey-300); --color-ink-3:var(--grey-400);
   --color-line:rgba(246,239,223,.08); --color-line-strong:rgba(246,239,223,.16);
+    --color-scrim:color-mix(in srgb,var(--grey-950) 75%,transparent); --color-sheet:var(--grey-850); --color-sheet-field:var(--grey-800);
   --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
   --color-brand:var(--pink-300); --color-focus:var(--lime-300);
   --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
   --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1C24; --color-on-pink:var(--forest-900);
-  --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--cream-50);
+  --color-feature:var(--grey-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--cream-50);
   --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
-  --color-success:var(--lime-300);   --color-success-bg:#1A2C12;
+  --color-success:var(--lime-300);   --color-success-bg:var(--grey-800);
   --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
   --color-danger:var(--red-300);     --color-danger-bg:#331A16;
   --color-info:var(--pink-300);      --color-info-bg:#3A1C24;
   --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
   --cat-meds-bg:#3A1C24;   --cat-meds-ink:var(--pink-300);
-  --cat-vax-bg:#123A27;    --cat-vax-ink:var(--forest-200);
+  --cat-vax-bg:var(--grey-800);    --cat-vax-ink:var(--forest-200);
   --cat-heat-bg:#331A16;   --cat-heat-ink:var(--red-300);
   --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
-  --cat-trip-bg:#1F2E10;   --cat-trip-ink:var(--lime-300);
+  --cat-trip-bg:var(--grey-800);   --cat-trip-ink:var(--lime-300);
   --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
 }
 
@@ -637,6 +646,8 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
   --lime-50:#F8FCE8;   --lime-100:#F1F9D2;  --lime-200:#E1F2A0;  --lime-300:#C9EA62;  --lime-400:#B5DA3E;  --lime-600:#6F8A16;
   --cream-50:#FBF8F0;  --cream-100:#F6EFDF; --cream-200:#EDE2C9;
   --yellow-50:#FFFBE8; --yellow-100:#FDF4C9; --yellow-300:#F4CF34; --yellow-700:#7A6200;
+  /* dark greys, neutral (no green bias): the dark theme's surfaces */
+  --grey-750:#33353A; --grey-800:#27292B; --grey-850:#1E1F21; --grey-900:#161718; --grey-950:#0E0F10;
   --red-50:#FEF1EE;    --red-300:#F59C8E;   --red-700:#B3261E;
 
   /* ---------- Semantic colour (light) ---------- */
@@ -645,16 +656,21 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
   --color-surface-2:var(--grey-50);        /* secondary button, inputs, segmented track */
   --color-surface-3:var(--grey-100);       /* pressed / hover */
   --color-ink:var(--forest-950);           /* primary text and icons: green-black */
-  --color-ink-2:var(--grey-500);           /* secondary text */
-  --color-ink-3:var(--grey-400);           /* hints, placeholders, disabled */
+  --color-ink-2:var(--grey-600);           /* secondary text */
+  --color-ink-3:var(--grey-500);           /* hints, placeholders, disabled (4.5:1 on white) */
   --color-line:rgba(6,36,26,.08);          /* hairlines, dividers */
   --color-line-strong:rgba(6,36,26,.16);   /* input borders */
+  --color-scrim:color-mix(in srgb,var(--grey-950) 45%,transparent); /* dims the page behind sheets and modals */
+  --color-sheet:var(--color-surface);       /* bottom sheets and modals: one step above the page */
+  --color-sheet-field:var(--color-surface-2); /* inputs and secondary buttons inside a sheet */
 
   /* the one prominent colour: primary action */
   --color-primary:var(--lime-300);
   --color-primary-hover:var(--lime-400);
   --color-primary-pressed:var(--lime-400);
   --color-on-primary:var(--forest-900);
+  --color-switch-on:var(--color-primary);  /* a switch that is on: lime in both themes, dark knob */
+  --color-switch-knob-on:var(--color-on-primary);
 
   --color-brand:var(--forest-700);         /* wordmark, links, selected tab icon */
   --color-focus:var(--forest-700);
@@ -752,53 +768,55 @@ pre{margin:0;max-height:420px;overflow:auto;background:var(--color-surface-2);bo
   --z-header:5; --z-tabbar:10; --z-scrim:20; --z-sheet:21; --z-toast:40;
 }
 
-/* ---------- Dark: green-black night, cream ink, the same lime and pink ---------- */
+/* ---------- Dark: neutral dark greys, cream ink, the same lime and pink ---------- */
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --color-bg:#06170F; --color-surface:#0C2118; --color-surface-2:#132A20; --color-surface-3:#1B352A;
-    --color-ink:var(--cream-100); --color-ink-2:#A2B2A8; --color-ink-3:#73857A;
+    --color-bg:var(--grey-950); --color-surface:var(--grey-900); --color-surface-2:var(--grey-850); --color-surface-3:var(--grey-800);
+    --color-ink:var(--cream-100); --color-ink-2:var(--grey-300); --color-ink-3:var(--grey-400);
     --color-line:rgba(246,239,223,.08); --color-line-strong:rgba(246,239,223,.16);
+    --color-scrim:color-mix(in srgb,var(--grey-950) 75%,transparent); --color-sheet:var(--grey-850); --color-sheet-field:var(--grey-800);
     --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
     --color-brand:var(--pink-300); --color-focus:var(--lime-300);
     --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
     --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1C24; --color-on-pink:var(--forest-900);
-    --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--cream-50);
+    --color-feature:var(--grey-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--cream-50);
     --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
-    --color-success:var(--lime-300);   --color-success-bg:#1A2C12;
+    --color-success:var(--lime-300);   --color-success-bg:var(--grey-800);
     --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
     --color-danger:var(--red-300);     --color-danger-bg:#331A16;
     --color-info:var(--pink-300);      --color-info-bg:#3A1C24;
     --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
     --cat-meds-bg:#3A1C24;   --cat-meds-ink:var(--pink-300);
-    --cat-vax-bg:#123A27;    --cat-vax-ink:var(--forest-200);
+    --cat-vax-bg:var(--grey-800);    --cat-vax-ink:var(--forest-200);
     --cat-heat-bg:#331A16;   --cat-heat-ink:var(--red-300);
     --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
-    --cat-trip-bg:#1F2E10;   --cat-trip-ink:var(--lime-300);
+    --cat-trip-bg:var(--grey-800);   --cat-trip-ink:var(--lime-300);
     --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --color-bg:#06170F; --color-surface:#0C2118; --color-surface-2:#132A20; --color-surface-3:#1B352A;
-  --color-ink:var(--cream-100); --color-ink-2:#A2B2A8; --color-ink-3:#73857A;
+  --color-bg:var(--grey-950); --color-surface:var(--grey-900); --color-surface-2:var(--grey-850); --color-surface-3:var(--grey-800);
+  --color-ink:var(--cream-100); --color-ink-2:var(--grey-300); --color-ink-3:var(--grey-400);
   --color-line:rgba(246,239,223,.08); --color-line-strong:rgba(246,239,223,.16);
+    --color-scrim:color-mix(in srgb,var(--grey-950) 75%,transparent); --color-sheet:var(--grey-850); --color-sheet-field:var(--grey-800);
   --color-primary:var(--lime-300); --color-primary-hover:var(--lime-200); --color-primary-pressed:var(--lime-400); --color-on-primary:var(--forest-900);
   --color-brand:var(--pink-300); --color-focus:var(--lime-300);
   --color-tooltip:var(--cream-100); --color-on-tooltip:var(--forest-900);
   --color-pink:var(--pink-300); --color-pink-strong:var(--pink-400); --color-pink-soft:#3A1C24; --color-on-pink:var(--forest-900);
-  --color-feature:var(--forest-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--cream-50);
+  --color-feature:var(--grey-800); --color-on-feature:var(--cream-50); --color-feature-title:var(--cream-50);
   --color-feature-ink-2:rgba(251,248,240,.72); --color-feature-line:rgba(251,248,240,.16);
-  --color-success:var(--lime-300);   --color-success-bg:#1A2C12;
+  --color-success:var(--lime-300);   --color-success-bg:var(--grey-800);
   --color-warning:var(--yellow-300); --color-warning-bg:#2A2510;
   --color-danger:var(--red-300);     --color-danger-bg:#331A16;
   --color-info:var(--pink-300);      --color-info-bg:#3A1C24;
   --cat-feed-bg:#2A2510;   --cat-feed-ink:var(--yellow-300);
   --cat-meds-bg:#3A1C24;   --cat-meds-ink:var(--pink-300);
-  --cat-vax-bg:#123A27;    --cat-vax-ink:var(--forest-200);
+  --cat-vax-bg:var(--grey-800);    --cat-vax-ink:var(--forest-200);
   --cat-heat-bg:#331A16;   --cat-heat-ink:var(--red-300);
   --cat-weight-bg:#2A271E; --cat-weight-ink:var(--cream-200);
-  --cat-trip-bg:#1F2E10;   --cat-trip-ink:var(--lime-300);
+  --cat-trip-bg:var(--grey-800);   --cat-trip-ink:var(--lime-300);
   --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 4px 16px rgba(0,0,0,.4); --shadow-3:0 12px 32px rgba(0,0,0,.5);
 }
 </pre>

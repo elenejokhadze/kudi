@@ -1,0 +1,7 @@
+Decision eval: trip type and ticket
+trip_hero order 0: pick=one_display (conf 0.95), one_big_number=0.29, on_scale=0.04
+trip_hero order 1: pick=one_display (conf 1.00), one_big_number=0.30, on_scale=0.04
+trip_hero: agreed on one_display
+ticket order 0: pick=art_top (conf 0.56), fixes_border=0.23, less_plain=0.30
+ticket order 1: pick=art_top (conf 0.85), fixes_border=0.22, less_plain=0.29
+ticket: agreed on art_top

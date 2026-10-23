@@ -1,0 +1,4 @@
+Decision eval: quick log captions
+caption order 0: pick=count_relative (conf 0.39), clear=0.16, fits=0.36
+caption order 1: pick=count_clock (conf 0.36), clear=0.15, fits=0.35
+caption: SPLIT between orders, ask the owner

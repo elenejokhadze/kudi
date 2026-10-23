@@ -1,0 +1,7 @@
+Decision eval: welcome copy
+actions order 0: pick=primary_plus_link (conf 0.43), one_action=0.37, keeps_demo=0.97
+actions order 1: pick=primary_plus_link (conf 0.56), one_action=0.32, keeps_demo=0.97
+actions: agreed on primary_plus_link
+message order 0: pick=headline_only (conf 0.61), one_message=0.34
+message order 1: pick=headline_only (conf 0.61), one_message=0.32
+message: agreed on headline_only

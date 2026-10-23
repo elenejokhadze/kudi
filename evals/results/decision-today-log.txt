@@ -1,0 +1,10 @@
+Decision eval: Today log
+extra_logs order 0: pick=one_timeline (conf 0.34), removes_duplicate=0.28, keeps_who=0.95
+extra_logs order 1: pick=on_buttons (conf 0.28), removes_duplicate=0.30, keeps_who=0.95
+extra_logs: SPLIT between orders, ask the owner
+weight order 0: pick=three (conf 0.72), one_tap=0.22
+weight order 1: pick=three (conf 0.82), one_tap=0.25
+weight: agreed on three
+icons order 0: pick=bare_large (conf 0.85), no_tile=0.30, no_invented_art=0.60
+icons order 1: pick=bare_large (conf 0.91), no_tile=0.36, no_invented_art=0.60
+icons: agreed on bare_large

@@ -1,0 +1,4 @@
+Decision eval: XP
+order 0: pick=toast_only (conf 0.83), consistent=0.04, buttons_clear=0.08
+order 1: pick=toast_only (conf 0.89), consistent=0.04, buttons_clear=0.08
+agreed on toast_only

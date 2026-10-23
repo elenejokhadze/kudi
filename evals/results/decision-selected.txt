@@ -1,0 +1,4 @@
+Decision eval: selected option card
+selected_card order 0: pick=ink (conf 0.25), consistent=0.21, meaning=0.80
+selected_card order 1: pick=ink (conf 0.23), consistent=0.20, meaning=0.81
+selected_card: agreed on ink
